@@ -98,6 +98,8 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	private LazyOptional<?> itemHandler = null;
 
 	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
+		double animationSpeed = Math.max(0.1, movementSpeed);
 
 		if (isJumping()) {
 			event.getController().setAnimation(
@@ -107,19 +109,16 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		} else if (event.isMoving()) {
 			if (isVehicle() || isAggressive() || isSprinting() || isSwimming()) {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
+				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
 			} else {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
+				event.getController().setAnimationSpeed(Math.max(0.1, 0.7 * event.getController().getAnimationSpeed() + animationSpeed));
 			}
-
-			event.getController().setAnimationSpeed(animationSpeed + getAttributeValue(Attributes.MOVEMENT_SPEED));
-
 		} else {
 			if (isVehicle()) {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
-
 			} else {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle3", ILoopType.EDefaultLoopTypes.LOOP));
-
 			}
 			event.getController().setAnimationSpeed(1.0);
 		}
@@ -147,7 +146,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.isSaddled() && !this.isVehicle()) {
+		if (this.isSaddled() && !this.isVehicle() || this.isLeashed()) {
 			this.getNavigation().stop();
 		}
 	}
