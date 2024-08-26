@@ -1,0 +1,31 @@
+modLoader="javafml"
+loaderVersion="[40,)"
+license="All Rights Reserved, DragN0007"
+issueTrackerURL="https://discord.gg/jubppqCzXj"
+[[mods]]
+modId="dragnlivestock"
+version="${1.18.2-1.0}"
+displayName="DragN's Livestock Overhaul!"
+logoFile="dlo_logo.png"
+authors="DragN0007"
+description='''
+An overhaul for Horses, Mules, Donkeys, ...
+'''
+[[dependencies.dragnlivestock]]
+modId="forge"
+mandatory=true
+versionRange="[40,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.dragnlivestock]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.18.2,1.19.0)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.dragnlivestock]]
+modId = "geckolib3"
+mandatory = true
+versionRange = "[3.0.57,)"
+ordering="NONE"
+side="BOTH"
