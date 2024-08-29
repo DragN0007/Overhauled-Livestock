@@ -1,7 +1,19 @@
 package com.dragn0007.dragnlivestock.entities.horse;
 
+import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
+import dev.kosmx.playerAnim.api.layered.IAnimation;
+import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
+import dev.kosmx.playerAnim.api.layered.ModifierLayer;
+import dev.kosmx.playerAnim.api.layered.PlayerAnimationFrame;
+import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
+import dev.kosmx.playerAnim.core.data.gson.AnimationJson;
+import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
+import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationFactory;
+import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -27,6 +39,8 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import software.bernie.geckolib3.core.AnimationState;
@@ -102,31 +116,25 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
 		double animationSpeed = Math.max(0.1, movementSpeed);
 
-		String animationName;
-
 		if (isJumping()) {
-			animationName = "jump";
 			event.getController().setAnimation(
-					new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.LOOP)
-			);
+					new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.LOOP));
+
 			event.getController().setAnimationSpeed(1.0);
+
 		} else if (event.isMoving()) {
 			if (isVehicle() || isAggressive() || isSprinting() || isSwimming()) {
-				animationName = "run";
-				event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.LOOP));
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
 				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
 			} else {
-				animationName = "walk";
-				event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.LOOP));
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
 				event.getController().setAnimationSpeed(Math.max(0.1, 0.7 * event.getController().getAnimationSpeed() + animationSpeed));
 			}
 		} else {
 			if (isVehicle()) {
-				animationName = "idle";
-				event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.LOOP));
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
 			} else {
-				animationName = "idle3";
-				event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.LOOP));
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle3", ILoopType.EDefaultLoopTypes.LOOP));
 			}
 			event.getController().setAnimationSpeed(1.0);
 		}
@@ -134,34 +142,35 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		return PlayState.CONTINUE;
 	}
 
-//	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-//		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
-//		double animationSpeed = Math.max(0.1, movementSpeed);
-//
-//		if (isJumping()) {
-//			event.getController().setAnimation(
-//					new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.LOOP)
-//			);
-//			event.getController().setAnimationSpeed(1.0);
-//		} else if (event.isMoving()) {
-//			if (isVehicle() || isAggressive() || isSprinting() || isSwimming()) {
-//				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
-//				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
-//			} else {
-//				event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
-//				event.getController().setAnimationSpeed(Math.max(0.1, 0.7 * event.getController().getAnimationSpeed() + animationSpeed));
-//			}
-//		} else {
-//			if (isVehicle()) {
-//				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
-//			} else {
-//				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle3", ILoopType.EDefaultLoopTypes.LOOP));
-//			}
-//			event.getController().setAnimationSpeed(1.0);
-//		}
-//
-//		return PlayState.CONTINUE;
-//	}
+	private <E extends IAnimatable> PlayState playerPredicate(AnimationEvent<E> event) {
+		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
+		double animationSpeed = Math.max(0.1, movementSpeed);
+
+		if (isJumping()) {
+			event.getController().setAnimation(
+					new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.LOOP));
+
+			event.getController().setAnimationSpeed(1.0);
+
+		} else if (event.isMoving()) {
+			if (isVehicle() || isAggressive() || isSprinting() || isSwimming()) {
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
+				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
+			} else {
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
+				event.getController().setAnimationSpeed(Math.max(0.1, 0.7 * event.getController().getAnimationSpeed() + animationSpeed));
+			}
+		} else {
+			if (isVehicle()) {
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
+			} else {
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle3", ILoopType.EDefaultLoopTypes.LOOP));
+			}
+			event.getController().setAnimationSpeed(1.0);
+		}
+
+		return PlayState.CONTINUE;
+	}
 
 	private PlayState attackPredicate(AnimationEvent event) {
 		if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
@@ -177,6 +186,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	public void registerControllers (AnimationData data){
 		data.addAnimationController(new AnimationController(this, "controller", 5, this::predicate));
 		data.addAnimationController(new AnimationController(this, "attackController", 1, this::attackPredicate));
+		data.addAnimationController(new AnimationController(this, "playerController", 1, this::playerPredicate));
 	}
 
 	//ground tie
