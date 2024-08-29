@@ -1,6 +1,7 @@
 package com.dragn0007.dragnlivestock.datagen;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
+import com.dragn0007.dragnlivestock.items.LOItems;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -16,7 +17,7 @@ public class LOItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-
+    simpleItem(LOItems.LIVESTOCK_OVERHAUL.get());
     }
 
     private ItemModelBuilder simpleSpriteBlockItem(Block block) {

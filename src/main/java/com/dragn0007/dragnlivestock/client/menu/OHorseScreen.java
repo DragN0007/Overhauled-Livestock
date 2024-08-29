@@ -19,7 +19,7 @@ public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
 
     public OHorseScreen(OHorseMenu oHorseMenu, Inventory inventory, Component component) {
         super(oHorseMenu, inventory, component);
-        this.texture = oHorseMenu.horse.isChested() ? CHESTED : SADDLED;
+        this.texture = oHorseMenu.OHorse.isChested() ? CHESTED : SADDLED;
         this.imageWidth = 175;
         this.imageHeight = 221;
         this.inventoryLabelY = this.imageHeight - 94;

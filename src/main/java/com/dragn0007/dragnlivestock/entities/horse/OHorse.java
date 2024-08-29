@@ -1,9 +1,16 @@
 package com.dragn0007.dragnlivestock.entities.horse;
 
+import com.dragn0007.dragnlivestock.client.menu.OHorseMenu;
 import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
+import dev.kosmx.playerAnim.api.layered.IAnimation;
+import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
+import dev.kosmx.playerAnim.api.layered.ModifierLayer;
+import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
+import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import net.minecraft.Util;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -11,6 +18,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -37,6 +45,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.network.NetworkHooks;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -136,36 +145,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		return PlayState.CONTINUE;
 	}
 
-	private <E extends IAnimatable> PlayState playerPredicate(AnimationEvent<E> event) {
-		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
-		double animationSpeed = Math.max(0.1, movementSpeed);
-
-		if (isJumping()) {
-			event.getController().setAnimation(
-					new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.LOOP));
-
-			event.getController().setAnimationSpeed(1.0);
-
-		} else if (event.isMoving()) {
-			if (isVehicle() || isAggressive() || isSprinting() || isSwimming()) {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
-				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
-			} else {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
-				event.getController().setAnimationSpeed(Math.max(0.1, 0.7 * event.getController().getAnimationSpeed() + animationSpeed));
-			}
-		} else {
-			if (isVehicle()) {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
-			} else {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle3", ILoopType.EDefaultLoopTypes.LOOP));
-			}
-			event.getController().setAnimationSpeed(1.0);
-		}
-
-		return PlayState.CONTINUE;
-	}
-
 	private PlayState attackPredicate(AnimationEvent event) {
 		if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
 			event.getController().markNeedsReload();
@@ -180,7 +159,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	public void registerControllers (AnimationData data){
 		data.addAnimationController(new AnimationController(this, "controller", 5, this::predicate));
 		data.addAnimationController(new AnimationController(this, "attackController", 1, this::attackPredicate));
-		data.addAnimationController(new AnimationController(this, "playerController", 1, this::playerPredicate));
 	}
 
 	//ground tie
@@ -263,19 +241,21 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 				return InteractionResult.sidedSuccess(this.level.isClientSide);
 			}
 
-			if (itemstack.is(Items.CHEST) && this.isChestable() && !this.isChested()) {
-				this.setChested(true);
-				this.equipChest(SoundSource.NEUTRAL);
-				this.updateInventory();
-				if (!player.getAbilities().instabuild) {
-					itemstack.shrink(1);
+			if (!this.level.isClientSide) {
+				if (player.isShiftKeyDown()) {
+					NetworkHooks.openGui((ServerPlayer) player, new SimpleMenuProvider((containerId, inventory, serverPlayer) -> {
+						return new OHorseMenu(containerId, inventory, this.inventory, this);
+					}, this.getDisplayName()), (data) -> {
+						data.writeInt(this.getInventorySize());
+						data.writeInt(this.getId());
+					});
+					return InteractionResult.SUCCESS;
 				}
-				return InteractionResult.sidedSuccess(this.level.isClientSide);
-			}
 
-			InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
-			if (interactionresult.consumesAction()) {
-				return interactionresult;
+				InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+				if (interactionresult.consumesAction()) {
+					return interactionresult;
+				}
 			}
 		}
 

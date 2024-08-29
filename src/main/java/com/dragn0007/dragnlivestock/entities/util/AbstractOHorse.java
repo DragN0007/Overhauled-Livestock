@@ -120,34 +120,6 @@ public class AbstractOHorse extends AbstractHorse implements Saddleable, Chestab
         this.updateContainerEquipment();
     }
 
-    public SlotAccess getSlot(int p_149479_) {
-        return p_149479_ == 499 ? new SlotAccess() {
-            public ItemStack get() {
-                return AbstractOHorse.this.hasChest() ? new ItemStack(Items.CHEST) : ItemStack.EMPTY;
-            }
-
-            public boolean set(ItemStack p_149485_) {
-                if (p_149485_.isEmpty()) {
-                    if (AbstractOHorse.this.hasChest()) {
-                        AbstractOHorse.this.setChest(false);
-                        AbstractOHorse.this.createInventory();
-                    }
-
-                    return true;
-                } else if (p_149485_.is(Items.CHEST)) {
-                    if (!AbstractOHorse.this.hasChest()) {
-                        AbstractOHorse.this.setChest(true);
-                        AbstractOHorse.this.createInventory();
-                    }
-
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        } : super.getSlot(p_149479_);
-    }
-
     public InteractionResult mobInteract(Player p_30493_, InteractionHand p_30494_) {
         ItemStack itemstack = p_30493_.getItemInHand(p_30494_);
         if (!this.isBaby()) {

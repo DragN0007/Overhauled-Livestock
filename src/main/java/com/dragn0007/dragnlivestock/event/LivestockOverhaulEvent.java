@@ -25,7 +25,3 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
     }
 }
-
-
-
-
