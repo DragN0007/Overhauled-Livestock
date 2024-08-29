@@ -102,30 +102,66 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
 		double animationSpeed = Math.max(0.1, movementSpeed);
 
+		String animationName;
+
 		if (isJumping()) {
+			animationName = "jump";
 			event.getController().setAnimation(
-					new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.LOOP)
+					new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.LOOP)
 			);
 			event.getController().setAnimationSpeed(1.0);
 		} else if (event.isMoving()) {
 			if (isVehicle() || isAggressive() || isSprinting() || isSwimming()) {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
+				animationName = "run";
+				event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.LOOP));
 				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
 			} else {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
+				animationName = "walk";
+				event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.LOOP));
 				event.getController().setAnimationSpeed(Math.max(0.1, 0.7 * event.getController().getAnimationSpeed() + animationSpeed));
 			}
 		} else {
 			if (isVehicle()) {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
+				animationName = "idle";
+				event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.LOOP));
 			} else {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle3", ILoopType.EDefaultLoopTypes.LOOP));
+				animationName = "idle3";
+				event.getController().setAnimation(new AnimationBuilder().addAnimation(animationName, ILoopType.EDefaultLoopTypes.LOOP));
 			}
 			event.getController().setAnimationSpeed(1.0);
 		}
 
 		return PlayState.CONTINUE;
 	}
+
+//	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+//		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
+//		double animationSpeed = Math.max(0.1, movementSpeed);
+//
+//		if (isJumping()) {
+//			event.getController().setAnimation(
+//					new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.LOOP)
+//			);
+//			event.getController().setAnimationSpeed(1.0);
+//		} else if (event.isMoving()) {
+//			if (isVehicle() || isAggressive() || isSprinting() || isSwimming()) {
+//				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
+//				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
+//			} else {
+//				event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
+//				event.getController().setAnimationSpeed(Math.max(0.1, 0.7 * event.getController().getAnimationSpeed() + animationSpeed));
+//			}
+//		} else {
+//			if (isVehicle()) {
+//				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
+//			} else {
+//				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle3", ILoopType.EDefaultLoopTypes.LOOP));
+//			}
+//			event.getController().setAnimationSpeed(1.0);
+//		}
+//
+//		return PlayState.CONTINUE;
+//	}
 
 	private PlayState attackPredicate(AnimationEvent event) {
 		if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
@@ -166,11 +202,11 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 
 			if (this.isSaddled()) {
 				offsetX = 0;
-				offsetY = 1.4;
+				offsetY = 1.3;
 				offsetZ = -0.1;
 			} else {
 				offsetX = 0;
-				offsetY = 1.2;
+				offsetY = 1.1;
 				offsetZ = -0.2;
 			}
 

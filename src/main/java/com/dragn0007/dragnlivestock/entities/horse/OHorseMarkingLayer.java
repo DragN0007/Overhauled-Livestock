@@ -34,7 +34,6 @@ public class OHorseMarkingLayer extends GeoLayerRenderer<OHorse> {
     }
 
     public enum Overlay {
-        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_none.png")),
         APPALOOSA(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_appaloosa.png")),
         BALD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_bald.png")),
         BLANKET_APPALOOSA(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_blanket_appaloosa.png")),
@@ -43,25 +42,30 @@ public class OHorseMarkingLayer extends GeoLayerRenderer<OHorse> {
         BLIND_EYES(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_blind_eyes.png")),
         BLUE_EYE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_blue_eye.png")),
         BROWN_EYE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_brown_eye.png")),
-        GOLD_EYE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_gold_eye.png")),
         FULL_SOCKS(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_full_socks.png")),
-        REVERSED_FULL_SOCKS_FEATHERING(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_reversed_full_socks_feathered.png")),
+        FULL_SOCKS_FEATHERING(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_full_socks_feathering.png")),
+        GOLD_EYE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_gold_eye.png")),
         HALF_SOCKS(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_half_socks.png")),
-        REVERSED_HALF_SOCKS(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_reversed_half_socks.png")),
         HALF_SOCKS_FEATHERING(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_half_socks_feathering.png")),
+        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_none.png")),
+        OVERO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_overo.png")),
+        OVERO_SPLASH(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_overo_splash.png")),
+        PAINT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_paint.png")),
+        PINK_BELLY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pink_belly.png")),
+        REVERSED_HALF_SOCKS(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_reversed_half_socks.png")),
+        REVERSED_FULL_SOCKS(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_reversed_full_socks.png")),
+        REVERSED_FULL_SOCKS_FEATHERING(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_reversed_full_socks_feathering.png")),
         REVERSED_HALF_SOCKS_FEATHERING(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_reversed_half_socks_feathering.png")),
         ROAN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_roan.png")),
         SNIP(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_snip.png")),
         SPLASH_OVERO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_splash_overo.png")),
-        OVERO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_overo.png")),
-        OVERO_PAINT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_overo_paint.png")),
-        PAINT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_paint.png")),
-        PINK_BELLY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pink_belly.png")),
         SPLASHED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_splashed.png")),
         SPOTTED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_spotted.png")),
         STAR(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_star.png")),
         TOBIANO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_tobiano.png")),
         ZORSE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_zorse.png"));
+
+        //Add new entries to bottom when mod is public
 
         public final ResourceLocation resourceLocation;
         Overlay(ResourceLocation resourceLocation) {

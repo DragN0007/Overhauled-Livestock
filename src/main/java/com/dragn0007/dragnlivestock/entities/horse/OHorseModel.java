@@ -28,6 +28,8 @@ public class OHorseModel extends AnimatedGeoModel<OHorse> {
         WARM_GREY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_warmgrey.png")),
         WHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_white.png"));
 
+        //Add new entries to bottom when mod is public
+
         public final ResourceLocation resourceLocation;
         Variant(ResourceLocation resourceLocation) {
             this.resourceLocation = resourceLocation;

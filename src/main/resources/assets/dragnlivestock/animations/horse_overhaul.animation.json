@@ -2,7 +2,6 @@
 	"format_version": "1.8.0",
 	"animations": {
 		"run": {
-			"loop": true,
 			"animation_length": 0.75,
 			"bones": {
 				"Horse": {
@@ -44,7 +43,7 @@
 						}
 					}
 				},
-				"body": {
+				"horse_body": {
 					"rotation": {
 						"0.0": {
 							"vector": [-2.5, 0, 0]
@@ -185,7 +184,7 @@
 						}
 					}
 				},
-				"head": {
+				"horse_head": {
 					"rotation": {
 						"0.0": {
 							"vector": [10, 0, 0]
@@ -1018,7 +1017,37 @@
 						}
 					}
 				},
-				"bipedHead": {
+				"body": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.25": {
+							"vector": [17.5, 0, 0]
+						},
+						"0.75": {
+							"vector": [0, 0, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 18, 5]
+						},
+						"0.25": {
+							"vector": [0, 16, -3.6]
+						},
+						"0.4167": {
+							"vector": [0, 18.25, -2.25]
+						},
+						"0.5833": {
+							"vector": [0, 21, 1]
+						},
+						"0.75": {
+							"vector": [0, 18, 5]
+						}
+					}
+				},
+				"head": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -1031,7 +1060,7 @@
 						}
 					}
 				},
-				"bipedRightArm": {
+				"right_arm": {
 					"rotation": {
 						"0.0": {
 							"vector": [-56.2576, -14.6914, -9.61518]
@@ -1050,7 +1079,7 @@
 						}
 					}
 				},
-				"bipedLeftArm": {
+				"left_arm": {
 					"rotation": {
 						"0.0": {
 							"vector": [-56.2576, 14.6914, -0.6152]
@@ -1069,7 +1098,7 @@
 						}
 					}
 				},
-				"bipedLeftLeg": {
+				"left_leg": {
 					"rotation": {
 						"0.0": {
 							"vector": [-58.62059, -34.07586, -24.23361]
@@ -1093,7 +1122,7 @@
 						}
 					}
 				},
-				"bipedRightLeg": {
+				"right_leg": {
 					"rotation": {
 						"0.0": {
 							"vector": [-58.62059, 34.07582, 24.23359]
@@ -1120,7 +1149,6 @@
 			}
 		},
 		"jump": {
-			"loop": true,
 			"animation_length": 1,
 			"bones": {
 				"Horse": {
@@ -1159,7 +1187,7 @@
 						}
 					}
 				},
-				"body": {
+				"horse_body": {
 					"position": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -1277,7 +1305,7 @@
 						}
 					}
 				},
-				"head": {
+				"horse_head": {
 					"rotation": {
 						"0.0": {
 							"vector": [17.5, 0, 0]
@@ -1911,7 +1939,37 @@
 						}
 					}
 				},
-				"bipedHead": {
+				"body": {
+					"rotation": {
+						"0.0": {
+							"vector": [10, 0, 0]
+						},
+						"0.5": {
+							"vector": [17.5, 0, 0]
+						},
+						"0.75": {
+							"vector": [22.5, 0, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 23, 9]
+						},
+						"0.25": {
+							"vector": [0, 29, 9]
+						},
+						"0.5": {
+							"vector": [0, 32, 1]
+						},
+						"0.75": {
+							"vector": [0, 27, -7]
+						},
+						"1.0": {
+							"vector": [0, 21, -10]
+						}
+					}
+				},
+				"head": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -1924,7 +1982,7 @@
 						}
 					}
 				},
-				"bipedRightArm": {
+				"right_arm": {
 					"rotation": {
 						"0.0": {
 							"vector": [-86.2576, -14.6914, -9.61518]
@@ -1940,7 +1998,7 @@
 						}
 					}
 				},
-				"bipedLeftArm": {
+				"left_arm": {
 					"rotation": {
 						"0.0": {
 							"vector": [-86.2576, 14.6914, -0.6152]
@@ -1956,7 +2014,7 @@
 						}
 					}
 				},
-				"bipedLeftLeg": {
+				"left_leg": {
 					"rotation": {
 						"0.0": {
 							"vector": [-36.12059, -34.07586, -24.23361]
@@ -1977,7 +2035,7 @@
 						}
 					}
 				},
-				"bipedRightLeg": {
+				"right_leg": {
 					"rotation": {
 						"0.0": {
 							"vector": [-38.62059, 34.07582, 24.23359]
@@ -2001,10 +2059,9 @@
 			}
 		},
 		"idle": {
-			"loop": true,
 			"animation_length": 3,
 			"bones": {
-				"body": {
+				"horse_body": {
 					"position": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -2101,7 +2158,7 @@
 						}
 					}
 				},
-				"head": {
+				"horse_head": {
 					"rotation": {
 						"0.0": {
 							"vector": [2.5, 0, 0]
@@ -2362,7 +2419,31 @@
 						}
 					}
 				},
-				"bipedHead": {
+				"body": {
+					"rotation": {
+						"0.0": {
+							"vector": [2.5, 0, 0]
+						},
+						"1.5": {
+							"vector": [0, 0, 0]
+						},
+						"3.0": {
+							"vector": [2.5, 0, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 17, 2]
+						},
+						"1.5": {
+							"vector": [0, 18, 2]
+						},
+						"3.0": {
+							"vector": [0, 17, 2]
+						}
+					}
+				},
+				"head": {
 					"rotation": {
 						"0.0": {
 							"vector": [5, 0, 0]
@@ -2375,7 +2456,7 @@
 						}
 					}
 				},
-				"bipedRightArm": {
+				"right_arm": {
 					"rotation": {
 						"0.0": {
 							"vector": [-39.17778, -0.32312, 11.015]
@@ -2396,7 +2477,7 @@
 						}
 					}
 				},
-				"bipedLeftArm": {
+				"left_arm": {
 					"rotation": {
 						"0.0": {
 							"vector": [-62.6549, 21.38841, 2.93847]
@@ -2414,7 +2495,7 @@
 						}
 					}
 				},
-				"bipedLeftLeg": {
+				"left_leg": {
 					"rotation": {
 						"0.0": {
 							"vector": [-65.39596, -36.35552, -25.48995]
@@ -2435,7 +2516,7 @@
 						}
 					}
 				},
-				"bipedRightLeg": {
+				"right_leg": {
 					"rotation": {
 						"0.0": {
 							"vector": [-64.58517, 38.6212, 26.82185]
@@ -2459,10 +2540,9 @@
 			}
 		},
 		"idle2": {
-			"loop": true,
 			"animation_length": 3,
 			"bones": {
-				"body": {
+				"horse_body": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -2603,7 +2683,7 @@
 						}
 					}
 				},
-				"head": {
+				"horse_head": {
 					"rotation": {
 						"0.0": {
 							"vector": [2.5, 0, 0]
@@ -2938,10 +3018,9 @@
 			}
 		},
 		"idle3": {
-			"loop": true,
 			"animation_length": 3,
 			"bones": {
-				"body": {
+				"horse_body": {
 					"position": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -3038,7 +3117,7 @@
 						}
 					}
 				},
-				"head": {
+				"horse_head": {
 					"rotation": {
 						"0.0": {
 							"vector": [2.5, 0, 0]
@@ -3286,7 +3365,6 @@
 			}
 		},
 		"rear": {
-			"loop": true,
 			"animation_length": 2.0417,
 			"bones": {
 				"Horse": {
@@ -3294,7 +3372,7 @@
 						"vector": [0, -1.3, 0]
 					}
 				},
-				"body": {
+				"horse_body": {
 					"rotation": {
 						"0.0": {
 							"vector": [-2.5, 0, 0]
@@ -3402,7 +3480,7 @@
 						}
 					}
 				},
-				"head": {
+				"horse_head": {
 					"rotation": {
 						"0.0": {
 							"vector": [2.5, 0, 0]
@@ -3820,10 +3898,9 @@
 			}
 		},
 		"attack": {
-			"loop": true,
 			"animation_length": 0.625,
 			"bones": {
-				"body": {
+				"horse_body": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -3849,7 +3926,7 @@
 						}
 					}
 				},
-				"head": {
+				"horse_head": {
 					"rotation": {
 						"0.0": {
 							"vector": [27.75279, -1.93597, -14.87739]
@@ -3900,10 +3977,9 @@
 			}
 		},
 		"walk": {
-			"loop": true,
 			"animation_length": 1.25,
 			"bones": {
-				"body": {
+				"horse_body": {
 					"rotation": {
 						"0.0": {
 							"vector": [-2.5, 0, 0]
@@ -3985,7 +4061,7 @@
 						}
 					}
 				},
-				"head": {
+				"horse_head": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -4839,7 +4915,37 @@
 						}
 					}
 				},
-				"bipedHead": {
+				"body": {
+					"rotation": {
+						"0.0": {
+							"vector": [7.5, 0, 0]
+						},
+						"0.5833": {
+							"vector": [7.5, 0, 0]
+						},
+						"1.25": {
+							"vector": [7.5, 0, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 18, 2]
+						},
+						"0.25": {
+							"vector": [0, 18, 2]
+						},
+						"0.5833": {
+							"vector": [0, 18, 2]
+						},
+						"0.8333": {
+							"vector": [0, 18, 2]
+						},
+						"1.25": {
+							"vector": [0, 18, 2]
+						}
+					}
+				},
+				"head": {
 					"rotation": {
 						"0.0": {
 							"vector": [5, 0, 0]
@@ -4858,7 +4964,7 @@
 						}
 					}
 				},
-				"bipedRightArm": {
+				"right_arm": {
 					"rotation": {
 						"0.0": {
 							"vector": [-63.7576, -14.6914, -9.61518]
@@ -4894,7 +5000,7 @@
 						}
 					}
 				},
-				"bipedLeftArm": {
+				"left_arm": {
 					"rotation": {
 						"0.0": {
 							"vector": [-63.0762, 19.16348, 1.72303]
@@ -4924,7 +5030,7 @@
 						}
 					}
 				},
-				"bipedLeftLeg": {
+				"left_leg": {
 					"rotation": {
 						"0.0": {
 							"vector": [-65.39596, -36.35552, -25.48995]
@@ -4954,7 +5060,7 @@
 						}
 					}
 				},
-				"bipedRightLeg": {
+				"right_leg": {
 					"rotation": {
 						"0.0": {
 							"vector": [-64.58517, 38.6212, 26.82185]
