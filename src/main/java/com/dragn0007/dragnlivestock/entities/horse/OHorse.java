@@ -4,11 +4,11 @@ import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -25,7 +25,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -43,12 +42,14 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.UUID;
 
 public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Saddleable {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
 	private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> ARMORED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
 
 	public OHorse(EntityType<? extends OHorse> type, Level level) {
 		super(type, level);
@@ -189,61 +190,57 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
-		if (!this.isBaby()) {
-			if (this.isTamed() && player.isSecondaryUseActive()) {
-				this.openInventory(player);
-				return InteractionResult.sidedSuccess(this.level.isClientSide);
-			}
 
-			if (this.isVehicle()) {
-				return super.mobInteract(player, hand);
-			}
+		if (this.isBaby()) {
+			return super.mobInteract(player, hand);
+		}
+
+		if (!this.isTamed() && this.isFood(itemstack)) {
+			return this.fedFood(player, itemstack);
+		}
+
+		if (this.isTamed() && player.isSecondaryUseActive()) {
+			this.openInventory(player);
+			return InteractionResult.sidedSuccess(this.level.isClientSide);
+		}
+
+		if (this.isVehicle()) {
+			return super.mobInteract(player, hand);
 		}
 
 		if (!itemstack.isEmpty()) {
-			if (this.isFood(itemstack)) {
-				return this.fedFood(player, itemstack);
+			if (!this.isTamed()) {
+				this.makeMad();
+				return InteractionResult.sidedSuccess(this.level.isClientSide);
+			}
+
+			if (itemstack.is(Items.SADDLE) && !this.isSaddled() && this.isSaddleable()) {
+				this.setSaddled(true);
+				this.updateInventory();
+				if (!player.getAbilities().instabuild) {
+					itemstack.shrink(1);
+				}
+				return InteractionResult.sidedSuccess(this.level.isClientSide);
+			}
+
+			if (itemstack.is(Items.CHEST) && this.isChestable() && !this.isChested()) {
+				this.setChested(true);
+				this.equipChest(SoundSource.NEUTRAL);
+				this.updateInventory();
+				if (!player.getAbilities().instabuild) {
+					itemstack.shrink(1);
+				}
+				return InteractionResult.sidedSuccess(this.level.isClientSide);
 			}
 
 			InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
 			if (interactionresult.consumesAction()) {
 				return interactionresult;
 			}
-
-			if (!this.isTamed()) {
-				this.makeMad();
-				return InteractionResult.sidedSuccess(this.level.isClientSide);
-			}
-
-			boolean flag = !this.isBaby() && !this.isSaddled() && itemstack.is(Items.SADDLE);
-			if (this.isArmor(itemstack) || flag) {
-				this.openInventory(player);
-				return InteractionResult.sidedSuccess(this.level.isClientSide);
-			}
 		}
 
-		if(itemstack.is(Items.SADDLE) && this.isSaddleable()) {
-			itemstack.interactLivingEntity(player, this, hand);
-			// equip saddle
-			this.setSaddled(true);
-			this.updateInventory();
-			return InteractionResult.sidedSuccess(this.level.isClientSide);
-		}
-
-	    if(itemstack.is(Items.CHEST) && this.isChestable()) {
-			// equip chest
-			this.setChested(true);
-			this.equipChest(SoundSource.NEUTRAL);
-			this.updateInventory();
-			return InteractionResult.sidedSuccess(this.level.isClientSide);
-		}
-
-		if (this.isBaby()) {
-			return super.mobInteract(player, hand);
-		} else {
-			this.doPlayerRide(player);
-			return InteractionResult.sidedSuccess(this.level.isClientSide);
-		}
+		this.doPlayerRide(player);
+		return InteractionResult.sidedSuccess(this.level.isClientSide);
 	}
 
 	protected void playGallopSound(SoundType p_30709_) {
@@ -351,53 +348,91 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		return SoundEvents.HORSE_ANGRY;
 	}
 
-	//Generates variant textures
-	public ResourceLocation getTextureLocation() {
-		return OHorseModel.Variant.variantFromOrdinal(getVariant()).resourceLocation;
-//		OHorseModel.Overlay.overlayFromOrdinal(getOverlayVariant());
+	public ItemStack getArmor() {
+		return this.getItemBySlot(EquipmentSlot.CHEST);
 	}
 
-	protected boolean canParent() {
-		return !this.isVehicle() && !this.isPassenger() && this.isTamed() && !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
+	private void setArmor(ItemStack stack) {
+		this.setItemSlot(EquipmentSlot.CHEST, stack);
+		this.setDropChance(EquipmentSlot.CHEST, 0.0F);
+	}
+
+	// Generates the base texture
+	public ResourceLocation getTextureLocation() {
+		return OHorseModel.Variant.variantFromOrdinal(getVariant()).resourceLocation;
+	}
+
+	public ResourceLocation getOverlayLocation() {
+		return OHorseMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
 	}
 
 	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
-//	private static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
 
-	public int getVariant(){
+	public int getVariant() {
 		return this.entityData.get(VARIANT);
 	}
-//	public int getOverlayVariant(){
-//		return this.entityData.get(OVERLAY);
-//	}
+
+	public int getOverlayVariant() {
+		return this.entityData.get(OVERLAY);
+	}
 
 	public void setVariant(int variant) {
 		this.entityData.set(VARIANT, variant);
 	}
-//	public void setOverlayVariant(int variant) {
-//		this.entityData.set(VARIANT, variant);
-//	}
+
+	public void setOverlayVariant(int variant) {
+		this.entityData.set(OVERLAY, variant);
+	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 
-		if(tag.contains("Variant")) {
+		if (tag.contains("Variant")) {
 			setVariant(tag.getInt("Variant"));
 		}
 
-//		if(tag.contains("Overlay")) {
-//			setOverlayVariant(tag.getInt("Overlay"));
-//		}
+		if (tag.contains("Overlay")) {
+			setOverlayVariant(tag.getInt("Overlay"));
+		}
 
-		if(tag.contains("Chested")) {
+		if (tag.contains("Chested")) {
 			this.setChested(tag.getBoolean("Chested"));
 		}
 
-		if(tag.contains("Saddled")) {
+		if (tag.contains("Saddled")) {
 			this.setSaddled(tag.getBoolean("Saddled"));
 		}
 
+		if (tag.contains("ArmorItem", 10)) {
+			ItemStack itemstack = ItemStack.of(tag.getCompound("ArmorItem"));
+			if (!itemstack.isEmpty() && this.isArmor(itemstack)) {
+				this.inventory.setItem(1, itemstack);
+			}
+		}
+
+		this.setTamed(tag.getBoolean("Tame"));
+		UUID uuid;
+		if (tag.hasUUID("Owner")) {
+			uuid = tag.getUUID("Owner");
+		} else {
+			String s = tag.getString("Owner");
+			uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
+		}
+
+		if (uuid != null) {
+			this.setOwnerUUID(uuid);
+		}
+
+		if (tag.contains("SaddleItem", 10)) {
+			ItemStack itemstack = ItemStack.of(tag.getCompound("SaddleItem"));
+			if (itemstack.is(Items.SADDLE)) {
+				this.inventory.setItem(0, itemstack);
+			}
+		}
+
+		this.updateContainerEquipment();
 		this.updateInventory();
 	}
 
@@ -405,9 +440,25 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putInt("Variant", getVariant());
-//		tag.putInt("Overlay", getOverlayVariant());
+
+		tag.putInt("Overlay", getOverlayVariant());
+
 		tag.putBoolean("Chested", this.isChested());
+
 		tag.putBoolean("Saddled", this.isSaddled());
+
+		tag.putBoolean("Tame", this.isTamed());
+		if (this.getOwnerUUID() != null) {
+			tag.putUUID("Owner", this.getOwnerUUID());
+		}
+
+		if (!this.inventory.getItem(0).isEmpty()) {
+			tag.put("SaddleItem", this.inventory.getItem(0).save(new CompoundTag()));
+		}
+
+		if (!this.inventory.getItem(1).isEmpty()) {
+			tag.put("ArmorItem", this.inventory.getItem(1).save(new CompoundTag()));
+		}
 	}
 
 	@Override
@@ -418,20 +469,28 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		}
 		Random random = new Random();
 		setVariant(random.nextInt(OHorseModel.Variant.values().length));
-//		setOverlayVariant(random.nextInt(OHorseModel.Overlay.values().length));
+		setOverlayVariant(random.nextInt(OHorseMarkingLayer.Overlay.values().length));
 
 		this.randomizeAttributes();
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
 	}
 
 	@Override
-	protected void defineSynchedData(){
+	protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
-//		this.entityData.define(OVERLAY, 0);
+		this.entityData.define(OVERLAY, 0);
 		this.entityData.define(CHESTED, false);
 		this.entityData.define(SADDLED, false);
 	}
+
+	protected void updateContainerEquipment() {
+		if (!this.level.isClientSide) {
+			super.updateContainerEquipment();
+			this.setDropChance(EquipmentSlot.CHEST, 0.0F);
+		}
+	}
+
 
 //	public boolean canMate(Animal animal) {
 //		if (animal == this) {

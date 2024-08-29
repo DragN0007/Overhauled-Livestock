@@ -37,39 +37,15 @@ public class OHorseModel extends AnimatedGeoModel<OHorse> {
         }
     }
 
-    public enum Overlay {
-        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay_none.png")),
-        APPALOOSA(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay_appaloosa.png")),
-        BLANKET_APPALOOSA(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay_blanket_appaloosa.png")),
-        HALF_SOCKS(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay_half_socks.png")),
-        REVERSED_HALF_SOCKS(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay_reversed_half_socks.png")),
-        HALF_SOCKS_FEATHERING(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay_half_socks_feathering.png")),
-        REVERSED_HALF_SOCKS_FEATHERING(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay_reversed_half_socks_feathering.png")),
-        OVERO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay_overo.png")),
-        PAINT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_paint.png")),
-        SPLASHED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay_splashed.png")),
-        SPOTTED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay_spotted.png"));
+    public static final ResourceLocation MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/horse_overhauled.geo.json");
+    public static final ResourceLocation ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/horse_overhaul.animation.json");
 
-        public final ResourceLocation resourceLocation;
-        Overlay(ResourceLocation resourceLocation) {
-            this.resourceLocation = resourceLocation;
-        }
-
-        public static Overlay overlayFromOrdinal(int overlay) { return Overlay.values()[overlay % Overlay.values().length];
-        }
-    }
-
-    public static final ResourceLocation model = new ResourceLocation(LivestockOverhaul.MODID, "geo/horse_overhauled.geo.json");
-    public static final ResourceLocation animation = new ResourceLocation(LivestockOverhaul.MODID, "animations/horse_overhaul.animation.json");
-
-
-
-    public static final ResourceLocation baby_model = new ResourceLocation(LivestockOverhaul.MODID, "geo/baby_horse_overhauled.geo.json");
+    public static final ResourceLocation BABY_MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/baby_horse_overhauled.geo.json");
     @Override
     public ResourceLocation getModelLocation(OHorse object) {
         if(object.isBaby())
-            return baby_model;
-        return model;
+            return BABY_MODEL;
+        return MODEL;
     }
 
     @Override
@@ -83,8 +59,7 @@ public class OHorseModel extends AnimatedGeoModel<OHorse> {
 
     @Override
     public ResourceLocation getAnimationFileLocation(OHorse animatable) {
-        return animation;
+        return ANIMATION;
     }
-
 }
 
