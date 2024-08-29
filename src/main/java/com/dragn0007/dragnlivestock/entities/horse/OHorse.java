@@ -1,25 +1,16 @@
 package com.dragn0007.dragnlivestock.entities.horse;
 
-import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.Chestable;
+import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
-import dev.kosmx.playerAnim.api.layered.IAnimation;
-import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
-import dev.kosmx.playerAnim.api.layered.ModifierLayer;
-import dev.kosmx.playerAnim.api.layered.PlayerAnimationFrame;
-import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
-import dev.kosmx.playerAnim.core.data.gson.AnimationJson;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationFactory;
-import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.Util;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -31,6 +22,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.horse.Donkey;
+import net.minecraft.world.entity.animal.horse.Markings;
+import net.minecraft.world.entity.animal.horse.Variant;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -39,8 +35,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import software.bernie.geckolib3.core.AnimationState;
@@ -537,14 +531,17 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		}
 	}
 
+	protected boolean canParent() {
+		return !this.isVehicle() && !this.isPassenger() && this.isTamed() && !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
+	}
 
 //	public boolean canMate(Animal animal) {
 //		if (animal == this) {
 //			return false;
-//		} else if (!(animal instanceof Donkey) && !(animal instanceof HorseReplaced)) {
+//		} else if (!(animal instanceof Donkey) && !(animal instanceof OHorse)) {
 //			return false;
 //		} else {
-//			return this.canParent() && ((AbstractHorse)animal).canParent();
+//			return this.canParent() && ((OHorse)animal).canParent();
 //		}
 //	}
 //
@@ -553,8 +550,8 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 //		if (ageableMob instanceof Donkey) {
 //			abstracthorse = EntityType.MULE.create(serverLevel);
 //		} else {
-//			HorseReplaced horse = (HorseReplaced)ageableMob;
-//			abstracthorse = EntityTypes.HORSE_REPLACED_ENTITY.create(serverLevel);
+//			OHorse horse = (OHorse) ageableMob;
+//			abstracthorse = EntityTypes.O_HORSE_ENTITY.create(serverLevel);
 //			int i = this.random.nextInt(9);
 //			Variant variant;
 //			if (i < 4) {
@@ -566,16 +563,16 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 //			}
 //
 //			int j = this.random.nextInt(5);
-//			HorseReplacedModel.Overlay markings;
+//			OHorseMarkingLayer.Overlay markings;
 //			if (j < 2) {
 //				markings = this.getOverlay();
 //			} else if (j < 4) {
 //				markings = horse.getOverlay();
 //			} else {
-//				markings = Util.getRandom(HorseReplacedModel.Overlay.values(), this.random);
+//				markings = Util.getRandom(OHorseMarkingLayer.Overlay.values(), this.random);
 //			}
 //
-//			((HorseReplaced)abstracthorse).setVariantAndMarkings(variant, markings);
+//			((OHorse)abstracthorse).setVariantAndMarkings(variant, markings);
 //		}
 //
 //		this.setOffspringAttributes(ageableMob, abstracthorse);
