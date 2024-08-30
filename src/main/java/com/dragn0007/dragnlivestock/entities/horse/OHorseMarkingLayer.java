@@ -64,7 +64,7 @@ public class OHorseMarkingLayer extends GeoLayerRenderer<OHorse> {
         TOBIANO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_tobiano.png")),
         ZORSE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_zorse.png"));
 
-        //Add new entries to bottom when mod is public
+        //Add new entries to bottom when mod is public, else horses will change textures during update.
 
         public final ResourceLocation resourceLocation;
         Overlay(ResourceLocation resourceLocation) {
