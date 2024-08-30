@@ -2,6 +2,8 @@ package com.dragn0007.dragnlivestock.event;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.entities.cow.OCow;
+import com.dragn0007.dragnlivestock.entities.cow.OCowRender;
 import com.dragn0007.dragnlivestock.entities.horse.OHorseRender;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
@@ -17,11 +19,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
     @SubscribeEvent
     public static void entityAttrbiuteCreationEvent(EntityAttributeCreationEvent event) {
         event.put(EntityTypes.O_HORSE_ENTITY.get(), AbstractChestedHorse.createBaseChestedHorseAttributes().build());
+        event.put(EntityTypes.O_COW_ENTITY.get(), OCow.createAttributes().build());
     }
 
     @SubscribeEvent
     public static void clientSetupEvent(FMLClientSetupEvent event) {
         EntityRenderers.register(EntityTypes.O_HORSE_ENTITY.get(), OHorseRender::new);
-
+        EntityRenderers.register(EntityTypes.O_COW_ENTITY.get(), OCowRender::new);
     }
 }
