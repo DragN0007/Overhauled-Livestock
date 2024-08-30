@@ -293,11 +293,9 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
 	}
-
 	public int getOverlayVariant() {
 		return this.entityData.get(OVERLAY);
 	}
-
 	public int getHornVariant() {
 		return this.entityData.get(HORNS);
 	}
@@ -305,13 +303,11 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 	public void setVariant(int variant) {
 		this.entityData.set(VARIANT, variant);
 	}
-
-	public void setOverlayVariant(int variant) {
-		this.entityData.set(OVERLAY, variant);
+	public void setOverlayVariant(int overlayVariant) {
+		this.entityData.set(OVERLAY, overlayVariant);
 	}
-
-	public void setHornVariant(int variant) {
-		this.entityData.set(HORNS, variant);
+	public void setHornVariant(int hornVariant) {
+		this.entityData.set(HORNS, hornVariant);
 	}
 
 	@Override
@@ -326,8 +322,8 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 			setOverlayVariant(tag.getInt("Overlay"));
 		}
 
-		if (tag.contains("Horn Overlay")) {
-			setOverlayVariant(tag.getInt("Horn Overlay"));
+		if (tag.contains("Horns")) {
+			setHornVariant(tag.getInt("Horns"));
 		}
 
 		if (tag.contains("Chested")) {
@@ -344,7 +340,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 
 		tag.putInt("Overlay", getOverlayVariant());
 
-		tag.putInt("Horn Overlay", getOverlayVariant());
+		tag.putInt("Horns", getHornVariant());
 
 		tag.putBoolean("Chested", this.isChested());
 	}
@@ -358,7 +354,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		Random random = new Random();
 		setVariant(random.nextInt(OCowModel.Variant.values().length));
 		setOverlayVariant(random.nextInt(OCowMarkingLayer.Overlay.values().length));
-		setOverlayVariant(random.nextInt(OCowHornLayer.HornOverlay.values().length));
+		setHornVariant(random.nextInt(OCowHornLayer.HornOverlay.values().length));
 
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
 	}
@@ -368,6 +364,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
+		this.entityData.define(HORNS, 0);
 		this.entityData.define(CHESTED, false);
 	}
 
@@ -424,7 +421,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 
 			((OCow) oCow).setVariant(variant);
 			((OCow) oCow).setOverlayVariant(overlay);
-			((OCow) oCow).setHornVariant(overlay);
+			((OCow) oCow).setHornVariant(horns);
 		}
 
 		return oCow;

@@ -20,6 +20,7 @@ public class OCowRender extends ExtendedGeoEntityRenderer<OCow> {
     public OCowRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new OCowModel());
         this.addLayer(new OCowMarkingLayer(this));
+        this.addLayer(new OCowHornLayer(this));
     }
 
     @Override

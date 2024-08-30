@@ -32,9 +32,10 @@ public class OCowHornLayer extends GeoLayerRenderer<OCow> {
     }
 
     public enum HornOverlay {
-        SHORT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/horn_overlay/overlay_short.png")),
-        MEDIUM(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/horn_overlay/overlay_medium.png")),
-        LONG(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/horn_overlay/overlay_splash_long.png"));
+        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_none.png")),
+        SHORT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/horn_overlay/overlay_short_horns.png")),
+        MEDIUM(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/horn_overlay/overlay_medium_horns.png")),
+        LONG(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/horn_overlay/overlay_long_horns.png"));
 
         //Add new entries to bottom when mod is public, else cows will change textures during update.
 
