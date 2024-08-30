@@ -58,6 +58,7 @@ public class OHorseMarkingLayer extends GeoLayerRenderer<OHorse> {
         SNIP(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_snip.png")),
         SPLASH_OVERO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_splash_overo.png")),
         SPLASHED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_splashed.png")),
+        SPLASHED_PAINT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_splashed_paint.png")),
         SPOTTED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_spotted.png")),
         STAR(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_star.png")),
         TOBIANO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_tobiano.png")),

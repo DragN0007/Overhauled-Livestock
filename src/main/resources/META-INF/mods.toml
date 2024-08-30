@@ -8,8 +8,9 @@ version="${1.18.2-1.0}"
 displayName="DragN's Livestock Overhaul!"
 logoFile="dlo_logo.png"
 authors="DragN0007"
+credits="Buu & NekoIceDragon for animations, EvangeliX for code help!"
 description='''
-An overhaul for Horses, Mules, Donkeys, ...
+An overhaul for livestock & farm animals!
 '''
 [[dependencies.dragnlivestock]]
 modId="forge"
