@@ -1,6 +1,7 @@
 package com.dragn0007.dragnlivestock.entities.horse;
 
 import com.dragn0007.dragnlivestock.client.menu.OHorseMenu;
+import com.dragn0007.dragnlivestock.entities.Armorable;
 import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
@@ -10,7 +11,10 @@ import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.KeyboardInput;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -41,6 +45,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -61,7 +67,7 @@ import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.UUID;
 
-public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Saddleable {
+public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Saddleable, Armorable {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
 	private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
@@ -108,8 +114,13 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 0.0F));
 
-		this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
+		this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D, AbstractOHorse.class));
 		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
+	}
+
+	@Override
+	public boolean canBeRiddenInWater(Entity rider) {
+		return false;
 	}
 
 	public SimpleContainer inventory;
@@ -208,6 +219,24 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
+
+		if(this.isTamed()) {
+			if (this.isFood(itemstack)) {
+				if (this.getHealth() < this.getMaxHealth()) {
+					// heal
+					this.usePlayerItem(player, hand, itemstack);
+					this.heal(itemstack.getFoodProperties(this).getNutrition());
+					this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+					return InteractionResult.sidedSuccess(this.level.isClientSide);
+				} else if (this.canFallInLove() && !this.level.isClientSide) {
+					// set to baby maker mode
+					this.usePlayerItem(player, hand, itemstack);
+					this.setInLove(player);
+					this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+					return InteractionResult.SUCCESS;
+				}
+			}
+		}
 
 		if (this.isBaby()) {
 			return super.mobInteract(player, hand);
@@ -515,49 +544,52 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		return !this.isVehicle() && !this.isPassenger() && this.isTamed() && !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
 	}
 
-//	public boolean canMate(Animal animal) {
-//		if (animal == this) {
-//			return false;
-//		} else if (!(animal instanceof Donkey) && !(animal instanceof OHorse)) {
-//			return false;
-//		} else {
-//			return this.canParent() && ((OHorse)animal).canParent();
-//		}
-//	}
-//
-//	public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-//		AbstractHorse abstracthorse;
-//		if (ageableMob instanceof Donkey) {
-//			abstracthorse = EntityType.MULE.create(serverLevel);
-//		} else {
-//			OHorse horse = (OHorse) ageableMob;
-//			abstracthorse = EntityTypes.O_HORSE_ENTITY.create(serverLevel);
-//			int i = this.random.nextInt(9);
-//			Variant variant;
-//			if (i < 4) {
-//				variant = this.getVariant();
-//			} else if (i < 8) {
-//				variant = horse.getVariant();
-//			} else {
-//				variant = Util.getRandom(Variant.values(), this.random);
-//			}
-//
-//			int j = this.random.nextInt(5);
-//			OHorseMarkingLayer.Overlay markings;
-//			if (j < 2) {
-//				markings = this.getOverlay();
-//			} else if (j < 4) {
-//				markings = horse.getOverlay();
-//			} else {
-//				markings = Util.getRandom(OHorseMarkingLayer.Overlay.values(), this.random);
-//			}
-//
-//			((OHorse)abstracthorse).setVariantAndMarkings(variant, markings);
-//		}
-//
-//		this.setOffspringAttributes(ageableMob, abstracthorse);
-//		return abstracthorse;
-//	}
+	public boolean canMate(Animal animal) {
+		if (animal == this) {
+			return false;
+		} else if (!(animal instanceof Donkey) && !(animal instanceof OHorse)) {
+			return false;
+		} else {
+			return this.canParent() && ((OHorse) animal).canParent();
+		}
+	}
+
+	@Override
+	public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
+		AbstractHorse abstracthorse;
+		if (ageableMob instanceof Donkey) {
+			abstracthorse = EntityType.MULE.create(serverLevel);
+		} else {
+			OHorse horse = (OHorse) ageableMob;
+			abstracthorse = EntityTypes.O_HORSE_ENTITY.get().create(serverLevel);
+
+			int i = this.random.nextInt(9);
+			int variant;
+			if (i < 4) {
+				variant = this.getVariant();
+			} else if (i < 8) {
+				variant = horse.getVariant();
+			} else {
+				variant = this.random.nextInt(OHorseModel.Variant.values().length);
+			}
+
+			int j = this.random.nextInt(5);
+			int overlay;
+			if (j < 2) {
+				overlay = this.getOverlayVariant();
+			} else if (j < 4) {
+				overlay = horse.getOverlayVariant();
+			} else {
+				overlay = this.random.nextInt(OHorseMarkingLayer.Overlay.values().length);
+			}
+
+			((OHorse) abstracthorse).setVariant(variant);
+			((OHorse) abstracthorse).setOverlayVariant(overlay);
+		}
+
+		this.setOffspringAttributes(ageableMob, abstracthorse);
+		return abstracthorse;
+	}
 
 	@Override
 	public boolean isChestable() {
@@ -583,8 +615,40 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	@Override
 	public void containerChanged(Container container) {
 		boolean flag = this.isSaddled();
-		if(this.tickCount > 20 && !flag && this.isSaddleable()) {
+		if (!this.level.isClientSide) {
+			this.setSaddled(!this.inventory.getItem(0).isEmpty());
+		}
+		if (this.tickCount > 20 && !flag && this.isSaddleable()) {
 			this.playSound(SoundEvents.HORSE_SADDLE, 0.5f, 1f);
 		}
+
+		if (!this.level.isClientSide) {
+			this.setArmored(!this.inventory.getItem(0).isEmpty());
+		}
+		if (this.tickCount > 20 && !flag && this.isArmorable()) {
+			this.playSound(SoundEvents.HORSE_ARMOR, 0.5f, 1f);
+		}
+	}
+
+	@Override
+	public boolean isArmorable() {
+		return this.isAlive() && !this.isBaby() && this.isTamed();
+	}
+
+	@Override
+	public void equipArmor(@Nullable SoundSource soundSource) {
+		if (soundSource != null) {
+			this.level.playSound(null, this, SoundEvents.HORSE_ARMOR, soundSource, 0.5f, 1f);
+		}
+	}
+
+	@Override
+	public boolean isArmored() {
+		return this.entityData.get(ARMORED);
+	}
+
+	public void setArmored(boolean armored) {
+		this.entityData.set(ARMORED, armored);
+		this.getAttribute(Attributes.ARMOR).setBaseValue(this.getAttribute(Attributes.ARMOR).getBaseValue() + 10);
 	}
 }
