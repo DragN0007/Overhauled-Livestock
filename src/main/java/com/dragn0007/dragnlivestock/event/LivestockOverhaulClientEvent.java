@@ -17,21 +17,4 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 @Mod.EventBusSubscriber(modid = LivestockOverhaul.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class LivestockOverhaulClientEvent {
 
-    @SubscribeEvent
-    public static void clientSetupEvent(FMLClientSetupEvent event) {
-        EntityRenderers.register(EntityTypes.O_HORSE_ENTITY.get(), OHorseRender::new);
-
-
-        //Set the player construct callback. It can be a lambda function.
-        PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(
-                new ResourceLocation(LivestockOverhaul.MODID, "animations/horse_overhaul.animation.json"),
-                42,
-                LivestockOverhaulClientEvent::registerPlayerAnimation);
-    }
-
-    //This method will set your mods animation into the library.
-    private static IAnimation registerPlayerAnimation(AbstractClientPlayer player) {
-        //This will be invoked for every new player
-        return new ModifierLayer<>();
-    }
 }

@@ -121,7 +121,6 @@ dependencies {
 
     minecraft 'net.minecraftforge:forge:1.18.2-40.2.0'
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.57')
-    implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:1.0.2+1.18")
 }
 
 jar {

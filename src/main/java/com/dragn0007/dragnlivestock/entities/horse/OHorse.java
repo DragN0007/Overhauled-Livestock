@@ -220,21 +220,21 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 
-		if(this.isTamed()) {
-			if (this.isFood(itemstack)) {
-				if (this.getHealth() < this.getMaxHealth()) {
-					// heal
-					this.usePlayerItem(player, hand, itemstack);
-					this.heal(itemstack.getFoodProperties(this).getNutrition());
-					this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
-					return InteractionResult.sidedSuccess(this.level.isClientSide);
-				} else if (this.canFallInLove() && !this.level.isClientSide) {
-					// set to baby maker mode
-					this.usePlayerItem(player, hand, itemstack);
-					this.setInLove(player);
-					this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
-					return InteractionResult.SUCCESS;
-				}
+		if (this.isFood(itemstack) && this.isTamed()) {
+			if (this.getHealth() < this.getMaxHealth()) {
+				this.usePlayerItem(player, hand, itemstack);
+				this.heal(itemstack.getFoodProperties(this).getNutrition());
+				this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+				return InteractionResult.sidedSuccess(this.level.isClientSide);
+			}
+		}
+
+		if (this.isFood(itemstack) && this.isTamed()) {
+			if (this.canFallInLove() && !this.level.isClientSide) {
+				this.usePlayerItem(player, hand, itemstack);
+				this.setInLove(player);
+				this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+				return InteractionResult.SUCCESS;
 			}
 		}
 
@@ -397,15 +397,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		return SoundEvents.HORSE_ANGRY;
 	}
 
-	public ItemStack getArmor() {
-		return this.getItemBySlot(EquipmentSlot.CHEST);
-	}
-
-	private void setArmor(ItemStack stack) {
-		this.setItemSlot(EquipmentSlot.CHEST, stack);
-		this.setDropChance(EquipmentSlot.CHEST, 0.0F);
-	}
-
 	// Generates the base texture
 	public ResourceLocation getTextureLocation() {
 		return OHorseModel.Variant.variantFromOrdinal(getVariant()).resourceLocation;
@@ -454,6 +445,10 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 			this.setSaddled(tag.getBoolean("Saddled"));
 		}
 
+		if (tag.contains("Armored")) {
+			this.setArmored(tag.getBoolean("Armored"));
+		}
+
 		if (tag.contains("ArmorItem", 10)) {
 			ItemStack itemstack = ItemStack.of(tag.getCompound("ArmorItem"));
 			if (!itemstack.isEmpty() && this.isArmor(itemstack)) {
@@ -496,6 +491,8 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 
 		tag.putBoolean("Saddled", this.isSaddled());
 
+		tag.putBoolean("Armored", this.isArmored());
+
 		tag.putBoolean("Tame", this.isTamed());
 		if (this.getOwnerUUID() != null) {
 			tag.putUUID("Owner", this.getOwnerUUID());
@@ -531,6 +528,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		this.entityData.define(OVERLAY, 0);
 		this.entityData.define(CHESTED, false);
 		this.entityData.define(SADDLED, false);
+		this.entityData.define(ARMORED, false);
 	}
 
 	protected void updateContainerEquipment() {
