@@ -79,7 +79,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
-		this.goalSelector.addGoal(5, new FollowHerdLeaderGoal(this));
+		this.goalSelector.addGoal(3, new FollowHerdLeaderGoal(this));
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, livingEntity
 				-> livingEntity instanceof OHorse
 //				|| livingEntity instanceof OMule
