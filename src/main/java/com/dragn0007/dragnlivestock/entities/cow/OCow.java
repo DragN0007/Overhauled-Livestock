@@ -373,13 +373,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 	}
 
 	public boolean canMate(Animal animal) {
-		if (animal == this) {
-			return false;
-		} else if (!(animal instanceof Donkey) && !(animal instanceof OCow)) {
-			return false;
-		} else {
 			return this.canParent() && ((OCow) animal).canParent();
-		}
 	}
 
 	@Override

@@ -5,5 +5,8 @@
   "entity.dragnlivestock.o_horse_entity": "O-Horse",
 
   "item.dragnlivestock.o_cow_spawn_egg": "O-Cow Spawn Egg",
-  "entity.dragnlivestock.o_cow_entity": "O-Cow"
+  "entity.dragnlivestock.o_cow_entity": "O-Cow",
+
+  "item.dragnlivestock.o_chicken_spawn_egg": "O-Chicken Spawn Egg",
+  "entity.dragnlivestock.o_chicken_entity": "O-Chicken"
 }

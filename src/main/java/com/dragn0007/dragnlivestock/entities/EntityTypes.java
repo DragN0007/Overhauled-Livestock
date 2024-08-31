@@ -1,5 +1,6 @@
 package com.dragn0007.dragnlivestock.entities;
 
+import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import net.minecraft.resources.ResourceLocation;
@@ -24,7 +25,14 @@ public class EntityTypes {
     public static final RegistryObject<EntityType<OCow>> O_COW_ENTITY = ENTITY_TYPES.register("o_cow_entity",
             () -> EntityType.Builder.of(OCow::new,
                             MobCategory.CREATURE)
-                    .sized(2f,1.5f)
+                    .sized(1f,1.5f)
                     .build(new ResourceLocation(MODID,"o_cow").toString()));
+
+
+    public static final RegistryObject<EntityType<OChicken>> O_CHICKEN_ENTITY = ENTITY_TYPES.register("o_chicken_entity",
+            () -> EntityType.Builder.of(OChicken::new,
+                            MobCategory.CREATURE)
+                    .sized(1f,1f)
+                    .build(new ResourceLocation(MODID,"o_chicken").toString()));
 }
 
