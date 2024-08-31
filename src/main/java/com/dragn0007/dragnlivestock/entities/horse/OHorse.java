@@ -71,7 +71,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		return Mob.createMobAttributes()
 				.add(Attributes.JUMP_STRENGTH)
 				.add(Attributes.MAX_HEALTH, 53.0D)
-				.add(Attributes.MOVEMENT_SPEED, (double)0.3F);
+				.add(Attributes.MOVEMENT_SPEED, (double)0.235F);
 	}
 
 	protected void randomizeAttributes() {
@@ -80,15 +80,15 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		this.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(this.generateRandomJumpStrength());
 	}
 
-	protected float generateRandomMaxHealth() {
+	public float generateRandomMaxHealth() {
 		return 15.0F + (float)this.random.nextInt(8) + (float)this.random.nextInt(9);
 	}
 
-	protected double generateRandomJumpStrength() {
+	public double generateRandomJumpStrength() {
 		return (double)0.4F + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D;
 	}
 
-	protected double generateRandomSpeed() {
+	public double generateRandomSpeed() {
 		return ((double)0.45F + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D) * 0.25D;
 	}
 
