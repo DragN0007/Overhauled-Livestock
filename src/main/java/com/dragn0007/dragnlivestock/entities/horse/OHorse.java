@@ -4,6 +4,9 @@ import com.dragn0007.dragnlivestock.client.menu.OHorseMenu;
 import com.dragn0007.dragnlivestock.entities.Armorable;
 import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.entities.ai.CattleFollowHerdLeaderGoal;
+import com.dragn0007.dragnlivestock.entities.ai.HorseFollowHerdLeaderGoal;
+import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -51,8 +54,10 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Saddleable, Armorable {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
@@ -101,6 +106,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 0.0F));
 
+		this.goalSelector.addGoal(3, new HorseFollowHerdLeaderGoal(this));
 		this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D, AbstractOHorse.class));
 		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
 	}
@@ -112,6 +118,8 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 
 	public SimpleContainer inventory;
 	private LazyOptional<?> itemHandler = null;
+	private OHorse leader;
+	private int herdSize = 1;
 
 	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
@@ -159,12 +167,73 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		data.addAnimationController(new AnimationController(this, "attackController", 1, this::attackPredicate));
 	}
 
+	public boolean isFollower() {
+		return this.leader != null && this.leader.isAlive();
+	}
+
+	public OHorse startFollowing(OHorse horse) {
+		this.leader = horse;
+		horse.addFollower();
+		return horse;
+	}
+
+	public void stopFollowing() {
+		this.leader.removeFollower();
+		this.leader = null;
+	}
+
+	private void addFollower() {
+		++this.herdSize;
+	}
+
+	private void removeFollower() {
+		--this.herdSize;
+	}
+
+	public boolean canBeFollowed() {
+		return this.hasFollowers() && this.herdSize < this.getMaxHerdSize();
+	}
+
+	public int getMaxHerdSize() {
+		return 3;
+	}
+
+	public boolean hasFollowers() {
+		return this.herdSize > 1;
+	}
+
+	public boolean inRangeOfLeader() {
+		return this.distanceToSqr(this.leader) <= 121.0D;
+	}
+
+	public void pathToLeader() {
+		if (this.isFollower()) {
+			this.getNavigation().moveTo(this.leader, 1.0D);
+		}
+
+	}
+
+	public void addFollowers(Stream<? extends OHorse> stream) {
+		stream.limit((long)(this.getMaxHerdSize() - this.herdSize)).filter((horse) -> {
+			return horse != this;
+		}).forEach((horse) -> {
+			horse.startFollowing(this);
+		});
+	}
+
 	//ground tie
 	@Override
 	public void tick() {
 		super.tick();
 		if (this.isSaddled() && !this.isVehicle() || this.isLeashed()) {
 			this.getNavigation().stop();
+		}
+
+		if (this.hasFollowers() && this.level.random.nextInt(200) == 1) {
+			List<? extends OHorse> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D));
+			if (list.size() <= 1) {
+				this.herdSize = 1;
+			}
 		}
 	}
 
