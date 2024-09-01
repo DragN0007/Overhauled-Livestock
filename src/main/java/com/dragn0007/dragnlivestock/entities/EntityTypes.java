@@ -25,7 +25,7 @@ public class EntityTypes {
     public static final RegistryObject<EntityType<OCow>> O_COW_ENTITY = ENTITY_TYPES.register("o_cow_entity",
             () -> EntityType.Builder.of(OCow::new,
                             MobCategory.CREATURE)
-                    .sized(1f,1.5f)
+                    .sized(2f,2f)
                     .build(new ResourceLocation(MODID,"o_cow").toString()));
 
 

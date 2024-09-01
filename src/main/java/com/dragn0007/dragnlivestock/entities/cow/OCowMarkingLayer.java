@@ -32,10 +32,19 @@ public class OCowMarkingLayer extends GeoLayerRenderer<OCow> {
     }
 
     public enum Overlay {
+        HIGHLAND_DARK_BROWN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/highland_dark_brown.png")),
+        HIGHLAND_GOLD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/highland_gold.png")),
+        HIGHLAND_WHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/highland_white.png")),
+        BLACK_SPECKLED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_black_speckled.png")),
+        BLAZE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_blaze.png")),
+        DAIRY_PAINT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_dairy_paint.png")),
         NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_none.png")),
         OVERO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_overo.png")),
         PAINT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_paint.png")),
-        SPLASH_STRIPE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_splash_stripe.png"));
+        REVERSE_PAINT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_reverse_paint.png")),
+        SOCKS(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_socks.png")),
+        SPLASH_STRIPE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_splash_stripe.png")),
+        WHITE_SPECKLED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_white_speckled.png"));
 
         //Add new entries to bottom when mod is public, else cows will change textures during update.
 
