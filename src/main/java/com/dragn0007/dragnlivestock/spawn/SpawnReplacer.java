@@ -53,12 +53,6 @@ public class SpawnReplacer {
                 int randomOverlayVariant = event.getWorld().getRandom().nextInt(31);
                 oHorse.setOverlayVariant(randomOverlayVariant);
 
-                //get new O-Horse
-                OHorse oHorse1 = null;
-                if (entity.getClass() == Horse.class) {
-                    oHorse1 = EntityTypes.O_HORSE_ENTITY.get().create(event.getWorld());
-                }
-
                 //discard vanilla horse once it's been successfully replaced on client and server
                 if (event.getWorld().isClientSide) {
                     vanillaHorse.remove(Entity.RemovalReason.DISCARDED);
@@ -102,11 +96,6 @@ public class SpawnReplacer {
                 int randomOverlayVariant = event.getWorld().getRandom().nextInt(31);
                 oCow.setOverlayVariant(randomOverlayVariant);
 
-                OCow oCow1 = null;
-                if (entity.getClass() == Horse.class) {
-                    oCow1 = EntityTypes.O_COW_ENTITY.get().create(event.getWorld());
-                }
-
                 if (event.getWorld().isClientSide) {
                     vanillacow.remove(Entity.RemovalReason.DISCARDED);
                 }
@@ -147,11 +136,6 @@ public class SpawnReplacer {
 
                 int randomOverlayVariant = event.getWorld().getRandom().nextInt(31);
                 oChicken.setOverlayVariant(randomOverlayVariant);
-
-                OChicken oChicken1 = null;
-                if (entity.getClass() == Horse.class) {
-                    oChicken1 = EntityTypes.O_CHICKEN_ENTITY.get().create(event.getWorld());
-                }
 
                 if (event.getWorld().isClientSide) {
                     vanillachicken.remove(Entity.RemovalReason.DISCARDED);
