@@ -28,7 +28,6 @@ public class EntityTypes {
                     .sized(2f,2f)
                     .build(new ResourceLocation(MODID,"o_cow").toString()));
 
-
     public static final RegistryObject<EntityType<OChicken>> O_CHICKEN_ENTITY = ENTITY_TYPES.register("o_chicken_entity",
             () -> EntityType.Builder.of(OChicken::new,
                             MobCategory.CREATURE)
