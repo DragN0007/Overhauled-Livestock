@@ -3,12 +3,16 @@ package com.dragn0007.dragnlivestock.spawn;
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
+import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
+import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.Cod;
 import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.animal.Salmon;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -152,6 +156,79 @@ public class SpawnReplacer {
             }
         }
 
+        //Salmon
+        OSalmon oSalmon = EntityTypes.O_SALMON_ENTITY.get().create(event.getWorld());
+        if (LivestockOverhaulCommonConfig.REPLACE_SALMON.get() && event.getEntity() instanceof Salmon) {
+            Salmon vanillasalmon = (Salmon) event.getEntity();
+
+            if (event.getWorld().isClientSide) {
+                return;
+            }
+
+            if (vanillasalmon.getPersistentData().getBoolean("O-Replaced")) {
+                return;
+            }
+
+            if (oSalmon != null) {
+                oSalmon.copyPosition(vanillasalmon);
+                Entity entity = event.getEntity();
+
+                oSalmon.setCustomName(vanillasalmon.getCustomName());
+
+                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                oSalmon.setVariant(randomVariant);
+
+                if (event.getWorld().isClientSide) {
+                    vanillasalmon.remove(Entity.RemovalReason.DISCARDED);
+                }
+
+                event.getWorld().addFreshEntity(oSalmon);
+                vanillasalmon.remove(Entity.RemovalReason.DISCARDED);
+
+                vanillasalmon.getPersistentData().putBoolean("O-Replaced", true);
+
+//                    System.out.println("[Livestock Overhaul]: Replaced a vanilla salmon with an O-Salmon!");
+
+                event.setCanceled(true);
+            }
+        }
+
+        //Cod
+        OCod oCod = EntityTypes.O_COD_ENTITY.get().create(event.getWorld());
+        if (LivestockOverhaulCommonConfig.REPLACE_COD.get() && event.getEntity() instanceof Cod) {
+            Cod vanillacod = (Cod) event.getEntity();
+
+            if (event.getWorld().isClientSide) {
+                return;
+            }
+
+            if (vanillacod.getPersistentData().getBoolean("O-Replaced")) {
+                return;
+            }
+
+            if (oCod != null) {
+                oCod.copyPosition(vanillacod);
+                Entity entity = event.getEntity();
+
+                oCod.setCustomName(vanillacod.getCustomName());
+
+                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                oCod.setVariant(randomVariant);
+
+                if (event.getWorld().isClientSide) {
+                    vanillacod.remove(Entity.RemovalReason.DISCARDED);
+                }
+
+                event.getWorld().addFreshEntity(oCod);
+                vanillacod.remove(Entity.RemovalReason.DISCARDED);
+
+                vanillacod.getPersistentData().putBoolean("O-Replaced", true);
+
+//                    System.out.println("[Livestock Overhaul]: Replaced a vanilla cod with an O-Cod!");
+
+                event.setCanceled(true);
+            }
+        }
 
 
     }

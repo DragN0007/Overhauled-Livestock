@@ -1,8 +1,10 @@
 package com.dragn0007.dragnlivestock.entities;
 
 import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
+import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
+import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -33,5 +35,17 @@ public class EntityTypes {
                             MobCategory.CREATURE)
                     .sized(1f,1f)
                     .build(new ResourceLocation(MODID,"o_chicken").toString()));
+
+    public static final RegistryObject<EntityType<OSalmon>> O_SALMON_ENTITY = ENTITY_TYPES.register("o_salmon_entity",
+            () -> EntityType.Builder.of(OSalmon::new,
+                            MobCategory.CREATURE)
+                    .sized(0.7f, 0.4f)
+                    .build(new ResourceLocation(MODID,"o_salmon").toString()));
+
+    public static final RegistryObject<EntityType<OCod>> O_COD_ENTITY = ENTITY_TYPES.register("o_cod_entity",
+            () -> EntityType.Builder.of(OCod::new,
+                            MobCategory.CREATURE)
+                    .sized(0.5f, 0.3f)
+                    .build(new ResourceLocation(MODID,"o_cod").toString()));
 }
 
