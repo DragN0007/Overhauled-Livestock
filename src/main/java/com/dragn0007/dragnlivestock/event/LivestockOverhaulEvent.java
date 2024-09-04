@@ -2,6 +2,8 @@ package com.dragn0007.dragnlivestock.event;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.entities.bee.OBee;
+import com.dragn0007.dragnlivestock.entities.bee.OBeeRender;
 import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
 import com.dragn0007.dragnlivestock.entities.chicken.OChickenRender;
 import com.dragn0007.dragnlivestock.entities.cod.OCod;
@@ -29,6 +31,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
         event.put(EntityTypes.O_CHICKEN_ENTITY.get(), OChicken.createAttributes().build());
         event.put(EntityTypes.O_SALMON_ENTITY.get(), OSalmon.createAttributes().build());
         event.put(EntityTypes.O_COD_ENTITY.get(), OCod.createAttributes().build());
+        event.put(EntityTypes.O_BEE_ENTITY.get(), OBee.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -38,5 +41,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
         EntityRenderers.register(EntityTypes.O_CHICKEN_ENTITY.get(), OChickenRender::new);
         EntityRenderers.register(EntityTypes.O_SALMON_ENTITY.get(), OSalmonRender::new);
         EntityRenderers.register(EntityTypes.O_COD_ENTITY.get(), OCodRender::new);
+        EntityRenderers.register(EntityTypes.O_BEE_ENTITY.get(), OBeeRender::new);
     }
 }

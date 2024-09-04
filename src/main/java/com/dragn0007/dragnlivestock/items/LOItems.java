@@ -25,6 +25,8 @@ public class LOItems {
             () -> new ForgeSpawnEggItem(EntityTypes.O_SALMON_ENTITY, 0xab3533, 0x5b511c, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
     public static final RegistryObject<Item> O_COD_SPAWN_EGG = ITEMS.register("o_cod_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityTypes.O_COD_ENTITY, 0x92715a, 0xb6966b, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+    public static final RegistryObject<Item> O_BEE_SPAWN_EGG = ITEMS.register("o_bee_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityTypes.O_BEE_ENTITY, 0xe4ae3b, 0xe4ae3b, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
 
 
     //MOD ITEM TABS (UNOBTAINABLE)

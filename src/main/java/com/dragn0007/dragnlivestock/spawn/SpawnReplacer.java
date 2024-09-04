@@ -2,6 +2,7 @@ package com.dragn0007.dragnlivestock.spawn;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.entities.bee.OBee;
 import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
 import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
@@ -9,10 +10,7 @@ import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.animal.Chicken;
-import net.minecraft.world.entity.animal.Cod;
-import net.minecraft.world.entity.animal.Cow;
-import net.minecraft.world.entity.animal.Salmon;
+import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -225,6 +223,43 @@ public class SpawnReplacer {
                 vanillacod.getPersistentData().putBoolean("O-Replaced", true);
 
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla cod with an O-Cod!");
+
+                event.setCanceled(true);
+            }
+        }
+
+        //Bee
+        OBee oBee = EntityTypes.O_BEE_ENTITY.get().create(event.getWorld());
+        if (LivestockOverhaulCommonConfig.REPLACE_BEES.get() && event.getEntity() instanceof Bee) {
+            Bee vanillabee = (Bee) event.getEntity();
+
+            if (event.getWorld().isClientSide) {
+                return;
+            }
+
+            if (vanillabee.getPersistentData().getBoolean("O-Replaced")) {
+                return;
+            }
+
+            if (oBee != null) {
+                oBee.copyPosition(vanillabee);
+                Entity entity = event.getEntity();
+
+                oBee.setCustomName(vanillabee.getCustomName());
+
+                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                oBee.setVariant(randomVariant);
+
+                if (event.getWorld().isClientSide) {
+                    vanillabee.remove(Entity.RemovalReason.DISCARDED);
+                }
+
+                event.getWorld().addFreshEntity(oBee);
+                vanillabee.remove(Entity.RemovalReason.DISCARDED);
+
+                vanillabee.getPersistentData().putBoolean("O-Replaced", true);
+
+//                    System.out.println("[Livestock Overhaul]: Replaced a vanilla bee with an O-Bee!");
 
                 event.setCanceled(true);
             }

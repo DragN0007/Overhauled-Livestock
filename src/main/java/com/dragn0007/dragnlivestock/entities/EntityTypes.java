@@ -1,5 +1,6 @@
 package com.dragn0007.dragnlivestock.entities;
 
+import com.dragn0007.dragnlivestock.entities.bee.OBee;
 import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
 import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
@@ -47,5 +48,11 @@ public class EntityTypes {
                             MobCategory.CREATURE)
                     .sized(0.5f, 0.3f)
                     .build(new ResourceLocation(MODID,"o_cod").toString()));
+
+    public static final RegistryObject<EntityType<OBee>> O_BEE_ENTITY = ENTITY_TYPES.register("o_bee_entity",
+            () -> EntityType.Builder.of(OBee::new,
+                            MobCategory.CREATURE)
+                    .sized(0.3f, 0.3f)
+                    .build(new ResourceLocation(MODID,"o_bee").toString()));
 }
 
