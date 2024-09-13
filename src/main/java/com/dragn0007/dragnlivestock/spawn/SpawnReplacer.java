@@ -9,9 +9,12 @@ import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -229,40 +232,22 @@ public class SpawnReplacer {
         }
 
         //Bee
-        OBee oBee = EntityTypes.O_BEE_ENTITY.get().create(event.getWorld());
-        if (LivestockOverhaulCommonConfig.REPLACE_BEES.get() && event.getEntity() instanceof Bee) {
-            Bee vanillabee = (Bee) event.getEntity();
+        if (LivestockOverhaulCommonConfig.REPLACE_BEES.get() && event.getEntity() instanceof Bee vanillaBee) {
+            OBee oBee = EntityTypes.O_BEE_ENTITY.get().create(event.getWorld());
 
-            if (event.getWorld().isClientSide) {
-                return;
-            }
+            vanillaBee.remove(Entity.RemovalReason.DISCARDED);
+            event.getWorld().addFreshEntity(oBee);
 
-            if (vanillabee.getPersistentData().getBoolean("O-Replaced")) {
-                return;
-            }
+                oBee.copyPosition(vanillaBee);
 
-            if (oBee != null) {
-                oBee.copyPosition(vanillabee);
-                Entity entity = event.getEntity();
-
-                oBee.setCustomName(vanillabee.getCustomName());
+                oBee.setCustomName(vanillaBee.getCustomName());
 
                 int randomVariant = event.getWorld().getRandom().nextInt(23);
                 oBee.setVariant(randomVariant);
 
-                if (event.getWorld().isClientSide) {
-                    vanillabee.remove(Entity.RemovalReason.DISCARDED);
-                }
-
-                event.getWorld().addFreshEntity(oBee);
-                vanillabee.remove(Entity.RemovalReason.DISCARDED);
-
-                vanillabee.getPersistentData().putBoolean("O-Replaced", true);
-
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla bee with an O-Bee!");
 
-                event.setCanceled(true);
-            }
+            event.setCanceled(true);
         }
 
 
