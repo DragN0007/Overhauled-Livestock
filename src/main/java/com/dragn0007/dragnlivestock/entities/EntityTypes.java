@@ -5,6 +5,7 @@ import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
 import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
+import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -54,5 +55,11 @@ public class EntityTypes {
                             MobCategory.CREATURE)
                     .sized(0.3f, 0.3f)
                     .build(new ResourceLocation(MODID,"o_bee").toString()));
+
+    public static final RegistryObject<EntityType<ORabbit>> O_RABBIT_ENTITY = ENTITY_TYPES.register("o_rabbit_entity",
+            () -> EntityType.Builder.of(ORabbit::new,
+                            MobCategory.CREATURE)
+                    .sized(0.7f, 0.7f)
+                    .build(new ResourceLocation(MODID,"o_rabbit").toString()));
 }
 
