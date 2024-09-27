@@ -5,8 +5,10 @@ import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
 import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
+import com.dragn0007.dragnlivestock.entities.llama.OLlama;
 import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
+import com.dragn0007.dragnlivestock.entities.sheep.OSheep;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -61,5 +63,17 @@ public class EntityTypes {
                             MobCategory.CREATURE)
                     .sized(0.7f, 0.7f)
                     .build(new ResourceLocation(MODID,"o_rabbit").toString()));
+
+    public static final RegistryObject<EntityType<OLlama>> O_LLAMA_ENTITY = ENTITY_TYPES.register("o_llama_entity",
+            () -> EntityType.Builder.of(OLlama::new,
+                            MobCategory.CREATURE)
+                    .sized(1.5f,1.5f)
+                    .build(new ResourceLocation(MODID,"o_llama").toString()));
+
+    public static final RegistryObject<EntityType<OSheep>> O_SHEEP_ENTITY = ENTITY_TYPES.register("o_sheep_entity",
+            () -> EntityType.Builder.of(OSheep::new,
+                            MobCategory.CREATURE)
+                    .sized(1f,1f)
+                    .build(new ResourceLocation(MODID,"o_sheep").toString()));
 }
 
