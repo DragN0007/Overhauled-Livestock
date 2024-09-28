@@ -243,18 +243,24 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	@Override
 	public void positionRider(Entity entity) {
 		if (this.hasPassenger(entity)) {
-			double offsetX;
-			double offsetY;
-			double offsetZ;
+			double offsetX = 0;
+			double offsetY = 1.1;
+			double offsetZ = -0.2;
 
-			if (this.isSaddled()) {
-				offsetX = 0;
+			if (this.isSaddled() && getModelLocation().equals(BreedModel.STOCK)) {
 				offsetY = 1.3;
-				offsetZ = -0.1;
-			} else {
-				offsetX = 0;
-				offsetY = 1.1;
-				offsetZ = -0.2;
+			}
+
+			if (this.isSaddled() && getModelLocation().equals(BreedModel.DRAFT)) {
+				offsetY = 1.6;
+			}
+
+			if (this.isSaddled() && getModelLocation().equals(BreedModel.WARMBLOOD)) {
+				offsetY = 1.4;
+			}
+
+			if (this.isSaddled() && getModelLocation().equals(BreedModel.PONY)) {
+				offsetY = 1.0;
 			}
 
 			double radYaw = Math.toRadians(this.getYRot());
@@ -460,8 +466,13 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		return OHorseMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
 	}
 
+	public ResourceLocation getModelLocation() {
+		return BreedModel.breedFromOrdinal(getBreed()).resourceLocation;
+	}
+
 	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> BREED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -470,13 +481,18 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	public int getOverlayVariant() {
 		return this.entityData.get(OVERLAY);
 	}
+	public int getBreed() {
+		return this.entityData.get(BREED);
+	}
 
 	public void setVariant(int variant) {
 		this.entityData.set(VARIANT, variant);
 	}
-
 	public void setOverlayVariant(int variant) {
 		this.entityData.set(OVERLAY, variant);
+	}
+	public void setBreed(int breed) {
+		this.entityData.set(BREED, breed);
 	}
 
 	@Override
@@ -489,6 +505,10 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 
 		if (tag.contains("Overlay")) {
 			setOverlayVariant(tag.getInt("Overlay"));
+		}
+
+		if (tag.contains("Breed")) {
+			setBreed(tag.getInt("Breed"));
 		}
 
 		if (tag.contains("Chested")) {
@@ -541,6 +561,8 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 
 		tag.putInt("Overlay", getOverlayVariant());
 
+		tag.putInt("Breed", getBreed());
+
 		tag.putBoolean("Chested", this.isChested());
 
 		tag.putBoolean("Saddled", this.isSaddled());
@@ -570,6 +592,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		Random random = new Random();
 		setVariant(random.nextInt(OHorseModel.Variant.values().length));
 		setOverlayVariant(random.nextInt(OHorseMarkingLayer.Overlay.values().length));
+		setBreed(random.nextInt(BreedModel.values().length));
 
 		this.randomizeAttributes();
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
@@ -580,6 +603,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
+		this.entityData.define(BREED, 0);
 		this.entityData.define(CHESTED, false);
 		this.entityData.define(SADDLED, false);
 		this.entityData.define(ARMORED, false);
@@ -635,8 +659,19 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 				overlay = this.random.nextInt(OHorseMarkingLayer.Overlay.values().length);
 			}
 
+			int k = this.random.nextInt(5);
+			int breed;
+			if (k < 2) {
+				breed = this.getBreed();
+			} else if (k < 4) {
+				breed = horse.getBreed();
+			} else {
+				breed = this.random.nextInt(BreedModel.values().length);
+			}
+
 			((OHorse) abstracthorse).setVariant(variant);
 			((OHorse) abstracthorse).setOverlayVariant(overlay);
+			((OHorse) abstracthorse).setBreed(breed);
 		}
 
 		this.setOffspringAttributes(ageableMob, abstracthorse);
