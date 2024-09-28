@@ -592,7 +592,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		Random random = new Random();
 		setVariant(random.nextInt(OHorseModel.Variant.values().length));
 		setOverlayVariant(random.nextInt(OHorseMarkingLayer.Overlay.values().length));
-		setBreed(random.nextInt(BreedModel.values().length));
+//		setBreed(random.nextInt(BreedModel.values().length)); breeds shouldnt spawn naturally!
 
 		this.randomizeAttributes();
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
