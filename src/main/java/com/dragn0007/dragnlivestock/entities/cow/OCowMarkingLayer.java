@@ -32,13 +32,13 @@ public class OCowMarkingLayer extends GeoLayerRenderer<OCow> {
     }
 
     public enum Overlay {
+        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_none.png")),
         HIGHLAND_DARK_BROWN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/highland_dark_brown.png")),
         HIGHLAND_GOLD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/highland_gold.png")),
         HIGHLAND_WHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/highland_white.png")),
         BLACK_SPECKLED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_black_speckled.png")),
         BLAZE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_blaze.png")),
         DAIRY_PAINT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_dairy_paint.png")),
-        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_none.png")),
         OVERO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_overo.png")),
         PAINT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_paint.png")),
         REVERSE_PAINT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/overlay/overlay_reverse_paint.png")),

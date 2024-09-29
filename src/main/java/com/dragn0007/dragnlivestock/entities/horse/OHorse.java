@@ -1,6 +1,7 @@
 package com.dragn0007.dragnlivestock.entities.horse;
 
 import com.dragn0007.dragnlivestock.LONetwork;
+import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.client.menu.OHorseMenu;
 import com.dragn0007.dragnlivestock.entities.Armorable;
 import com.dragn0007.dragnlivestock.entities.Chestable;
@@ -8,8 +9,10 @@ import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.HorseFollowHerdLeaderGoal;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HorseModel;
 import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -541,14 +544,17 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	}
 
 	// Generates the base texture
+	public static final EntityDataAccessor<ResourceLocation> VARIANT_TEXTURE = SynchedEntityData.defineId(OHorse.class, LivestockOverhaul.RESOURCE_LOCATION);
+	public static final EntityDataAccessor<ResourceLocation> OVERLAY_TEXTURE = SynchedEntityData.defineId(OHorse.class, LivestockOverhaul.RESOURCE_LOCATION);
+
 	public ResourceLocation getTextureLocation() {
-		return OHorseModel.Variant.variantFromOrdinal(getVariant()).resourceLocation;
+		return this.entityData.get(VARIANT_TEXTURE);
+//		return OHorseModel.Variant.variantFromOrdinal(getVariant()).resourceLocation;
 	}
-
 	public ResourceLocation getOverlayLocation() {
-		return OHorseMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
+		return this.entityData.get(OVERLAY_TEXTURE);
+//		return OHorseMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
 	}
-
 	public ResourceLocation getModelLocation() {
 		return BreedModel.breedFromOrdinal(getBreed()).resourceLocation;
 	}
@@ -560,7 +566,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
 	}
-
 	public int getOverlayVariant() {
 		return this.entityData.get(OVERLAY);
 	}
@@ -569,13 +574,30 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	}
 
 	public void setVariant(int variant) {
+		this.entityData.set(VARIANT_TEXTURE, OHorseModel.Variant.variantFromOrdinal(variant).resourceLocation);
 		this.entityData.set(VARIANT, variant);
 	}
 	public void setOverlayVariant(int variant) {
+		this.entityData.set(OVERLAY_TEXTURE, OHorseMarkingLayer.Overlay.overlayFromOrdinal(variant).resourceLocation);
 		this.entityData.set(OVERLAY, variant);
 	}
 	public void setBreed(int breed) {
 		this.entityData.set(BREED, breed);
+	}
+
+	public void setVariantTexture(String variant) {
+		ResourceLocation resourceLocation = ResourceLocation.tryParse(variant);
+		if (resourceLocation == null) {
+			resourceLocation = OHorseModel.Variant.BAY.resourceLocation;
+		}
+		this.entityData.set(VARIANT_TEXTURE, resourceLocation);
+	}
+	public void setOverlayVariantTexture(String variant) {
+		ResourceLocation resourceLocation = ResourceLocation.tryParse(variant);
+		if (resourceLocation == null) {
+			resourceLocation = OHorseMarkingLayer.Overlay.NONE.resourceLocation;
+		}
+		this.entityData.set(OVERLAY_TEXTURE, resourceLocation);
 	}
 
 	@Override
@@ -588,6 +610,14 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 
 		if (tag.contains("Overlay")) {
 			setOverlayVariant(tag.getInt("Overlay"));
+		}
+
+		if (tag.contains("Variant_Texture")) {
+			setVariantTexture(tag.getString("Variant_Texture"));
+		}
+
+		if (tag.contains("Overlay_Texture")) {
+			setOverlayVariantTexture(tag.getString("Overlay_Texture"));
 		}
 
 		if (tag.contains("Breed")) {
@@ -644,6 +674,10 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 
 		tag.putInt("Overlay", getOverlayVariant());
 
+		tag.putString("Variant_Texture", getTextureLocation().toString());
+
+		tag.putString("Overlay_Texture", getOverlayLocation().toString());
+
 		tag.putInt("Breed", getBreed());
 
 		tag.putBoolean("Chested", this.isChested());
@@ -687,6 +721,8 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
 		this.entityData.define(BREED, 0);
+		this.entityData.define(VARIANT_TEXTURE, OHorseModel.Variant.BAY.resourceLocation);
+		this.entityData.define(OVERLAY_TEXTURE, OHorseMarkingLayer.Overlay.NONE.resourceLocation);
 		this.entityData.define(CHESTED, false);
 		this.entityData.define(SADDLED, false);
 		this.entityData.define(ARMORED, false);

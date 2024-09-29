@@ -20,5 +20,11 @@
   "entity.dragnlivestock.o_bee_entity": "O-Bee",
 
   "item.dragnlivestock.o_rabbit_spawn_egg": "O-Rabbit Spawn Egg",
-  "entity.dragnlivestock.o_rabbit_entity": "O-Rabbit"
+  "entity.dragnlivestock.o_rabbit_entity": "O-Rabbit",
+
+  "item.dragnlivestock.o_sheep_spawn_egg": "O-Sheep Spawn Egg",
+  "entity.dragnlivestock.o_sheep_entity": "O-Sheep",
+
+  "item.dragnlivestock.o_llama_spawn_egg": "O-Llama Spawn Egg",
+  "entity.dragnlivestock.o_llama_entity": "O-Llama"
 }

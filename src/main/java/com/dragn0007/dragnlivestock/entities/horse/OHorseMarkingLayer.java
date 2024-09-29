@@ -32,6 +32,7 @@ public class OHorseMarkingLayer extends GeoLayerRenderer<OHorse> {
     }
 
     public enum Overlay {
+        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_none.png")),
         APPALOOSA(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_appaloosa.png")),
         BALD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_bald.png")),
         BLANKET_APPALOOSA(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_blanket_appaloosa.png")),
@@ -45,7 +46,6 @@ public class OHorseMarkingLayer extends GeoLayerRenderer<OHorse> {
         GOLD_EYE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_gold_eye.png")),
         HALF_SOCKS(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_half_socks.png")),
         HALF_SOCKS_FEATHERING(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_half_socks_feathering.png")),
-        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_none.png")),
         OVERO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_overo.png")),
         OVERO_SPLASH(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_overo_splash.png")),
         PAINT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_paint.png")),
