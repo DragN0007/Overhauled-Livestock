@@ -1,11 +1,15 @@
 package com.dragn0007.dragnlivestock.entities.horse;
 
+import com.dragn0007.dragnlivestock.LONetwork;
 import com.dragn0007.dragnlivestock.client.menu.OHorseMenu;
 import com.dragn0007.dragnlivestock.entities.Armorable;
 import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.HorseFollowHerdLeaderGoal;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.KeyboardInput;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -18,6 +22,7 @@ import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -26,6 +31,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.animal.horse.Donkey;
 import net.minecraft.world.entity.player.Player;
@@ -35,6 +41,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -107,6 +114,9 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		this.goalSelector.addGoal(3, new HorseFollowHerdLeaderGoal(this));
 		this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D, AbstractOHorse.class));
 		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
+		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, livingEntity
+				-> livingEntity instanceof Wolf
+		));
 	}
 
 	@Override
@@ -122,6 +132,8 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
 		double animationSpeed = Math.max(0.1, movementSpeed);
+		double currentSpeed = this.getDeltaMovement().lengthSqr();
+		double speedThreshold = 0.02;
 
 		if (isJumping()) {
 			event.getController().setAnimation(
@@ -130,7 +142,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 			event.getController().setAnimationSpeed(1.0);
 
 		} else if (event.isMoving()) {
-			if (isVehicle() || isAggressive() || isSprinting() || isSwimming()) {
+			if (currentSpeed > speedThreshold || isAggressive() || isSprinting() || isSwimming()) {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
 				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
 			} else {
@@ -219,6 +231,77 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		});
 	}
 
+	private void handleInput(KeyboardInput input) {
+		if(input.jumping) {
+			LONetwork.INSTANCE.sendToServer(new LONetwork.ButtonPressRequest(this.getId()));
+		}
+	}
+
+	public void travel(Vec3 travel) {
+		if (this.isAlive()) {
+			if (this.isVehicle() && this.canBeControlledByRider() && this.isSaddled()) {
+				LivingEntity livingentity = (LivingEntity)this.getControllingPassenger();
+				this.setYRot(livingentity.getYRot());
+				this.yRotO = this.getYRot();
+				this.setXRot(livingentity.getXRot() * 0.5F);
+				this.setRot(this.getYRot(), this.getXRot());
+				this.yBodyRot = this.getYRot();
+				this.yHeadRot = this.yBodyRot;
+				float sidewaysSpeed = livingentity.xxa * 0.5F;
+				float fowardSpeed = livingentity.zza;
+				if (fowardSpeed <= 0.0F) {
+					fowardSpeed *= 0.25F;
+					this.gallopSoundCounter = 0;
+				}
+
+				if (this.isSprinting()) { //walk when CTRL is toggled
+					fowardSpeed = 0.0F;
+				}
+
+				if (this.onGround && this.playerJumpPendingScale == 0.0F && this.isStanding()) {
+					sidewaysSpeed = 0.0F;
+					fowardSpeed = 0.0F;
+				}
+
+				if (this.playerJumpPendingScale > 0.0F && !this.isJumping() && this.onGround) {
+					double d0 = this.getCustomJump() * (double)this.playerJumpPendingScale * (double)this.getBlockJumpFactor();
+					double d1 = d0 + this.getJumpBoostPower();
+					Vec3 vec3 = this.getDeltaMovement();
+					this.setDeltaMovement(vec3.x, d1, vec3.z);
+					this.setIsJumping(true);
+					this.hasImpulse = true;
+					net.minecraftforge.common.ForgeHooks.onLivingJump(this);
+					if (fowardSpeed > 0.0F) {
+						float f2 = Mth.sin(this.getYRot() * ((float)Math.PI / 180F));
+						float f3 = Mth.cos(this.getYRot() * ((float)Math.PI / 180F));
+						this.setDeltaMovement(this.getDeltaMovement().add((double)(-0.4F * f2 * this.playerJumpPendingScale), 0.0D, (double)(0.4F * f3 * this.playerJumpPendingScale)));
+					}
+
+					this.playerJumpPendingScale = 0.0F;
+				}
+
+				this.flyingSpeed = this.getSpeed() * 0.1F;
+				if (this.isControlledByLocalInstance()) {
+					this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+					super.travel(new Vec3((double)sidewaysSpeed, travel.y, (double)fowardSpeed));
+				} else if (livingentity instanceof Player) {
+					this.setDeltaMovement(Vec3.ZERO);
+				}
+
+				if (this.onGround) {
+					this.playerJumpPendingScale = 0.0F;
+					this.setIsJumping(false);
+				}
+
+				this.calculateEntityAnimation(this, false);
+				this.tryCheckInsideBlocks();
+			} else {
+				this.flyingSpeed = 0.02F;
+				super.travel(travel);
+			}
+		}
+	}
+
 	//ground tie
 	@Override
 	public void tick() {
@@ -247,20 +330,20 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 			double offsetY = 1.1;
 			double offsetZ = -0.2;
 
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.STOCK)) {
+			if (this.isSaddled() && getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
 				offsetY = 1.3;
 			}
 
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.DRAFT)) {
-				offsetY = 1.6;
+			if (this.isSaddled() && getModelLocation().equals(BreedModel.DRAFT.resourceLocation)) {
+				offsetY = 1.45;
 			}
 
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.WARMBLOOD)) {
-				offsetY = 1.4;
+			if (this.isSaddled() && getModelLocation().equals(BreedModel.WARMBLOOD.resourceLocation)) {
+				offsetY = 1.35;
 			}
 
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.PONY)) {
-				offsetY = 1.0;
+			if (this.isSaddled() && getModelLocation().equals(BreedModel.PONY.resourceLocation)) {
+				offsetY = 1.1;
 			}
 
 			double radYaw = Math.toRadians(this.getYRot());

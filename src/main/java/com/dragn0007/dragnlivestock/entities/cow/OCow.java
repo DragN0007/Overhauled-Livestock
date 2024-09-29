@@ -22,6 +22,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
@@ -84,7 +85,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, livingEntity
 				-> livingEntity instanceof OHorse
 //				|| livingEntity instanceof OMule
-//				|| livingEntity instanceof ODonkey
+				|| livingEntity instanceof Wolf
 		));
 	}
 
