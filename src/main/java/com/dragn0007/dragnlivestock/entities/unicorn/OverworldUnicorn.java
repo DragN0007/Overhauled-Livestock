@@ -1,15 +1,14 @@
-package com.dragn0007.dragnlivestock.entities.horse;
+package com.dragn0007.dragnlivestock.entities.unicorn;
 
-import com.dragn0007.dragnlivestock.LONetwork;
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.client.menu.OHorseMenu;
 import com.dragn0007.dragnlivestock.entities.Armorable;
 import com.dragn0007.dragnlivestock.entities.Chestable;
-import com.dragn0007.dragnlivestock.entities.EntityTypes;
-import com.dragn0007.dragnlivestock.entities.ai.HorseFollowHerdLeaderGoal;
-import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
-import net.minecraft.client.player.KeyboardInput;
-import net.minecraft.core.Direction;
+import com.dragn0007.dragnlivestock.entities.horse.BreedModel;
+import com.dragn0007.dragnlivestock.entities.horse.OHorse;
+import com.dragn0007.dragnlivestock.entities.horse.OHorseMarkingLayer;
+import com.dragn0007.dragnlivestock.entities.horse.OHorseModel;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -21,7 +20,6 @@ import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -31,8 +29,6 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Wolf;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.animal.horse.Donkey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -41,10 +37,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.network.NetworkHooks;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -58,29 +50,30 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import java.util.stream.Stream;
 
-public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Saddleable, Armorable {
+public class OverworldUnicorn extends OHorse implements IAnimatable, Chestable, Saddleable, Armorable {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-	private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> ARMORED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OverworldUnicorn.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(OverworldUnicorn.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> ARMORED = SynchedEntityData.defineId(OverworldUnicorn.class, EntityDataSerializers.BOOLEAN);
 
-	public OHorse(EntityType<? extends OHorse> type, Level level) {
+	public OverworldUnicorn(EntityType<? extends OverworldUnicorn> type, Level level) {
 		super(type, level);
 		this.noCulling = true;
 		this.updateInventory();
+		this.xpReward = 50;
 	}
 
 	public static AttributeSupplier.Builder createBaseHorseAttributes() {
 		return Mob.createMobAttributes()
 				.add(Attributes.JUMP_STRENGTH)
-				.add(Attributes.MAX_HEALTH, 53.0D)
-				.add(Attributes.MOVEMENT_SPEED, (double)0.235F);
+				.add(Attributes.MAX_HEALTH, 80.0D)
+				.add(Attributes.MOVEMENT_SPEED, (double)0.250F)
+				.add(Attributes.ATTACK_DAMAGE, 4D)
+				.add(Attributes.ATTACK_KNOCKBACK, 2F);
 	}
 
 	protected void randomizeAttributes() {
@@ -90,15 +83,15 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	}
 
 	public float generateRandomMaxHealth() {
-		return 15.0F + (float)this.random.nextInt(8) + (float)this.random.nextInt(9);
+		return 24.0F + (float)this.random.nextInt(8) + (float)this.random.nextInt(9);
 	}
 
 	public double generateRandomJumpStrength() {
-		return (double)0.4F + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D;
+		return (double)0.8F + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D;
 	}
 
 	public double generateRandomSpeed() {
-		return ((double)0.45F + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D) * 0.25D;
+		return ((double)0.65F + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D) * 0.25D;
 	}
 
 	@Override
@@ -110,23 +103,23 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 0.0F));
 
-		this.goalSelector.addGoal(3, new HorseFollowHerdLeaderGoal(this));
-		this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D, AbstractOHorse.class));
-		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, livingEntity
 				-> livingEntity instanceof Wolf
 		));
 	}
 
 	@Override
+	public boolean hurt(DamageSource damageSource, float v) {
+		if(damageSource.isMagic() || damageSource.isExplosion()) {
+			return false;
+		}
+		return super.hurt(damageSource, v);
+	}
+
+	@Override
 	public boolean canBeRiddenInWater(Entity rider) {
 		return false;
 	}
-
-	public SimpleContainer inventory;
-	private LazyOptional<?> itemHandler = null;
-	private OHorse leader;
-	private int herdSize = 1;
 
 	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
@@ -176,129 +169,15 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		data.addAnimationController(new AnimationController(this, "attackController", 1, this::attackPredicate));
 	}
 
-	public boolean isFollower() {
-		return this.leader != null && this.leader.isAlive();
+	public void aiStep() {
+		super.aiStep();
+
+		this.level.addParticle(ParticleTypes.MYCELIUM, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
 	}
 
-	public OHorse startFollowing(OHorse horse) {
-		this.leader = horse;
-		horse.addFollower();
-		return horse;
-	}
-
-	public void stopFollowing() {
-		this.leader.removeFollower();
-		this.leader = null;
-	}
-
-	private void addFollower() {
-		++this.herdSize;
-	}
-
-	private void removeFollower() {
-		--this.herdSize;
-	}
-
-	public boolean canBeFollowed() {
-		return this.hasFollowers() && this.herdSize < this.getMaxHerdSize();
-	}
-
-	public int getMaxHerdSize() {
-		return 3;
-	}
-
-	public boolean hasFollowers() {
-		return this.herdSize > 1;
-	}
-
-	public boolean inRangeOfLeader() {
-		return this.distanceToSqr(this.leader) <= 121.0D;
-	}
-
-	public void pathToLeader() {
-		if (this.isFollower()) {
-			this.getNavigation().moveTo(this.leader, 1.0D);
-		}
-
-	}
-
-	public void addFollowers(Stream<? extends OHorse> stream) {
-		stream.limit((long)(this.getMaxHerdSize() - this.herdSize)).filter((horse) -> {
-			return horse != this;
-		}).forEach((horse) -> {
-			horse.startFollowing(this);
-		});
-	}
-
-	private void handleInput(KeyboardInput input) {
-		if(input.jumping) {
-			LONetwork.INSTANCE.sendToServer(new LONetwork.ButtonPressRequest(this.getId()));
-		}
-	}
-
-	public void travel(Vec3 travel) {
-		if (this.isAlive()) {
-			if (this.isVehicle() && this.canBeControlledByRider() && this.isSaddled()) {
-				LivingEntity livingentity = (LivingEntity)this.getControllingPassenger();
-				this.setYRot(livingentity.getYRot());
-				this.yRotO = this.getYRot();
-				this.setXRot(livingentity.getXRot() * 0.5F);
-				this.setRot(this.getYRot(), this.getXRot());
-				this.yBodyRot = this.getYRot();
-				this.yHeadRot = this.yBodyRot;
-				float sidewaysSpeed = livingentity.xxa * 0.5F;
-				float fowardSpeed = livingentity.zza;
-				if (fowardSpeed <= 0.0F) {
-					fowardSpeed *= 0.25F;
-					this.gallopSoundCounter = 0;
-				}
-
-				if (this.isSprinting()) { //walk when CTRL is toggled
-					fowardSpeed = 0.0F;
-				}
-
-				if (this.onGround && this.playerJumpPendingScale == 0.0F && this.isStanding()) {
-					sidewaysSpeed = 0.0F;
-					fowardSpeed = 0.0F;
-				}
-
-				if (this.playerJumpPendingScale > 0.0F && !this.isJumping() && this.onGround) {
-					double d0 = this.getCustomJump() * (double)this.playerJumpPendingScale * (double)this.getBlockJumpFactor();
-					double d1 = d0 + this.getJumpBoostPower();
-					Vec3 vec3 = this.getDeltaMovement();
-					this.setDeltaMovement(vec3.x, d1, vec3.z);
-					this.setIsJumping(true);
-					this.hasImpulse = true;
-					net.minecraftforge.common.ForgeHooks.onLivingJump(this);
-					if (fowardSpeed > 0.0F) {
-						float f2 = Mth.sin(this.getYRot() * ((float)Math.PI / 180F));
-						float f3 = Mth.cos(this.getYRot() * ((float)Math.PI / 180F));
-						this.setDeltaMovement(this.getDeltaMovement().add((double)(-0.4F * f2 * this.playerJumpPendingScale), 0.0D, (double)(0.4F * f3 * this.playerJumpPendingScale)));
-					}
-
-					this.playerJumpPendingScale = 0.0F;
-				}
-
-				this.flyingSpeed = this.getSpeed() * 0.1F;
-				if (this.isControlledByLocalInstance()) {
-					this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
-					super.travel(new Vec3((double)sidewaysSpeed, travel.y, (double)fowardSpeed));
-				} else if (livingentity instanceof Player) {
-					this.setDeltaMovement(Vec3.ZERO);
-				}
-
-				if (this.onGround) {
-					this.playerJumpPendingScale = 0.0F;
-					this.setIsJumping(false);
-				}
-
-				this.calculateEntityAnimation(this, false);
-				this.tryCheckInsideBlocks();
-			} else {
-				this.flyingSpeed = 0.02F;
-				super.travel(travel);
-			}
-		}
+	@Override
+	public boolean causeFallDamage(float p_148875_, float p_148876_, DamageSource p_148877_) {
+		return false;
 	}
 
 	//ground tie
@@ -309,12 +188,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 			this.getNavigation().stop();
 		}
 
-		if (this.hasFollowers() && this.level.random.nextInt(200) == 1) {
-			List<? extends OHorse> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D));
-			if (list.size() <= 1) {
-				this.herdSize = 1;
-			}
-		}
 	}
 
 	@Override
@@ -326,24 +199,8 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	public void positionRider(Entity entity) {
 		if (this.hasPassenger(entity)) {
 			double offsetX = 0;
-			double offsetY = 1.1;
+			double offsetY = 1.4;
 			double offsetZ = -0.2;
-
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
-				offsetY = 1.3;
-			}
-
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.DRAFT.resourceLocation)) {
-				offsetY = 1.45;
-			}
-
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.WARMBLOOD.resourceLocation)) {
-				offsetY = 1.35;
-			}
-
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.PONY.resourceLocation)) {
-				offsetY = 1.1;
-			}
 
 			double radYaw = Math.toRadians(this.getYRot());
 
@@ -466,43 +323,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		this.entityData.set(SADDLED, saddled);
 	}
 
-	protected void updateInventory() {
-		SimpleContainer tempInventory = this.inventory;
-		this.inventory = new SimpleContainer(this.getInventorySize());
-
-		if(tempInventory != null) {
-			tempInventory.removeListener(this);
-			int maxSize = Math.min(tempInventory.getContainerSize(), this.inventory.getContainerSize());
-
-			for(int i = 0; i < maxSize; i++) {
-				ItemStack itemStack = tempInventory.getItem(i);
-				if(!itemStack.isEmpty()) {
-					this.inventory.setItem(i, itemStack.copy());
-				}
-			}
-		}
-		this.inventory.addListener(this);
-		this.itemHandler = LazyOptional.of(() -> new InvWrapper(this.inventory));
-	}
-
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-		if(this.isAlive() && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.itemHandler != null) {
-			return itemHandler.cast();
-		}
-		return super.getCapability(capability, facing);
-	}
-
-	@Override
-	public void invalidateCaps() {
-		super.invalidateCaps();
-		if(this.itemHandler != null) {
-			LazyOptional<?> oldHandler = this.itemHandler;
-			this.itemHandler = null;
-			oldHandler.invalidate();
-		}
-	}
-
 	@Override
 	protected void dropEquipment() {
 		if(!this.level.isClientSide) {
@@ -540,8 +360,8 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	}
 
 	// Generates the base texture
-	public static final EntityDataAccessor<ResourceLocation> VARIANT_TEXTURE = SynchedEntityData.defineId(OHorse.class, LivestockOverhaul.RESOURCE_LOCATION);
-	public static final EntityDataAccessor<ResourceLocation> OVERLAY_TEXTURE = SynchedEntityData.defineId(OHorse.class, LivestockOverhaul.RESOURCE_LOCATION);
+	public static final EntityDataAccessor<ResourceLocation> VARIANT_TEXTURE = SynchedEntityData.defineId(OverworldUnicorn.class, LivestockOverhaul.RESOURCE_LOCATION);
+	public static final EntityDataAccessor<ResourceLocation> OVERLAY_TEXTURE = SynchedEntityData.defineId(OverworldUnicorn.class, LivestockOverhaul.RESOURCE_LOCATION);
 
 	public ResourceLocation getTextureLocation() {
 		return this.entityData.get(VARIANT_TEXTURE);
@@ -551,13 +371,9 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		return this.entityData.get(OVERLAY_TEXTURE);
 //		return OHorseMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
 	}
-	public ResourceLocation getModelLocation() {
-		return BreedModel.breedFromOrdinal(getBreed()).resourceLocation;
-	}
 
-	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> BREED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OverworldUnicorn.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OverworldUnicorn.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -565,33 +381,27 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	public int getOverlayVariant() {
 		return this.entityData.get(OVERLAY);
 	}
-	public int getBreed() {
-		return this.entityData.get(BREED);
-	}
 
 	public void setVariant(int variant) {
-		this.entityData.set(VARIANT_TEXTURE, OHorseModel.Variant.variantFromOrdinal(variant).resourceLocation);
+		this.entityData.set(VARIANT_TEXTURE, OverworldUnicornModel.Variant.variantFromOrdinal(variant).resourceLocation);
 		this.entityData.set(VARIANT, variant);
 	}
 	public void setOverlayVariant(int variant) {
-		this.entityData.set(OVERLAY_TEXTURE, OHorseMarkingLayer.Overlay.overlayFromOrdinal(variant).resourceLocation);
+		this.entityData.set(OVERLAY_TEXTURE, OverworldUnicornHornLayer.Overlay.overlayFromOrdinal(variant).resourceLocation);
 		this.entityData.set(OVERLAY, variant);
-	}
-	public void setBreed(int breed) {
-		this.entityData.set(BREED, breed);
 	}
 
 	public void setVariantTexture(String variant) {
 		ResourceLocation resourceLocation = ResourceLocation.tryParse(variant);
 		if (resourceLocation == null) {
-			resourceLocation = OHorseModel.Variant.BAY.resourceLocation;
+			resourceLocation = OverworldUnicornModel.Variant.OVERWORLD.resourceLocation;
 		}
 		this.entityData.set(VARIANT_TEXTURE, resourceLocation);
 	}
 	public void setOverlayVariantTexture(String variant) {
 		ResourceLocation resourceLocation = ResourceLocation.tryParse(variant);
 		if (resourceLocation == null) {
-			resourceLocation = OHorseMarkingLayer.Overlay.NONE.resourceLocation;
+			resourceLocation = OverworldUnicornHornLayer.Overlay.NONE.resourceLocation;
 		}
 		this.entityData.set(OVERLAY_TEXTURE, resourceLocation);
 	}
@@ -614,10 +424,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 
 		if (tag.contains("Overlay_Texture")) {
 			setOverlayVariantTexture(tag.getString("Overlay_Texture"));
-		}
-
-		if (tag.contains("Breed")) {
-			setBreed(tag.getInt("Breed"));
 		}
 
 		if (tag.contains("Chested")) {
@@ -660,7 +466,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		}
 
 		this.updateContainerEquipment();
-		this.updateInventory();
 	}
 
 	@Override
@@ -673,8 +478,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		tag.putString("Variant_Texture", getTextureLocation().toString());
 
 		tag.putString("Overlay_Texture", getOverlayLocation().toString());
-
-		tag.putInt("Breed", getBreed());
 
 		tag.putBoolean("Chested", this.isChested());
 
@@ -700,12 +503,11 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		if (data == null) {
-			data = new AgeableMob.AgeableMobGroupData(0.2F);
+			data = new AgeableMobGroupData(0.2F);
 		}
 		Random random = new Random();
-		setVariant(random.nextInt(OHorseModel.Variant.values().length));
-		setOverlayVariant(random.nextInt(OHorseMarkingLayer.Overlay.values().length));
-//		setBreed(random.nextInt(BreedModel.values().length)); breeds shouldnt spawn naturally!
+		setVariant(random.nextInt(OverworldUnicornModel.Variant.values().length));
+		setOverlayVariant(random.nextInt(OverworldUnicornHornLayer.Overlay.values().length));
 
 		this.randomizeAttributes();
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
@@ -716,9 +518,8 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
-		this.entityData.define(BREED, 0);
-		this.entityData.define(VARIANT_TEXTURE, OHorseModel.Variant.BAY.resourceLocation);
-		this.entityData.define(OVERLAY_TEXTURE, OHorseMarkingLayer.Overlay.NONE.resourceLocation);
+		this.entityData.define(VARIANT_TEXTURE, OverworldUnicornModel.Variant.OVERWORLD.resourceLocation);
+		this.entityData.define(OVERLAY_TEXTURE, OverworldUnicornHornLayer.Overlay.NONE.resourceLocation);
 		this.entityData.define(CHESTED, false);
 		this.entityData.define(SADDLED, false);
 		this.entityData.define(ARMORED, false);
@@ -736,61 +537,12 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	}
 
 	public boolean canMate(Animal animal) {
-		if (animal == this) {
-			return false;
-		} else if (!(animal instanceof Donkey) && !(animal instanceof OHorse)) {
-			return false;
-		} else {
-			return this.canParent() && ((OHorse) animal).canParent();
-		}
+		return false;
 	}
 
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-		AbstractHorse abstracthorse;
-		if (ageableMob instanceof Donkey) {
-			abstracthorse = EntityType.MULE.create(serverLevel);
-		} else {
-			OHorse horse = (OHorse) ageableMob;
-			abstracthorse = EntityTypes.O_HORSE_ENTITY.get().create(serverLevel);
-
-			int i = this.random.nextInt(9);
-			int variant;
-			if (i < 4) {
-				variant = this.getVariant();
-			} else if (i < 8) {
-				variant = horse.getVariant();
-			} else {
-				variant = this.random.nextInt(OHorseModel.Variant.values().length);
-			}
-
-			int j = this.random.nextInt(5);
-			int overlay;
-			if (j < 2) {
-				overlay = this.getOverlayVariant();
-			} else if (j < 4) {
-				overlay = horse.getOverlayVariant();
-			} else {
-				overlay = this.random.nextInt(OHorseMarkingLayer.Overlay.values().length);
-			}
-
-			int k = this.random.nextInt(5);
-			int breed;
-			if (k < 2) {
-				breed = this.getBreed();
-			} else if (k < 4) {
-				breed = horse.getBreed();
-			} else {
-				breed = this.random.nextInt(BreedModel.values().length);
-			}
-
-			((OHorse) abstracthorse).setVariant(variant);
-			((OHorse) abstracthorse).setOverlayVariant(overlay);
-			((OHorse) abstracthorse).setBreed(breed);
-		}
-
-		this.setOffspringAttributes(ageableMob, abstracthorse);
-		return abstracthorse;
+		return null;
 	}
 
 	@Override

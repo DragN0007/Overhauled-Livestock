@@ -26,5 +26,13 @@
   "entity.dragnlivestock.o_sheep_entity": "O-Sheep",
 
   "item.dragnlivestock.o_llama_spawn_egg": "O-Llama Spawn Egg",
-  "entity.dragnlivestock.o_llama_entity": "O-Llama"
+  "entity.dragnlivestock.o_llama_entity": "O-Llama",
+
+
+
+  "item.dragnlivestock.overworld_unicorn_spawn_egg": "Overworld Unicorn Spawn Egg",
+  "entity.dragnlivestock.overworld_unicorn_entity": "Overworld Unicorn",
+
+  "item.dragnlivestock.nether_unicorn_spawn_egg": "Nether Unicorn Spawn Egg",
+  "entity.dragnlivestock.nether_unicorn_entity": "Nether Unicorn"
 }

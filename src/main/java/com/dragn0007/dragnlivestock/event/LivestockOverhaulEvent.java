@@ -16,6 +16,10 @@ import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
 import com.dragn0007.dragnlivestock.entities.rabbit.ORabbitRender;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmonRender;
+import com.dragn0007.dragnlivestock.entities.unicorn.NetherUnicorn;
+import com.dragn0007.dragnlivestock.entities.unicorn.NetherUnicornRender;
+import com.dragn0007.dragnlivestock.entities.unicorn.OverworldUnicorn;
+import com.dragn0007.dragnlivestock.entities.unicorn.OverworldUnicornRender;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -35,6 +39,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
         event.put(EntityTypes.O_COD_ENTITY.get(), OCod.createAttributes().build());
         event.put(EntityTypes.O_BEE_ENTITY.get(), OBee.createAttributes().build());
         event.put(EntityTypes.O_RABBIT_ENTITY.get(), ORabbit.createAttributes().build());
+
+        event.put(EntityTypes.OVERWORLD_UNICORN_ENTITY.get(), OverworldUnicorn.createBaseHorseAttributes().build());
+        event.put(EntityTypes.NETHER_UNICORN_ENTITY.get(), NetherUnicorn.createBaseHorseAttributes().build());
     }
 
     @SubscribeEvent
@@ -46,5 +53,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
         EntityRenderers.register(EntityTypes.O_COD_ENTITY.get(), OCodRender::new);
         EntityRenderers.register(EntityTypes.O_BEE_ENTITY.get(), OBeeRender::new);
         EntityRenderers.register(EntityTypes.O_RABBIT_ENTITY.get(), ORabbitRender::new);
+
+        EntityRenderers.register(EntityTypes.OVERWORLD_UNICORN_ENTITY.get(), OverworldUnicornRender::new);
+        EntityRenderers.register(EntityTypes.NETHER_UNICORN_ENTITY.get(), NetherUnicornRender::new);
     }
 }
