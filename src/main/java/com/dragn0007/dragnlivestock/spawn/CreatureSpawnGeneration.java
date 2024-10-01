@@ -1,12 +1,21 @@
 package com.dragn0007.dragnlivestock.spawn;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.entities.unicorn.EndUnicorn;
+import com.dragn0007.dragnlivestock.entities.unicorn.OverworldUnicorn;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.Event;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +34,10 @@ public class CreatureSpawnGeneration {
                 Biomes.BASALT_DELTAS
         );
 
+        addEntityToSpecificBiomes(event, EntityTypes.END_UNICORN_ENTITY.get(),
+                1, 1, 1,
+                Biomes.END_HIGHLANDS
+        );
     }
 
     @SafeVarargs
@@ -39,8 +52,8 @@ public class CreatureSpawnGeneration {
     }
 
     private static boolean shouldSpawnEntity() {
-        int randomChance = new Random().nextInt(10000);
-        return randomChance < 4500; // 0.45% chance
+        int randomChance = new Random().nextInt(100);
+        return randomChance < 5;
     }
 
     private static void addEntityToAllBiomes(BiomeLoadingEvent event, EntityType<?> type,

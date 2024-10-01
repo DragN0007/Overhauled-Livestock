@@ -34,5 +34,8 @@
   "entity.dragnlivestock.overworld_unicorn_entity": "Overworld Unicorn",
 
   "item.dragnlivestock.nether_unicorn_spawn_egg": "Nether Unicorn Spawn Egg",
-  "entity.dragnlivestock.nether_unicorn_entity": "Nether Unicorn"
+  "entity.dragnlivestock.nether_unicorn_entity": "Nether Unicorn",
+
+  "item.dragnlivestock.end_unicorn_spawn_egg": "End Unicorn Spawn Egg",
+  "entity.dragnlivestock.end_unicorn_entity": "End Unicorn"
 }

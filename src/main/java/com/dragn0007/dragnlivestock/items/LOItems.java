@@ -34,6 +34,8 @@ public class LOItems {
             () -> new ForgeSpawnEggItem(EntityTypes.OVERWORLD_UNICORN_ENTITY, 0xfef4f4, 0xccbfbf, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
     public static final RegistryObject<Item> NETHER_UNICORN_SPAWN_EGG = ITEMS.register("nether_unicorn_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityTypes.NETHER_UNICORN_ENTITY, 0x222539, 0x090a12, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+ public static final RegistryObject<Item> END_UNICORN_SPAWN_EGG = ITEMS.register("end_unicorn_spawn_egg",
+         () -> new ForgeSpawnEggItem(EntityTypes.END_UNICORN_ENTITY, 0xb4ac79, 0xdee6a4, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
 
 
     //MOD ITEM TABS (UNOBTAINABLE)
