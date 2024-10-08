@@ -20,31 +20,31 @@ public class LOItemModelProvider extends ItemModelProvider {
     simpleItem(LOItems.LIVESTOCK_OVERHAUL.get());
     }
 
-    private ItemModelBuilder simpleSpriteBlockItem(Block block) {
+    protected ItemModelBuilder simpleSpriteBlockItem(Block block) {
         return withExistingParent(block.getRegistryName().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(LivestockOverhaul.MODID,"block/" + block.getRegistryName().getPath()));
     }
 
-    private ItemModelBuilder simpleItem(Item item) {
+    protected ItemModelBuilder simpleItem(Item item) {
         return withExistingParent(item.getRegistryName().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(LivestockOverhaul.MODID,"item/" + item.getRegistryName().getPath()));
     }
 
-    private ItemModelBuilder itemNameBlockItem(Item item, String getTextureName) {
+    protected ItemModelBuilder itemNameBlockItem(Item item, String getTextureName) {
         return withExistingParent(item.getRegistryName().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(LivestockOverhaul.MODID,"block/" + getTextureName));
     }
 
-    private ItemModelBuilder advancedItem(Item item, String getTextureName) {
+    protected ItemModelBuilder advancedItem(Item item, String getTextureName) {
         return withExistingParent(item.getRegistryName().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(LivestockOverhaul.MODID,"item/" + getTextureName));
     }
 
-    private ItemModelBuilder handheldItem(Item item) {
+    protected ItemModelBuilder handheldItem(Item item) {
         return withExistingParent(item.getRegistryName().getPath(),
                 new ResourceLocation("item/handheld")).texture("layer0",
                 new ResourceLocation(LivestockOverhaul.MODID,"item/" + item.getRegistryName().getPath()));

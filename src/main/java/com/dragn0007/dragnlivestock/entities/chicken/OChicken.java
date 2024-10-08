@@ -56,7 +56,7 @@ public class OChicken extends Animal implements IAnimatable {
 				.add(Attributes.MOVEMENT_SPEED, 0.16F);
 	}
 
-	private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
+	protected static final Ingredient FOOD_ITEMS = Ingredient.of(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
@@ -74,7 +74,7 @@ public class OChicken extends Animal implements IAnimatable {
 		return 1F;
 	}
 
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
 		double speedThreshold = 0.01;
 
@@ -163,8 +163,8 @@ public class OChicken extends Animal implements IAnimatable {
 		return OChickenMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
 	}
 
-	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OChicken.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OChicken.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OChicken.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OChicken.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);

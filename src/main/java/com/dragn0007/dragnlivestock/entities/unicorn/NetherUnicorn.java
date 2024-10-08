@@ -30,7 +30,6 @@ import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.SoundType;
@@ -56,9 +55,9 @@ import java.util.UUID;
 public class NetherUnicorn extends OHorse implements IAnimatable, Chestable, Saddleable, Armorable {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-	private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(NetherUnicorn.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(NetherUnicorn.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> ARMORED = SynchedEntityData.defineId(NetherUnicorn.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(NetherUnicorn.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(NetherUnicorn.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Boolean> ARMORED = SynchedEntityData.defineId(NetherUnicorn.class, EntityDataSerializers.BOOLEAN);
 
 	public NetherUnicorn(EntityType<? extends NetherUnicorn> type, Level level) {
 		super(type, level);
@@ -121,7 +120,7 @@ public class NetherUnicorn extends OHorse implements IAnimatable, Chestable, Sad
 		return false;
 	}
 
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
 		double animationSpeed = Math.max(0.1, movementSpeed);
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
@@ -153,7 +152,7 @@ public class NetherUnicorn extends OHorse implements IAnimatable, Chestable, Sad
 		return PlayState.CONTINUE;
 	}
 
-	private PlayState attackPredicate(AnimationEvent event) {
+	protected PlayState attackPredicate(AnimationEvent event) {
 		if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
 			event.getController().markNeedsReload();
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
@@ -337,7 +336,7 @@ public class NetherUnicorn extends OHorse implements IAnimatable, Chestable, Sad
 		return this.entityData.get(SADDLED);
 	}
 
-	private void setSaddled(boolean saddled) {
+	protected void setSaddled(boolean saddled) {
 		this.entityData.set(SADDLED, saddled);
 	}
 
@@ -390,8 +389,8 @@ public class NetherUnicorn extends OHorse implements IAnimatable, Chestable, Sad
 //		return OHorseMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
 	}
 
-	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(NetherUnicorn.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(NetherUnicorn.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(NetherUnicorn.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(NetherUnicorn.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -580,7 +579,7 @@ public class NetherUnicorn extends OHorse implements IAnimatable, Chestable, Sad
 		return this.entityData.get(CHESTED);
 	}
 
-	private void setChested(boolean chested) {
+	protected void setChested(boolean chested) {
 		this.entityData.set(CHESTED, chested);
 	}
 

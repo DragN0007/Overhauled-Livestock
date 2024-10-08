@@ -63,7 +63,7 @@ public class OSalmon extends AbstractSchoolingFish implements IAnimatable {
 		return SoundEvents.SALMON_FLOP;
 	}
 
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
 		double speedThreshold = 0.04;
 
@@ -95,7 +95,7 @@ public class OSalmon extends AbstractSchoolingFish implements IAnimatable {
 		return OSalmonModel.Variant.variantFromOrdinal(getVariant()).resourceLocation;
 	}
 
-	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OSalmon.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OSalmon.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);

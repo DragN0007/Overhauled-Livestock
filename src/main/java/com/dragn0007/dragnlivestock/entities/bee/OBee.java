@@ -31,7 +31,7 @@ public class OBee extends BeeBase implements NeutralMob, FlyingAnimal, IAnimatab
 		this.noCulling = true;
 	}
 
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
 		if (event.isMoving()) {
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("flap", ILoopType.EDefaultLoopTypes.LOOP));
@@ -63,7 +63,7 @@ public class OBee extends BeeBase implements NeutralMob, FlyingAnimal, IAnimatab
 		return OBeeModel.Variant.variantFromOrdinal(getVariant()).resourceLocation;
 	}
 
-	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OBee.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OBee.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);

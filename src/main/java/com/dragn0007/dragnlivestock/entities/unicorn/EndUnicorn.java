@@ -35,7 +35,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraftforge.network.NetworkHooks;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -55,9 +54,9 @@ import java.util.UUID;
 public class EndUnicorn extends OHorse implements IAnimatable, Chestable, Saddleable, Armorable {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-	private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(EndUnicorn.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(EndUnicorn.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> ARMORED = SynchedEntityData.defineId(EndUnicorn.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(EndUnicorn.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(EndUnicorn.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Boolean> ARMORED = SynchedEntityData.defineId(EndUnicorn.class, EntityDataSerializers.BOOLEAN);
 
 	public EndUnicorn(EntityType<? extends EndUnicorn> type, Level level) {
 		super(type, level);
@@ -117,7 +116,7 @@ public class EndUnicorn extends OHorse implements IAnimatable, Chestable, Saddle
 		return false;
 	}
 
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
 		double animationSpeed = Math.max(0.1, movementSpeed);
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
@@ -149,7 +148,7 @@ public class EndUnicorn extends OHorse implements IAnimatable, Chestable, Saddle
 		return PlayState.CONTINUE;
 	}
 
-	private PlayState attackPredicate(AnimationEvent event) {
+	protected PlayState attackPredicate(AnimationEvent event) {
 		if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
 			event.getController().markNeedsReload();
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
@@ -331,7 +330,7 @@ public class EndUnicorn extends OHorse implements IAnimatable, Chestable, Saddle
 		return this.entityData.get(SADDLED);
 	}
 
-	private void setSaddled(boolean saddled) {
+	protected void setSaddled(boolean saddled) {
 		this.entityData.set(SADDLED, saddled);
 	}
 
@@ -384,8 +383,8 @@ public class EndUnicorn extends OHorse implements IAnimatable, Chestable, Saddle
 //		return OHorseMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
 	}
 
-	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EndUnicorn.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(EndUnicorn.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EndUnicorn.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(EndUnicorn.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -574,7 +573,7 @@ public class EndUnicorn extends OHorse implements IAnimatable, Chestable, Saddle
 		return this.entityData.get(CHESTED);
 	}
 
-	private void setChested(boolean chested) {
+	protected void setChested(boolean chested) {
 		this.entityData.set(CHESTED, chested);
 	}
 

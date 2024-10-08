@@ -28,9 +28,9 @@ import javax.annotation.Nullable;
 public class AbstractOHorse extends AbstractHorse implements Saddleable, Chestable {
 
 
-    private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> DATA_ID_CHEST = SynchedEntityData.defineId(AbstractOHorse.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> DATA_ID_CHEST = SynchedEntityData.defineId(AbstractOHorse.class, EntityDataSerializers.BOOLEAN);
     public static final int INV_CHEST_COUNT = 15;
 
     protected AbstractOHorse(EntityType<? extends AbstractOHorse> p_30485_, Level p_30486_) {
@@ -192,7 +192,7 @@ public class AbstractOHorse extends AbstractHorse implements Saddleable, Chestab
         return this.entityData.get(CHESTED);
     }
 
-    private void setChested(boolean chested) {
+    protected void setChested(boolean chested) {
         this.entityData.set(CHESTED, chested);
     }
 

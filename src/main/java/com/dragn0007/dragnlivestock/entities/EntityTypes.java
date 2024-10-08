@@ -10,7 +10,6 @@ import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
 import com.dragn0007.dragnlivestock.entities.sheep.OSheep;
 import com.dragn0007.dragnlivestock.entities.unicorn.EndUnicorn;
-import com.dragn0007.dragnlivestock.entities.unicorn.EndUnicornHornLayer;
 import com.dragn0007.dragnlivestock.entities.unicorn.NetherUnicorn;
 import com.dragn0007.dragnlivestock.entities.unicorn.OverworldUnicorn;
 import net.minecraft.resources.ResourceLocation;

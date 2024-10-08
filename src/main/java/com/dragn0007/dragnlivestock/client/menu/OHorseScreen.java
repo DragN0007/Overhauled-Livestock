@@ -11,11 +11,11 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
 
-    private static final ResourceLocation SADDLED = new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/o_horse_gui.png");
-    private static final ResourceLocation CHESTED = new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/o_horse_gui_chested.png");
+    protected static final ResourceLocation SADDLED = new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/o_horse_gui.png");
+    protected static final ResourceLocation CHESTED = new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/o_horse_gui_chested.png");
 
 
-    private final ResourceLocation texture;
+    protected final ResourceLocation texture;
 
     public OHorseScreen(OHorseMenu oHorseMenu, Inventory inventory, Component component) {
         super(oHorseMenu, inventory, component);

@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class CattleFollowHerdLeaderGoal extends Goal {
-   private static final int INTERVAL_TICKS = 200;
-   private final OCow mob;
-   private int timeToRecalcPath;
-   private int nextStartTick;
+   protected static final int INTERVAL_TICKS = 200;
+   protected final OCow mob;
+   protected int timeToRecalcPath;
+   protected int nextStartTick;
 
    public CattleFollowHerdLeaderGoal(OCow p_25249_) {
       this.mob = p_25249_;

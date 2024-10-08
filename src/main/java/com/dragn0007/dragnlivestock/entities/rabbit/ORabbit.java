@@ -60,7 +60,7 @@ public class ORabbit extends Animal implements IAnimatable {
 				.add(Attributes.MOVEMENT_SPEED, 0.16F);
 	}
 
-	private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.CARROT, Items.GOLDEN_CARROT, Blocks.DANDELION);
+	protected static final Ingredient FOOD_ITEMS = Ingredient.of(Items.CARROT, Items.GOLDEN_CARROT, Blocks.DANDELION);
 
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
@@ -78,7 +78,7 @@ public class ORabbit extends Animal implements IAnimatable {
 	}
 
 	static class RabbitAvoidEntityGoal<T extends LivingEntity> extends AvoidEntityGoal<T> {
-		private final ORabbit rabbit;
+		protected final ORabbit rabbit;
 
 		public RabbitAvoidEntityGoal(ORabbit p_29743_, Class<T> p_29744_, float p_29745_, double p_29746_, double p_29747_) {
 			super(p_29743_, p_29744_, p_29745_, p_29746_, p_29747_);
@@ -91,7 +91,7 @@ public class ORabbit extends Animal implements IAnimatable {
 		return 1F;
 	}
 
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
 		double speedThreshold = 0.01;
 
@@ -120,9 +120,9 @@ public class ORabbit extends Animal implements IAnimatable {
 	}
 
 	static class RaidGardenGoal extends MoveToBlockGoal {
-		private final ORabbit rabbit;
-		private boolean wantsToRaid;
-		private boolean canRaid;
+		protected final ORabbit rabbit;
+		protected boolean wantsToRaid;
+		protected boolean canRaid;
 
 		public RaidGardenGoal(ORabbit p_29782_) {
 			super(p_29782_, (double)0.7F, 16);
@@ -229,8 +229,8 @@ public class ORabbit extends Animal implements IAnimatable {
 		return ORabbitMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
 	}
 
-	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(ORabbit.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(ORabbit.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(ORabbit.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(ORabbit.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);

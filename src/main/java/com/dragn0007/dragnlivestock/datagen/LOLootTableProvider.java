@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class LOLootTableProvider extends LootTableProvider {
-    private final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>>
+    protected final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>>
             loot_tables = ImmutableList.of(Pair.of(LOBlockLootTables::new, LootContextParamSets.BLOCK));
 
     public LOLootTableProvider(DataGenerator pGenerator) {

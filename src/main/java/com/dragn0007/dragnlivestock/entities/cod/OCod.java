@@ -63,7 +63,7 @@ public class OCod extends AbstractSchoolingFish implements IAnimatable {
 		return SoundEvents.COD_FLOP;
 	}
 
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
 		double speedThreshold = 0.04;
 
@@ -95,7 +95,7 @@ public class OCod extends AbstractSchoolingFish implements IAnimatable {
 		return OCodModel.Variant.variantFromOrdinal(getVariant()).resourceLocation;
 	}
 
-	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OCod.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OCod.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);

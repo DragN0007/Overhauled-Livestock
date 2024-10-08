@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 public class LONetwork {
 
     public static class ButtonPressRequest {
-        private final int id;
+        protected final int id;
 
         public ButtonPressRequest(int id) {
             this.id = id;

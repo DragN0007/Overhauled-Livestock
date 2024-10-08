@@ -29,6 +29,10 @@ public class LOItems {
             () -> new ForgeSpawnEggItem(EntityTypes.O_BEE_ENTITY, 0xe4ae3b, 0xe4ae3b, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
     public static final RegistryObject<Item> O_RABBIT_SPAWN_EGG = ITEMS.register("o_rabbit_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityTypes.O_RABBIT_ENTITY, 0xa48d73, 0x524839, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+    public static final RegistryObject<Item> O_SHEEP_SPAWN_EGG = ITEMS.register("o_sheep_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityTypes.O_SHEEP_ENTITY, 0xc7c7c7, 0xdccbc2, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+    public static final RegistryObject<Item> O_LLAMA_SPAWN_EGG = ITEMS.register("o_llama_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityTypes.O_LLAMA_ENTITY, 0xccb37c, 0xfff3d8, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
 
     public static final RegistryObject<Item> OVERWORLD_UNICORN_SPAWN_EGG = ITEMS.register("overworld_unicorn_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityTypes.OVERWORLD_UNICORN_ENTITY, 0xfef4f4, 0xccbfbf, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));

@@ -67,7 +67,7 @@ public class LivestockOverhaul
         EntityDataSerializers.registerSerializer(RESOURCE_LOCATION);
     }
 
-    private void onFMLCommonSetupEvent(FMLCommonSetupEvent event) {
+    protected void onFMLCommonSetupEvent(FMLCommonSetupEvent event) {
         LONetwork.init();
     }
 }

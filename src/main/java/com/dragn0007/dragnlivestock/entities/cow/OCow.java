@@ -54,10 +54,10 @@ import java.util.stream.Stream;
 public class OCow extends Animal implements IAnimatable, Chestable, ContainerListener {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-	private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.BOOLEAN);
 
-	private OCow leader;
-	private int herdSize = 1;
+	protected OCow leader;
+	protected int herdSize = 1;
 
 	public OCow(EntityType<? extends OCow> type, Level level) {
 		super(type, level);
@@ -95,9 +95,9 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 	}
 
 	public SimpleContainer inventory;
-	private LazyOptional<?> itemHandler = null;
+	protected LazyOptional<?> itemHandler = null;
 
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double currentSpeed = this.getDeltaMovement().lengthSqr(); //grabbing the speed of the cow to see if it should run the "run" animation. particularly for avoiding the OHorse.
 		double speedThreshold = 0.01;
 
@@ -114,7 +114,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		return PlayState.CONTINUE;
 	}
 
-	private PlayState attackPredicate(AnimationEvent event) {
+	protected PlayState attackPredicate(AnimationEvent event) {
 		if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
 			event.getController().markNeedsReload();
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
@@ -150,11 +150,11 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		this.leader = null;
 	}
 
-	private void addFollower() {
+	protected void addFollower() {
 		++this.herdSize;
 	}
 
-	private void removeFollower() {
+	protected void removeFollower() {
 		--this.herdSize;
 	}
 
@@ -200,7 +200,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		});
 	}
 
-	private void updateInventory() {
+	protected void updateInventory() {
 		SimpleContainer tempInventory = this.inventory;
 		this.inventory = new SimpleContainer(this.getInventorySize());
 
@@ -292,9 +292,9 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		return OCowHornLayer.HornOverlay.hornOverlayFromOrdinal(getHornVariant()).resourceLocation;
 	}
 
-	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> HORNS = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> HORNS = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -427,7 +427,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		return oCow;
 	}
 
-	private int getInventorySize() {
+	protected int getInventorySize() {
 		return this.isChested() ? 51 : 1;
 	}
 
@@ -448,7 +448,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		return this.entityData.get(CHESTED);
 	}
 
-	private void setChested(boolean chested) {
+	protected void setChested(boolean chested) {
 		this.entityData.set(CHESTED, chested);
 	}
 

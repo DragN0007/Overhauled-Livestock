@@ -21,13 +21,13 @@ public class LOBlocks {
 
 
 
-    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
+    protected static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);
         return toReturn;
     }
 
-    private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
+    protected static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
         LOItems.ITEMS.register(name, () -> new BlockItem(block.get(),
                 new Item.Properties().tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
     }

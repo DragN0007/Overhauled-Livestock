@@ -66,9 +66,9 @@ import java.util.stream.Stream;
 public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Saddleable, Armorable {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-	private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> ARMORED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Boolean> ARMORED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
 
 	public OHorse(EntityType<? extends OHorse> type, Level level) {
 		super(type, level);
@@ -124,11 +124,11 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 	}
 
 	public SimpleContainer inventory;
-	private LazyOptional<?> itemHandler = null;
-	private OHorse leader;
-	private int herdSize = 1;
+	protected LazyOptional<?> itemHandler = null;
+	protected OHorse leader;
+	protected int herdSize = 1;
 
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
 		double animationSpeed = Math.max(0.1, movementSpeed);
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
@@ -160,7 +160,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		return PlayState.CONTINUE;
 	}
 
-	private PlayState attackPredicate(AnimationEvent event) {
+	protected PlayState attackPredicate(AnimationEvent event) {
 		if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
 			event.getController().markNeedsReload();
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
@@ -191,11 +191,11 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		this.leader = null;
 	}
 
-	private void addFollower() {
+	protected void addFollower() {
 		++this.herdSize;
 	}
 
-	private void removeFollower() {
+	protected void removeFollower() {
 		--this.herdSize;
 	}
 
@@ -230,7 +230,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		});
 	}
 
-	private void handleInput(KeyboardInput input) {
+	protected void handleInput(KeyboardInput input) {
 		if(input.jumping) {
 			LONetwork.INSTANCE.sendToServer(new LONetwork.ButtonPressRequest(this.getId()));
 		}
@@ -462,7 +462,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		return this.entityData.get(SADDLED);
 	}
 
-	private void setSaddled(boolean saddled) {
+	protected void setSaddled(boolean saddled) {
 		this.entityData.set(SADDLED, saddled);
 	}
 
@@ -555,9 +555,9 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		return BreedModel.breedFromOrdinal(getBreed()).resourceLocation;
 	}
 
-	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> BREED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> BREED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -810,7 +810,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		return this.entityData.get(CHESTED);
 	}
 
-	private void setChested(boolean chested) {
+	protected void setChested(boolean chested) {
 		this.entityData.set(CHESTED, chested);
 	}
 

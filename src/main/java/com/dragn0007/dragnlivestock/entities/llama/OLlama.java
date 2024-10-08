@@ -63,8 +63,8 @@ public class OLlama extends TamableAnimal implements IAnimatable, Chestable, Sad
 
 	//TODO
 
-	private static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.BOOLEAN);
+	protected static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.BOOLEAN);
 
 	public OLlama(EntityType<? extends OLlama> type, Level level) {
 		super(type, level);
@@ -114,11 +114,11 @@ public class OLlama extends TamableAnimal implements IAnimatable, Chestable, Sad
 	}
 
 	public SimpleContainer inventory;
-	private LazyOptional<?> itemHandler = null;
-	private OLlama leader;
-	private int herdSize = 1;
+	protected LazyOptional<?> itemHandler = null;
+	protected OLlama leader;
+	protected int herdSize = 1;
 
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
 		double animationSpeed = Math.max(0.1, movementSpeed);
 
@@ -137,7 +137,7 @@ public class OLlama extends TamableAnimal implements IAnimatable, Chestable, Sad
 		return PlayState.CONTINUE;
 	}
 
-	private PlayState attackPredicate(AnimationEvent event) {
+	protected PlayState attackPredicate(AnimationEvent event) {
 		if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
 			event.getController().markNeedsReload();
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
@@ -168,11 +168,11 @@ public class OLlama extends TamableAnimal implements IAnimatable, Chestable, Sad
 		this.leader = null;
 	}
 
-	private void addFollower() {
+	protected void addFollower() {
 		++this.herdSize;
 	}
 
-	private void removeFollower() {
+	protected void removeFollower() {
 		--this.herdSize;
 	}
 
@@ -345,15 +345,15 @@ public class OLlama extends TamableAnimal implements IAnimatable, Chestable, Sad
 		return this.entityData.get(SADDLED);
 	}
 
-	private void setSaddled(boolean saddled) {
+	protected void setSaddled(boolean saddled) {
 		this.entityData.set(SADDLED, saddled);
 	}
 
-	private int getInventorySize() {
+	protected int getInventorySize() {
 		return this.isChested() ? 27 : 1;
 	}
 
-	private void updateInventory() {
+	protected void updateInventory() {
 		SimpleContainer tempInventory = this.inventory;
 		this.inventory = new SimpleContainer(this.getInventorySize());
 
@@ -425,8 +425,8 @@ public class OLlama extends TamableAnimal implements IAnimatable, Chestable, Sad
 		return OHorseMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
 	}
 
-	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -596,7 +596,7 @@ public class OLlama extends TamableAnimal implements IAnimatable, Chestable, Sad
 		return this.entityData.get(CHESTED);
 	}
 
-	private void setChested(boolean chested) {
+	protected void setChested(boolean chested) {
 		this.entityData.set(CHESTED, chested);
 	}
 
