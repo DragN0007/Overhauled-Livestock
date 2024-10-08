@@ -26,7 +26,7 @@ public class OLlamaRender extends ExtendedGeoEntityRenderer<OLlama> {
     @Override
     public void render(GeoModel model, OLlama animatable, float partialTick, RenderType type, PoseStack poseStack, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 
-        if (animatable.isChested()) {
+        if (animatable.hasChest()) {
             model.getBone("saddlebags").ifPresent(b -> b.setHidden(false));
             model.getBone("halter").ifPresent(b -> b.setHidden(false));
         } else {

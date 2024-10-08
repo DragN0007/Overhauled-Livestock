@@ -27,6 +27,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
+import net.minecraft.world.entity.animal.horse.Llama;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -64,8 +65,16 @@ import java.util.stream.Stream;
 public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestable, ContainerListener, RangedAttackMob {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
+	protected static final Ingredient FOOD_ITEMS = Ingredient.of(Items.WHEAT, Blocks.HAY_BLOCK.asItem());
+	protected static final EntityDataAccessor<Integer> DATA_STRENGTH_ID = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Integer> DATA_SWAG_ID = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
+	boolean didSpit;
+	@Nullable
+	protected OLlama caravanHead;
+	@Nullable
+	protected OLlama caravanTail;
+
 	protected static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.BOOLEAN);
-	protected static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.BOOLEAN);
 
 	public OLlama(EntityType<? extends OLlama> type, Level level) {
 		super(type, level);
@@ -73,24 +82,10 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
-		return createBaseChestedHorseAttributes().add(Attributes.FOLLOW_RANGE, 40.0D);
-	}
-
-	protected void randomizeAttributes() {
-		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue((double)this.generateRandomMaxHealth());
-		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(this.generateRandomSpeed());
-	}
-
-	public float generateRandomMaxHealth() {
-		return 15.0F + (float)this.random.nextInt(8) + (float)this.random.nextInt(9);
-	}
-
-	public double generateRandomJumpStrength() {
-		return (double)0.4F + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D;
-	}
-
-	public double generateRandomSpeed() {
-		return ((double)0.45F + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D) * 0.25D;
+		return createBaseHorseAttributes()
+				.add(Attributes.MOVEMENT_SPEED, (double)0.20F)
+				.add(Attributes.JUMP_STRENGTH, 0.5D)
+				.add(Attributes.FOLLOW_RANGE, 40.0D);
 	}
 
 	protected void registerGoals() {
@@ -108,11 +103,6 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		this.targetSelector.addGoal(1, new OLlama.LlamaHurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new OLlama.LlamaAttackWolfGoal(this));
 		this.goalSelector.addGoal(3, new LlamaFollowHerdLeaderGoal(this));
-	}
-
-	@Override
-	public boolean canBeRiddenInWater(Entity rider) {
-		return false;
 	}
 
 	protected LazyOptional<?> itemHandler = null;
@@ -351,15 +341,14 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		}
 
 		this.setStrength(tag.getInt("Strength"));
-		super.readAdditionalSaveData(tag);
 
 		if (tag.contains("DecorItem", 10)) {
 			this.inventory.setItem(1, ItemStack.of(tag.getCompound("DecorItem")));
 		}
 
 		this.updateContainerEquipment();
-
 		this.updateInventory();
+		super.readAdditionalSaveData(tag);
 	}
 
 	@Override
@@ -372,6 +361,7 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		tag.putBoolean("Chested", this.isChested());
 
 		tag.putInt("Strength", this.getStrength());
+
 		if (!this.inventory.getItem(1).isEmpty()) {
 			tag.put("DecorItem", this.inventory.getItem(1).save(new CompoundTag()));
 		}
@@ -380,21 +370,23 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 	@Override
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+		this.setRandomStrength();
+		int i;
+		if (data instanceof OLlama.LlamaGroupData) {
+			i = ((OLlama.LlamaGroupData)data).variant;
+		} else {
+			i = this.random.nextInt(8);
+			data = new OLlama.LlamaGroupData(i);
+		}
+
+		this.setVariant(i);
+
 		if (data == null) {
 			data = new AgeableMobGroupData(0.2F);
 		}
 		Random random = new Random();
 		setVariant(random.nextInt(OLlamaModel.Variant.values().length));
 		setOverlayVariant(random.nextInt(OLlamaMarkingLayer.Overlay.values().length));
-
-		this.setRandomStrength();
-		int i;
-		if (data instanceof OLlama.LlamaGroupData) {
-			i = ((OLlama.LlamaGroupData)data).variant;
-		} else {
-			i = this.random.nextInt(4);
-			data = new OLlama.LlamaGroupData(i);
-		}
 
 		this.randomizeAttributes();
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
@@ -449,6 +441,12 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 				overlay = this.random.nextInt(OLlamaMarkingLayer.Overlay.values().length);
 			}
 
+			int k = this.random.nextInt(Math.max(this.getStrength(), oLlama1.getStrength())) + 1;
+			if (this.random.nextFloat() < 0.03F) {
+				++k;
+			}
+
+			((OLlama) oLlama).setStrength(k);
 			((OLlama) oLlama).setVariant(variant);
 			((OLlama) oLlama).setOverlayVariant(overlay);
 		}
@@ -476,16 +474,6 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 	protected void setChested(boolean chested) {
 		this.entityData.set(CHESTED, chested);
 	}
-
-	protected static final int MAX_STRENGTH = 5;
-	protected static final Ingredient FOOD_ITEMS = Ingredient.of(Items.WHEAT, Blocks.HAY_BLOCK.asItem());
-	protected static final EntityDataAccessor<Integer> DATA_STRENGTH_ID = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
-	protected static final EntityDataAccessor<Integer> DATA_SWAG_ID = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
-	boolean didSpit;
-	@Nullable
-	protected OLlama caravanHead;
-	@Nullable
-	protected OLlama caravanTail;
 
 	protected void setStrength(int p_30841_) {
 		this.entityData.set(DATA_STRENGTH_ID, Math.max(1, Math.min(5, p_30841_)));
@@ -610,61 +598,61 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 
 	}
 
-	public InteractionResult mobInteract(Player player, InteractionHand hand) {
-		ItemStack itemstack = player.getItemInHand(hand);
-
-		if (this.isFood(itemstack) && this.isTamed()) {
-			if (this.getHealth() < this.getMaxHealth()) {
-				this.usePlayerItem(player, hand, itemstack);
-				this.heal(itemstack.getFoodProperties(this).getNutrition());
-				this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
-				return InteractionResult.sidedSuccess(this.level.isClientSide);
-			}
-		}
-
-		if (this.isFood(itemstack) && this.isTamed()) {
-			if (this.canFallInLove() && !this.level.isClientSide) {
-				this.usePlayerItem(player, hand, itemstack);
-				this.setInLove(player);
-				this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
-				return InteractionResult.SUCCESS;
-			}
-		}
-
-		if (this.isBaby()) {
-			return super.mobInteract(player, hand);
-		}
-
-		if (!this.isTamed() && this.isFood(itemstack)) {
-			return this.fedFood(player, itemstack);
-		}
-
-		if (this.isTamed() && player.isSecondaryUseActive()) {
-			this.openInventory(player);
-			return InteractionResult.sidedSuccess(this.level.isClientSide);
-		}
-
-		if (this.isVehicle()) {
-			return super.mobInteract(player, hand);
-		}
-
-		if (!itemstack.isEmpty()) {
-			if (!this.isTamed()) {
-				this.makeMad();
-				return InteractionResult.sidedSuccess(this.level.isClientSide);
-			}
-		}
-
-		if (itemstack.is(Items.CHEST) && this.isChestable()) {
-			this.setChested(true);
-			this.equipChest(SoundSource.NEUTRAL);
-			this.updateInventory();
-			return InteractionResult.sidedSuccess(this.level.isClientSide);
-		}
-
-		this.doPlayerRide(player);
-		return InteractionResult.sidedSuccess(this.level.isClientSide);
-	}
+//	public InteractionResult mobInteract(Player player, InteractionHand hand) {
+//		ItemStack itemstack = player.getItemInHand(hand);
+//
+//		if (this.isFood(itemstack) && this.isTamed()) {
+//			if (this.getHealth() < this.getMaxHealth()) {
+//				this.usePlayerItem(player, hand, itemstack);
+//				this.heal(itemstack.getFoodProperties(this).getNutrition());
+//				this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+//				return InteractionResult.sidedSuccess(this.level.isClientSide);
+//			}
+//		}
+//
+//		if (this.isFood(itemstack) && this.isTamed()) {
+//			if (this.canFallInLove() && !this.level.isClientSide) {
+//				this.usePlayerItem(player, hand, itemstack);
+//				this.setInLove(player);
+//				this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+//				return InteractionResult.SUCCESS;
+//			}
+//		}
+//
+//		if (this.isBaby()) {
+//			return super.mobInteract(player, hand);
+//		}
+//
+//		if (!this.isTamed() && this.isFood(itemstack)) {
+//			return this.fedFood(player, itemstack);
+//		}
+//
+//		if (this.isTamed() && player.isSecondaryUseActive()) {
+//			this.openInventory(player);
+//			return InteractionResult.sidedSuccess(this.level.isClientSide);
+//		}
+//
+//		if (this.isVehicle()) {
+//			return super.mobInteract(player, hand);
+//		}
+//
+//		if (!itemstack.isEmpty()) {
+//			if (!this.isTamed()) {
+//				this.makeMad();
+//				return InteractionResult.sidedSuccess(this.level.isClientSide);
+//			}
+//		}
+//
+//		if (itemstack.is(Items.CHEST) && this.isChestable()) {
+//			this.setChested(true);
+//			this.equipChest(SoundSource.NEUTRAL);
+//			this.updateInventory();
+//			return InteractionResult.sidedSuccess(this.level.isClientSide);
+//		}
+//
+//		this.doPlayerRide(player);
+//		return InteractionResult.sidedSuccess(this.level.isClientSide);
+//	}
 
 	public int getInventoryColumns() {
 		return this.getStrength();
@@ -821,15 +809,6 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		}
 	}
 
-	static class LlamaGroupData extends AgeableMob.AgeableMobGroupData {
-		public final int variant;
-
-		LlamaGroupData(int p_30849_) {
-			super(true);
-			this.variant = p_30849_;
-		}
-	}
-
 	static class LlamaHurtByTargetGoal extends HurtByTargetGoal {
 		public LlamaHurtByTargetGoal(OLlama p_30854_) {
 			super(p_30854_);
@@ -845,6 +824,15 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 			}
 
 			return super.canContinueToUse();
+		}
+	}
+
+	static class LlamaGroupData extends AgeableMob.AgeableMobGroupData {
+		public final int variant;
+
+		LlamaGroupData(int p_30849_) {
+			super(true);
+			this.variant = p_30849_;
 		}
 	}
 }

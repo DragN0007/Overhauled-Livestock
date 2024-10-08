@@ -7,6 +7,7 @@ import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
 import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
+import com.dragn0007.dragnlivestock.entities.llama.OLlama;
 import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
 import com.dragn0007.dragnlivestock.entities.sheep.OSheep;
@@ -14,6 +15,7 @@ import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.entity.animal.horse.Llama;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -267,6 +269,7 @@ public class SpawnReplacer {
                 Entity entity = event.getEntity();
 
                 oRabbit.setCustomName(vanillarabbit.getCustomName());
+                oRabbit.setAge(vanillarabbit.getAge());
 
                 int randomVariant = event.getWorld().getRandom().nextInt(23);
                 oRabbit.setVariant(randomVariant);
@@ -304,6 +307,7 @@ public class SpawnReplacer {
                 Entity entity = event.getEntity();
 
                 oSheep.setCustomName(vanillasheep.getCustomName());
+                oSheep.setAge(vanillasheep.getAge());
 
                 int randomVariant = event.getWorld().getRandom().nextInt(23);
                 oSheep.setVariant(randomVariant);
@@ -318,6 +322,45 @@ public class SpawnReplacer {
                 vanillasheep.getPersistentData().putBoolean("O-Replaced", true);
 
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla sheep with an O-Sheep!");
+
+                event.setCanceled(true);
+            }
+        }
+
+        //Llama
+        OLlama oLlama = EntityTypes.O_LLAMA_ENTITY.get().create(event.getWorld());
+        if (LivestockOverhaulCommonConfig.REPLACE_LLAMAS.get() && event.getEntity() instanceof Llama) {
+            Llama vanillallama = (Llama) event.getEntity();
+
+            if (event.getWorld().isClientSide) {
+                return;
+            }
+
+            if (vanillallama.getPersistentData().getBoolean("O-Replaced")) {
+                return;
+            }
+
+            if (oLlama != null) {
+                oLlama.copyPosition(vanillallama);
+                Entity entity = event.getEntity();
+
+                oLlama.setCustomName(vanillallama.getCustomName());
+                oLlama.setOwnerUUID(vanillallama.getOwnerUUID());
+                oLlama.setAge(vanillallama.getAge());
+
+                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                oLlama.setVariant(randomVariant);
+
+                if (event.getWorld().isClientSide) {
+                    vanillallama.remove(Entity.RemovalReason.DISCARDED);
+                }
+
+                event.getWorld().addFreshEntity(oLlama);
+                vanillallama.remove(Entity.RemovalReason.DISCARDED);
+
+                vanillallama.getPersistentData().putBoolean("O-Replaced", true);
+
+//                    System.out.println("[Livestock Overhaul]: Replaced a vanilla llama with an O-Llama!");
 
                 event.setCanceled(true);
             }
