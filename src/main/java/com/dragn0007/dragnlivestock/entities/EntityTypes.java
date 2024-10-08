@@ -6,6 +6,7 @@ import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.llama.OLlama;
+import com.dragn0007.dragnlivestock.entities.pig.OPig;
 import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
 import com.dragn0007.dragnlivestock.entities.sheep.OSheep;
@@ -78,6 +79,12 @@ public class EntityTypes {
                             MobCategory.CREATURE)
                     .sized(1f,1f)
                     .build(new ResourceLocation(MODID,"o_sheep").toString()));
+
+    public static final RegistryObject<EntityType<OPig>> O_PIG_ENTITY = ENTITY_TYPES.register("o_pig_entity",
+            () -> EntityType.Builder.of(OPig::new,
+                            MobCategory.CREATURE)
+                    .sized(1f,1f)
+                    .build(new ResourceLocation(MODID,"o_pig").toString()));
 
 
     public static final RegistryObject<EntityType<OverworldUnicorn>> OVERWORLD_UNICORN_ENTITY = ENTITY_TYPES.register("overworld_unicorn_entity",

@@ -1,4 +1,4 @@
-package com.dragn0007.dragnlivestock.entities.bee;
+package com.dragn0007.dragnlivestock.entities.pig;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -15,14 +15,15 @@ import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.geo.render.built.GeoModel;
 import software.bernie.geckolib3.renderers.geo.ExtendedGeoEntityRenderer;
 
-public class OBeeRender extends ExtendedGeoEntityRenderer<OBee> {
+public class OPigRender extends ExtendedGeoEntityRenderer<OPig> {
 
-    public OBeeRender(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new OBeeModel());
+    public OPigRender(EntityRendererProvider.Context renderManager) {
+        super(renderManager, new OPigModel());
+        this.addLayer(new OPigMarkingLayer(this));
     }
 
     @Override
-    public void render(GeoModel model, OBee animatable, float partialTick, RenderType type, PoseStack poseStack, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void render(GeoModel model, OPig animatable, float partialTick, RenderType type, PoseStack poseStack, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 
         if(animatable.isBaby()) {
             poseStack.scale(0.5F, 0.5F, 0.5F);
@@ -40,13 +41,13 @@ public class OBeeRender extends ExtendedGeoEntityRenderer<OBee> {
 
     @Nullable
     @Override
-    protected ResourceLocation getTextureForBone(String boneName, OBee animatable) {
+    protected ResourceLocation getTextureForBone(String boneName, OPig animatable) {
         return null;
     }
 
     @Nullable
     @Override
-    protected ItemStack getHeldItemForBone(String boneName, OBee animatable) {
+    protected ItemStack getHeldItemForBone(String boneName, OPig animatable) {
         return null;
     }
 
@@ -57,24 +58,24 @@ public class OBeeRender extends ExtendedGeoEntityRenderer<OBee> {
 
     @Nullable
     @Override
-    protected BlockState getHeldBlockForBone(String boneName, OBee animatable) {
+    protected BlockState getHeldBlockForBone(String boneName, OPig animatable) {
         return null;
     }
 
     @Override
-    protected void preRenderItem(PoseStack poseStack, ItemStack stack, String boneName, OBee animatable, IBone bone) {
+    protected void preRenderItem(PoseStack poseStack, ItemStack stack, String boneName, OPig animatable, IBone bone) {
     }
 
     @Override
-    protected void preRenderBlock(PoseStack poseStack, BlockState state, String boneName, OBee animatable) {
+    protected void preRenderBlock(PoseStack poseStack, BlockState state, String boneName, OPig animatable) {
     }
 
     @Override
-    protected void postRenderItem(PoseStack poseStack, ItemStack stack, String boneName, OBee animatable, IBone bone) {
+    protected void postRenderItem(PoseStack poseStack, ItemStack stack, String boneName, OPig animatable, IBone bone) {
     }
 
     @Override
-    protected void postRenderBlock(PoseStack poseStack, BlockState state, String boneName, OBee animatable) {
+    protected void postRenderBlock(PoseStack poseStack, BlockState state, String boneName, OPig animatable) {
     }
 }
 

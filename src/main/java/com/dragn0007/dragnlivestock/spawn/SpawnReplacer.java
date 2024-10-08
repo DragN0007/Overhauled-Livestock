@@ -8,6 +8,7 @@ import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.llama.OLlama;
+import com.dragn0007.dragnlivestock.entities.pig.OPig;
 import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
 import com.dragn0007.dragnlivestock.entities.sheep.OSheep;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.animal.horse.Llama;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import software.bernie.shadowed.eliotlash.mclib.math.functions.classic.Pi;
 
 @Mod.EventBusSubscriber(modid = LivestockOverhaul.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class SpawnReplacer {
@@ -361,6 +363,44 @@ public class SpawnReplacer {
                 vanillallama.getPersistentData().putBoolean("O-Replaced", true);
 
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla llama with an O-Llama!");
+
+                event.setCanceled(true);
+            }
+        }
+
+        //Llama
+        OPig oPig = EntityTypes.O_PIG_ENTITY.get().create(event.getWorld());
+        if (LivestockOverhaulCommonConfig.REPLACE_PIGS.get() && event.getEntity() instanceof Pig) {
+            Pig vanillapig = (Pig) event.getEntity();
+
+            if (event.getWorld().isClientSide) {
+                return;
+            }
+
+            if (vanillapig.getPersistentData().getBoolean("O-Replaced")) {
+                return;
+            }
+
+            if (oPig != null) {
+                oPig.copyPosition(vanillapig);
+                Entity entity = event.getEntity();
+
+                oPig.setCustomName(vanillapig.getCustomName());
+                oPig.setAge(vanillapig.getAge());
+
+                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                oPig.setVariant(randomVariant);
+
+                if (event.getWorld().isClientSide) {
+                    vanillapig.remove(Entity.RemovalReason.DISCARDED);
+                }
+
+                event.getWorld().addFreshEntity(oPig);
+                vanillapig.remove(Entity.RemovalReason.DISCARDED);
+
+                vanillapig.getPersistentData().putBoolean("O-Replaced", true);
+
+//                    System.out.println("[Livestock Overhaul]: Replaced a vanilla pig with an O-Llama!");
 
                 event.setCanceled(true);
             }

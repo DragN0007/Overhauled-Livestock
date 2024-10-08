@@ -34,7 +34,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -241,25 +240,6 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 	@Override
 	public AnimationFactory getFactory() {
 		return factory;
-	}
-
-//	public ResourceLocation getDefaultLootTable() {
-//		return this.isSheared() ? this.getType().getDefaultLootTable() : getLootTableForColor(this.getColor());
-//	}
-//
-//	protected ResourceLocation getLootTableForColor(DyeColor color) {
-//		switch(color) {
-//			default: return BuiltInLootTables.SHEEP_WHITE;
-//		}
-//	}
-
-	public void aiStep() {
-		super.aiStep();
-
-		Vec3 vec3 = this.getDeltaMovement();
-		if (!this.onGround && vec3.y < 0.0D) {
-			this.setDeltaMovement(vec3.multiply(1.0D, 0.6D, 1.0D));
-		}
 	}
 
 	protected SoundEvent getAmbientSound() {
