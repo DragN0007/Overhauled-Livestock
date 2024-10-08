@@ -9,6 +9,7 @@ import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
+import com.dragn0007.dragnlivestock.entities.sheep.OSheep;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.*;
@@ -248,7 +249,6 @@ public class SpawnReplacer {
             event.setCanceled(true);
         }
 
-
         //Rabbit
         ORabbit oRabbit = EntityTypes.O_RABBIT_ENTITY.get().create(event.getWorld());
         if (LivestockOverhaulCommonConfig.REPLACE_RABBITS.get() && event.getEntity() instanceof Rabbit) {
@@ -281,6 +281,43 @@ public class SpawnReplacer {
                 vanillarabbit.getPersistentData().putBoolean("O-Replaced", true);
 
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla rabbit with an O-Rabbit!");
+
+                event.setCanceled(true);
+            }
+        }
+
+        //Sheep
+        OSheep oSheep = EntityTypes.O_SHEEP_ENTITY.get().create(event.getWorld());
+        if (LivestockOverhaulCommonConfig.REPLACE_SHEEP.get() && event.getEntity() instanceof Sheep) {
+            Sheep vanillasheep = (Sheep) event.getEntity();
+
+            if (event.getWorld().isClientSide) {
+                return;
+            }
+
+            if (vanillasheep.getPersistentData().getBoolean("O-Replaced")) {
+                return;
+            }
+
+            if (oSheep != null) {
+                oSheep.copyPosition(vanillasheep);
+                Entity entity = event.getEntity();
+
+                oSheep.setCustomName(vanillasheep.getCustomName());
+
+                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                oSheep.setVariant(randomVariant);
+
+                if (event.getWorld().isClientSide) {
+                    vanillasheep.remove(Entity.RemovalReason.DISCARDED);
+                }
+
+                event.getWorld().addFreshEntity(oSheep);
+                vanillasheep.remove(Entity.RemovalReason.DISCARDED);
+
+                vanillasheep.getPersistentData().putBoolean("O-Replaced", true);
+
+//                    System.out.println("[Livestock Overhaul]: Replaced a vanilla sheep with an O-Sheep!");
 
                 event.setCanceled(true);
             }

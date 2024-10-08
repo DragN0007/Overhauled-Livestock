@@ -2,7 +2,6 @@ package com.dragn0007.dragnlivestock.entities.sheep;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.DyeColor;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class OSheepModel extends AnimatedGeoModel<OSheep> {

@@ -1,9 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.sheep;
 
-import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
-import com.dragn0007.dragnlivestock.entities.horse.OHorseModel;
-import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -28,7 +25,6 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -38,7 +34,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -252,7 +247,7 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 //		return this.isSheared() ? this.getType().getDefaultLootTable() : getLootTableForColor(this.getColor());
 //	}
 //
-//	private ResourceLocation getLootTableForColor(DyeColor color) {
+//	protected ResourceLocation getLootTableForColor(DyeColor color) {
 //		switch(color) {
 //			default: return BuiltInLootTables.SHEEP_WHITE;
 //		}
