@@ -2,6 +2,7 @@ package com.dragn0007.dragnlivestock;
 
 import com.dragn0007.dragnlivestock.blocks.LOBlocks;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.gui.LOMenuTypes;
 import com.dragn0007.dragnlivestock.items.LOItems;
 import com.dragn0007.dragnlivestock.spawn.SpawnReplacer;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
@@ -35,6 +36,7 @@ public class LivestockOverhaul
 
         LOItems.register(eventBus);
         LOBlocks.register(eventBus);
+        LOMenuTypes.register(eventBus);
         EntityTypes.ENTITY_TYPES.register(eventBus);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onFMLCommonSetupEvent);
 

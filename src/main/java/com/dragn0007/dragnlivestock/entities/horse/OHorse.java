@@ -2,12 +2,11 @@ package com.dragn0007.dragnlivestock.entities.horse;
 
 import com.dragn0007.dragnlivestock.LONetwork;
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
-import com.dragn0007.dragnlivestock.client.menu.OHorseMenu;
-import com.dragn0007.dragnlivestock.entities.Armorable;
 import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.HorseFollowHerdLeaderGoal;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
+import com.dragn0007.dragnlivestock.gui.OHorseMenu;
 import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -63,12 +62,11 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Saddleable, Armorable {
+public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Saddleable {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
 	protected static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
 	protected static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
-	protected static final EntityDataAccessor<Boolean> ARMORED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.BOOLEAN);
 
 	public OHorse(EntityType<? extends OHorse> type, Level level) {
 		super(type, level);
@@ -230,12 +228,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		});
 	}
 
-	protected void handleInput(KeyboardInput input) {
-		if(input.jumping) {
-			LONetwork.INSTANCE.sendToServer(new LONetwork.ButtonPressRequest(this.getId()));
-		}
-	}
-
 	public void travel(Vec3 travel) {
 		if (this.isAlive()) {
 			if (this.isVehicle() && this.canBeControlledByRider() && this.isSaddled()) {
@@ -357,81 +349,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 
 			entity.setPos(x, y, z);
 		}
-	}
-
-	public InteractionResult mobInteract(Player player, InteractionHand hand) {
-		ItemStack itemstack = player.getItemInHand(hand);
-
-		if (this.isFood(itemstack) && this.isTamed()) {
-			if (this.getHealth() < this.getMaxHealth()) {
-				this.usePlayerItem(player, hand, itemstack);
-				this.heal(itemstack.getFoodProperties(this).getNutrition());
-				this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
-				return InteractionResult.sidedSuccess(this.level.isClientSide);
-			}
-		}
-
-		if (this.isFood(itemstack) && this.isTamed()) {
-			if (this.canFallInLove() && !this.level.isClientSide) {
-				this.usePlayerItem(player, hand, itemstack);
-				this.setInLove(player);
-				this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
-				return InteractionResult.SUCCESS;
-			}
-		}
-
-		if (this.isBaby()) {
-			return super.mobInteract(player, hand);
-		}
-
-		if (!this.isTamed() && this.isFood(itemstack)) {
-			return this.fedFood(player, itemstack);
-		}
-
-		if (this.isTamed() && player.isSecondaryUseActive()) {
-			this.openInventory(player);
-			return InteractionResult.sidedSuccess(this.level.isClientSide);
-		}
-
-		if (this.isVehicle()) {
-			return super.mobInteract(player, hand);
-		}
-
-		if (!itemstack.isEmpty()) {
-			if (!this.isTamed()) {
-				this.makeMad();
-				return InteractionResult.sidedSuccess(this.level.isClientSide);
-			}
-
-			if (itemstack.is(Items.SADDLE) && !this.isSaddled() && this.isSaddleable()) {
-				this.setSaddled(true);
-				this.updateInventory();
-				if (!player.getAbilities().instabuild) {
-					itemstack.shrink(1);
-				}
-				return InteractionResult.sidedSuccess(this.level.isClientSide);
-			}
-
-			if (!this.level.isClientSide) {
-				if (player.isShiftKeyDown()) {
-					NetworkHooks.openGui((ServerPlayer) player, new SimpleMenuProvider((containerId, inventory, serverPlayer) -> {
-						return new OHorseMenu(containerId, inventory, this.inventory, this);
-					}, this.getDisplayName()), (data) -> {
-						data.writeInt(this.getInventorySize());
-						data.writeInt(this.getId());
-					});
-					return InteractionResult.SUCCESS;
-				}
-
-				InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
-				if (interactionresult.consumesAction()) {
-					return interactionresult;
-				}
-			}
-		}
-
-		this.doPlayerRide(player);
-		return InteractionResult.sidedSuccess(this.level.isClientSide);
 	}
 
 	protected void playGallopSound(SoundType p_30709_) {
@@ -628,10 +545,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 			this.setSaddled(tag.getBoolean("Saddled"));
 		}
 
-		if (tag.contains("Armored")) {
-			this.setArmored(tag.getBoolean("Armored"));
-		}
-
 		if (tag.contains("ArmorItem", 10)) {
 			ItemStack itemstack = ItemStack.of(tag.getCompound("ArmorItem"));
 			if (!itemstack.isEmpty() && this.isArmor(itemstack)) {
@@ -680,8 +593,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 
 		tag.putBoolean("Saddled", this.isSaddled());
 
-		tag.putBoolean("Armored", this.isArmored());
-
 		tag.putBoolean("Tame", this.isTamed());
 		if (this.getOwnerUUID() != null) {
 			tag.putUUID("Owner", this.getOwnerUUID());
@@ -721,7 +632,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		this.entityData.define(OVERLAY_TEXTURE, OHorseMarkingLayer.Overlay.NONE.resourceLocation);
 		this.entityData.define(CHESTED, false);
 		this.entityData.define(SADDLED, false);
-		this.entityData.define(ARMORED, false);
 	}
 
 	protected void updateContainerEquipment() {
@@ -823,34 +733,5 @@ public class OHorse extends AbstractOHorse implements IAnimatable, Chestable, Sa
 		if (this.tickCount > 20 && !flag && this.isSaddleable()) {
 			this.playSound(SoundEvents.HORSE_SADDLE, 0.5f, 1f);
 		}
-
-		if (!this.level.isClientSide) {
-			this.setArmored(!this.inventory.getItem(0).isEmpty());
-		}
-		if (this.tickCount > 20 && !flag && this.isArmorable()) {
-			this.playSound(SoundEvents.HORSE_ARMOR, 0.5f, 1f);
-		}
-	}
-
-	@Override
-	public boolean isArmorable() {
-		return this.isAlive() && !this.isBaby() && this.isTamed();
-	}
-
-	@Override
-	public void equipArmor(@Nullable SoundSource soundSource) {
-		if (soundSource != null) {
-			this.level.playSound(null, this, SoundEvents.HORSE_ARMOR, soundSource, 0.5f, 1f);
-		}
-	}
-
-	@Override
-	public boolean isArmored() {
-		return this.entityData.get(ARMORED);
-	}
-
-	public void setArmored(boolean armored) {
-		this.entityData.set(ARMORED, armored);
-		this.getAttribute(Attributes.ARMOR).setBaseValue(this.getAttribute(Attributes.ARMOR).getBaseValue() + 10);
 	}
 }

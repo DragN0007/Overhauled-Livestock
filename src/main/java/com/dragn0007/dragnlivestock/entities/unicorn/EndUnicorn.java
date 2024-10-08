@@ -1,8 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.unicorn;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
-import com.dragn0007.dragnlivestock.client.menu.OHorseMenu;
-import com.dragn0007.dragnlivestock.entities.Armorable;
 import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import net.minecraft.core.particles.ParticleTypes;
@@ -12,13 +10,14 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.*;
+import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -33,9 +32,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.network.NetworkHooks;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -51,7 +48,7 @@ import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.UUID;
 
-public class EndUnicorn extends OHorse implements IAnimatable, Chestable, Saddleable, Armorable {
+public class EndUnicorn extends OHorse implements IAnimatable, Chestable, Saddleable {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
 	protected static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(EndUnicorn.class, EntityDataSerializers.BOOLEAN);
@@ -227,80 +224,80 @@ public class EndUnicorn extends OHorse implements IAnimatable, Chestable, Saddle
 		}
 	}
 
-	public InteractionResult mobInteract(Player player, InteractionHand hand) {
-		ItemStack itemstack = player.getItemInHand(hand);
-
-		if (this.isFood(itemstack) && this.isTamed()) {
-			if (this.getHealth() < this.getMaxHealth()) {
-				this.usePlayerItem(player, hand, itemstack);
-				this.heal(itemstack.getFoodProperties(this).getNutrition());
-				this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
-				return InteractionResult.sidedSuccess(this.level.isClientSide);
-			}
-		}
-
-		if (this.isFood(itemstack) && this.isTamed()) {
-			if (this.canFallInLove() && !this.level.isClientSide) {
-				this.usePlayerItem(player, hand, itemstack);
-				this.setInLove(player);
-				this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
-				return InteractionResult.SUCCESS;
-			}
-		}
-
-		if (this.isBaby()) {
-			return super.mobInteract(player, hand);
-		}
-
-		if (!this.isTamed() && this.isFood(itemstack)) {
-			return this.fedFood(player, itemstack);
-		}
-
-		if (this.isTamed() && player.isSecondaryUseActive()) {
-			this.openInventory(player);
-			return InteractionResult.sidedSuccess(this.level.isClientSide);
-		}
-
-		if (this.isVehicle()) {
-			return super.mobInteract(player, hand);
-		}
-
-		if (!itemstack.isEmpty()) {
-			if (!this.isTamed()) {
-				this.makeMad();
-				return InteractionResult.sidedSuccess(this.level.isClientSide);
-			}
-
-			if (itemstack.is(Items.SADDLE) && !this.isSaddled() && this.isSaddleable()) {
-				this.setSaddled(true);
-				this.updateInventory();
-				if (!player.getAbilities().instabuild) {
-					itemstack.shrink(1);
-				}
-				return InteractionResult.sidedSuccess(this.level.isClientSide);
-			}
-
-			if (!this.level.isClientSide) {
-				if (player.isShiftKeyDown()) {
-					NetworkHooks.openGui((ServerPlayer) player, new SimpleMenuProvider((containerId, inventory, serverPlayer) -> {
-						return new OHorseMenu(containerId, inventory, this.inventory, this);
-					}, this.getDisplayName()), (data) -> {
-						data.writeInt(this.getInventorySize());
-						data.writeInt(this.getId());
-					});
-					return InteractionResult.SUCCESS;
-				}
-
-				InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
-				if (interactionresult.consumesAction()) {
-					return interactionresult;
-				}
-			}
-		}
-
-		this.doPlayerRide(player);
-		return InteractionResult.sidedSuccess(this.level.isClientSide);
-	}
+//	public InteractionResult mobInteract(Player player, InteractionHand hand) {
+//		ItemStack itemstack = player.getItemInHand(hand);
+//
+//		if (this.isFood(itemstack) && this.isTamed()) {
+//			if (this.getHealth() < this.getMaxHealth()) {
+//				this.usePlayerItem(player, hand, itemstack);
+//				this.heal(itemstack.getFoodProperties(this).getNutrition());
+//				this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+//				return InteractionResult.sidedSuccess(this.level.isClientSide);
+//			}
+//		}
+//
+//		if (this.isFood(itemstack) && this.isTamed()) {
+//			if (this.canFallInLove() && !this.level.isClientSide) {
+//				this.usePlayerItem(player, hand, itemstack);
+//				this.setInLove(player);
+//				this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+//				return InteractionResult.SUCCESS;
+//			}
+//		}
+//
+//		if (this.isBaby()) {
+//			return super.mobInteract(player, hand);
+//		}
+//
+//		if (!this.isTamed() && this.isFood(itemstack)) {
+//			return this.fedFood(player, itemstack);
+//		}
+//
+//		if (this.isTamed() && player.isSecondaryUseActive()) {
+//			this.openInventory(player);
+//			return InteractionResult.sidedSuccess(this.level.isClientSide);
+//		}
+//
+//		if (this.isVehicle()) {
+//			return super.mobInteract(player, hand);
+//		}
+//
+//		if (!itemstack.isEmpty()) {
+//			if (!this.isTamed()) {
+//				this.makeMad();
+//				return InteractionResult.sidedSuccess(this.level.isClientSide);
+//			}
+//
+//			if (itemstack.is(Items.SADDLE) && !this.isSaddled() && this.isSaddleable()) {
+//				this.setSaddled(true);
+//				this.updateInventory();
+//				if (!player.getAbilities().instabuild) {
+//					itemstack.shrink(1);
+//				}
+//				return InteractionResult.sidedSuccess(this.level.isClientSide);
+//			}
+//
+//			if (!this.level.isClientSide) {
+//				if (player.isShiftKeyDown()) {
+//					NetworkHooks.openGui((ServerPlayer) player, new SimpleMenuProvider((containerId, inventory, serverPlayer) -> {
+//						return new OHorseMenu(containerId, inventory, this.inventory, this);
+//					}, this.getDisplayName()), (data) -> {
+//						data.writeInt(this.getInventorySize());
+//						data.writeInt(this.getId());
+//					});
+//					return InteractionResult.SUCCESS;
+//				}
+//
+//				InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+//				if (interactionresult.consumesAction()) {
+//					return interactionresult;
+//				}
+//			}
+//		}
+//
+//		this.doPlayerRide(player);
+//		return InteractionResult.sidedSuccess(this.level.isClientSide);
+//	}
 
 	protected void playGallopSound(SoundType p_30709_) {
 		super.playGallopSound(p_30709_);
@@ -445,10 +442,6 @@ public class EndUnicorn extends OHorse implements IAnimatable, Chestable, Saddle
 			this.setSaddled(tag.getBoolean("Saddled"));
 		}
 
-		if (tag.contains("Armored")) {
-			this.setArmored(tag.getBoolean("Armored"));
-		}
-
 		if (tag.contains("ArmorItem", 10)) {
 			ItemStack itemstack = ItemStack.of(tag.getCompound("ArmorItem"));
 			if (!itemstack.isEmpty() && this.isArmor(itemstack)) {
@@ -493,8 +486,6 @@ public class EndUnicorn extends OHorse implements IAnimatable, Chestable, Saddle
 		tag.putBoolean("Chested", this.isChested());
 
 		tag.putBoolean("Saddled", this.isSaddled());
-
-		tag.putBoolean("Armored", this.isArmored());
 
 		tag.putBoolean("Tame", this.isTamed());
 		if (this.getOwnerUUID() != null) {
@@ -586,34 +577,5 @@ public class EndUnicorn extends OHorse implements IAnimatable, Chestable, Saddle
 		if (this.tickCount > 20 && !flag && this.isSaddleable()) {
 			this.playSound(SoundEvents.HORSE_SADDLE, 0.5f, 1f);
 		}
-
-		if (!this.level.isClientSide) {
-			this.setArmored(!this.inventory.getItem(0).isEmpty());
-		}
-		if (this.tickCount > 20 && !flag && this.isArmorable()) {
-			this.playSound(SoundEvents.HORSE_ARMOR, 0.5f, 1f);
-		}
-	}
-
-	@Override
-	public boolean isArmorable() {
-		return this.isAlive() && !this.isBaby() && this.isTamed();
-	}
-
-	@Override
-	public void equipArmor(@Nullable SoundSource soundSource) {
-		if (soundSource != null) {
-			this.level.playSound(null, this, SoundEvents.HORSE_ARMOR, soundSource, 0.5f, 1f);
-		}
-	}
-
-	@Override
-	public boolean isArmored() {
-		return this.entityData.get(ARMORED);
-	}
-
-	public void setArmored(boolean armored) {
-		this.entityData.set(ARMORED, armored);
-		this.getAttribute(Attributes.ARMOR).setBaseValue(this.getAttribute(Attributes.ARMOR).getBaseValue() + 10);
 	}
 }

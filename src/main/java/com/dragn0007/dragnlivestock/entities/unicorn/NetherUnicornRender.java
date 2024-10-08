@@ -53,7 +53,7 @@ public class NetherUnicornRender extends ExtendedGeoEntityRenderer<NetherUnicorn
                 model.getBone("back_left_shoe").ifPresent(b -> b.setHidden(true));
             }
 
-            if (animatable.isArmored()) {
+            if (animatable.isWearingArmor()) {
                 model.getBone("body_armor").ifPresent(b -> b.setHidden(false));
                 model.getBone("neck_armor").ifPresent(b -> b.setHidden(false));
                 model.getBone("head_armor").ifPresent(b -> b.setHidden(false));
