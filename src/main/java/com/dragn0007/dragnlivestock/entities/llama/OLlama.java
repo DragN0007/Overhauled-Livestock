@@ -3,6 +3,7 @@ package com.dragn0007.dragnlivestock.entities.llama;
 import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.LlamaFollowHerdLeaderGoal;
+import com.dragn0007.dragnlivestock.items.LOItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -31,6 +32,7 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -281,6 +283,18 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 			LazyOptional<?> oldHandler = this.itemHandler;
 			this.itemHandler = null;
 			oldHandler.invalidate();
+		}
+	}
+
+	public InteractionResult mobInteract(Player player, InteractionHand hand) {
+		ItemStack itemstack = player.getItemInHand(hand);
+		if (itemstack.is(Items.BUCKET) && !this.isBaby()) {
+			player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
+			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, LOItems.LLAMA_MILK_BUCKET.get().getDefaultInstance());
+			player.setItemInHand(hand, itemstack1);
+			return InteractionResult.sidedSuccess(this.level.isClientSide);
+		} else {
+			return super.mobInteract(player, hand);
 		}
 	}
 
