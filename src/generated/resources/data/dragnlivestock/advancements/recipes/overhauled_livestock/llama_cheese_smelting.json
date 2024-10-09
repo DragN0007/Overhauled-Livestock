@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "dragnlivestock:llama_cheese_smelting"
+    ]
+  },
+  "criteria": {
+    "has_llama_milk": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dragnlivestock:llama_milk_bucket"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "dragnlivestock:llama_cheese_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_llama_milk",
+      "has_the_recipe"
+    ]
+  ]
+}

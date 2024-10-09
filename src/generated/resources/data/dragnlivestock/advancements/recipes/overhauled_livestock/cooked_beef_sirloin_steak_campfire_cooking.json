@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "dragnlivestock:cooked_beef_sirloin_steak_campfire_cooking"
+    ]
+  },
+  "criteria": {
+    "has_beef_sirloin_steak": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dragnlivestock:beef_sirloin_steak"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "dragnlivestock:cooked_beef_sirloin_steak_campfire_cooking"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_beef_sirloin_steak",
+      "has_the_recipe"
+    ]
+  ]
+}

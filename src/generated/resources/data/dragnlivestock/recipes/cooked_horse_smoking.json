@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "dragnlivestock:horse"
+  },
+  "result": "dragnlivestock:cooked_horse",
+  "experience": 0.35,
+  "cookingtime": 100
+}

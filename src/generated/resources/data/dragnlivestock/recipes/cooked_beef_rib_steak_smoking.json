@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "dragnlivestock:beef_rib_steak"
+  },
+  "result": "dragnlivestock:cooked_beef_rib_steak",
+  "experience": 0.35,
+  "cookingtime": 100
+}

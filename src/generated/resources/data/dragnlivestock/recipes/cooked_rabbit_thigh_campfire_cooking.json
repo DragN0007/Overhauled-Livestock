@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "item": "dragnlivestock:rabbit_thigh"
+  },
+  "result": "dragnlivestock:cooked_rabbit_thigh",
+  "experience": 0.35,
+  "cookingtime": 600
+}

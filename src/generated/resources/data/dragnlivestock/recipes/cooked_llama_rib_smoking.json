@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "dragnlivestock:llama_rib"
+  },
+  "result": "dragnlivestock:cooked_llama_rib",
+  "experience": 0.35,
+  "cookingtime": 100
+}

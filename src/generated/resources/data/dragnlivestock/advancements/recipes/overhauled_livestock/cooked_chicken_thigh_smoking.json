@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "dragnlivestock:cooked_chicken_thigh_smoking"
+    ]
+  },
+  "criteria": {
+    "has_chicken_thigh": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dragnlivestock:chicken_thigh"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "dragnlivestock:cooked_chicken_thigh_smoking"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_chicken_thigh",
+      "has_the_recipe"
+    ]
+  ]
+}
