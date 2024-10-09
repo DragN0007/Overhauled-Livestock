@@ -19,6 +19,8 @@ public class LOItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         simpleItem(LOItems.LIVESTOCK_OVERHAUL.get());
 
+        simpleItem(LOItems.BRAND_TAG.get());
+
         simpleItem(LOItems.SHEEP_MILK_BUCKET.get());
         simpleItem(LOItems.LLAMA_MILK_BUCKET.get());
 

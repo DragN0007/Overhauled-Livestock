@@ -44,7 +44,7 @@ public class CreatureSpawnGeneration {
 
     protected static boolean shouldSpawnEntity() {
         int randomChance = new Random().nextInt(100);
-        return randomChance < 5;
+        return randomChance < 10;
     }
 
     protected static void addEntityToAllBiomes(BiomeLoadingEvent event, EntityType<?> type,

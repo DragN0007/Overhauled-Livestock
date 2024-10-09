@@ -25,6 +25,11 @@ public class UnicornHornItem extends Item {
         this.effectInstances = effectInstances;
     }
 
+    @Override
+    public Rarity getRarity(ItemStack p_41461_) {
+        return Rarity.EPIC;
+    }
+
     public SoundEvent getDrinkingSound() {
         return SoundEvents.ARMOR_EQUIP_GENERIC;
     }

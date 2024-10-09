@@ -2,6 +2,7 @@ package com.dragn0007.dragnlivestock.items;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.items.custom.BrandTagItem;
 import com.dragn0007.dragnlivestock.items.custom.FishOilItem;
 import com.dragn0007.dragnlivestock.items.custom.UnicornHornItem;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -50,6 +51,9 @@ public class LOItems {
     public static final RegistryObject<Item> END_UNICORN_SPAWN_EGG = ITEMS.register("end_unicorn_spawn_egg",
          () -> new ForgeSpawnEggItem(EntityTypes.END_UNICORN_ENTITY, 0xb4ac79, 0xdee6a4, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
 
+    //Misc
+    public static final RegistryObject<Item> BRAND_TAG = ITEMS.register("brand_tag",
+            () -> new BrandTagItem(new Item.Properties()));
 
     //Food/ Items
     public static final RegistryObject<Item> SHEEP_MILK_BUCKET = ITEMS.register("sheep_milk_bucket",
