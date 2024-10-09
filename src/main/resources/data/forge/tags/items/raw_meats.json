@@ -1,0 +1,24 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:beef",
+    "dragnlivestock:beef_sirloin_steak",
+    "dragnlivestock:beef_rib_steak",
+    "minecraft:chicken",
+    "dragnlivestock:chicken_thigh",
+    "dragnlivestock:horse",
+    "dragnlivestock:horse_sirloin_steak",
+    "dragnlivestock:horse_rib_steak",
+    "minecraft:mutton",
+    "dragnlivestock:mutton_loin",
+    "dragnlivestock:mutton_rib",
+    "minecraft:porkchop",
+    "dragnlivestock:pork_tenderloin",
+    "dragnlivestock:pork_rib_chop",
+    "minecraft:rabbit",
+    "dragnlivestock:rabbit_thigh",
+    "dragnlivestock:unicorn",
+    "dragnlivestock:unicorn_sirloin_steak",
+    "dragnlivestock:unicorn_rib_steak"
+  ]
+}
