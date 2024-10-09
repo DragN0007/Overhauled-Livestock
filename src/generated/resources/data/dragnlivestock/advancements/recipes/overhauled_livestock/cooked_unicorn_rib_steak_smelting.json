@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "dragnlivestock:cooked_unicorn_rib_steak_smelting"
+    ]
+  },
+  "criteria": {
+    "has_unicorn_rib_steak": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dragnlivestock:unicorn_rib_steak"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "dragnlivestock:cooked_unicorn_rib_steak_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_unicorn_rib_steak",
+      "has_the_recipe"
+    ]
+  ]
+}

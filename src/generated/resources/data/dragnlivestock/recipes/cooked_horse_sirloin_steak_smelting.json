@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "dragnlivestock:horse_sirloin_steak"
+  },
+  "result": "dragnlivestock:cooked_horse_sirloin_steak",
+  "experience": 0.35,
+  "cookingtime": 200
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "dragnlivestock:cooked_beef_rib_steak_smoking"
+    ]
+  },
+  "criteria": {
+    "has_beef_rib_steak": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dragnlivestock:beef_rib_steak"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "dragnlivestock:cooked_beef_rib_steak_smoking"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_beef_rib_steak",
+      "has_the_recipe"
+    ]
+  ]
+}

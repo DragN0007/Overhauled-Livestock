@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "dragnlivestock:mutton_loin"
+  },
+  "result": "dragnlivestock:cooked_mutton_loin",
+  "experience": 0.35,
+  "cookingtime": 200
+}

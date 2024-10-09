@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "dragnlivestock:sheep_cheese_smelting"
+    ]
+  },
+  "criteria": {
+    "has_sheep_milk": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dragnlivestock:sheep_milk_bucket"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "dragnlivestock:sheep_cheese_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_sheep_milk",
+      "has_the_recipe"
+    ]
+  ]
+}

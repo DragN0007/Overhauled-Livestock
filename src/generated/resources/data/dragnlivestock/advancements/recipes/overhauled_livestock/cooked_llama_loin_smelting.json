@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "dragnlivestock:cooked_llama_loin_smelting"
+    ]
+  },
+  "criteria": {
+    "has_llama_loin": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dragnlivestock:llama_loin"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "dragnlivestock:cooked_llama_loin_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_llama_loin",
+      "has_the_recipe"
+    ]
+  ]
+}

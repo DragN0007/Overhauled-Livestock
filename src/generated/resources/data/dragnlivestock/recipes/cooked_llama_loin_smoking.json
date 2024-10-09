@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "dragnlivestock:llama_loin"
+  },
+  "result": "dragnlivestock:cooked_llama_loin",
+  "experience": 0.35,
+  "cookingtime": 100
+}

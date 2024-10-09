@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "dragnlivestock:cooked_horse_smelting"
+    ]
+  },
+  "criteria": {
+    "has_horse": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dragnlivestock:horse"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "dragnlivestock:cooked_horse_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_horse",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "dragnlivestock:chicken_thigh"
+  },
+  "result": "dragnlivestock:cooked_chicken_thigh",
+  "experience": 0.35,
+  "cookingtime": 200
+}

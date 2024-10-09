@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "item": "dragnlivestock:unicorn_sirloin_steak"
+  },
+  "result": "dragnlivestock:cooked_unicorn_sirloin_steak",
+  "experience": 0.35,
+  "cookingtime": 600
+}

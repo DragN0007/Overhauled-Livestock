@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "dragnlivestock:llama_milk_bucket"
+  },
+  "result": "dragnlivestock:llama_cheese",
+  "experience": 0.35,
+  "cookingtime": 200
+}

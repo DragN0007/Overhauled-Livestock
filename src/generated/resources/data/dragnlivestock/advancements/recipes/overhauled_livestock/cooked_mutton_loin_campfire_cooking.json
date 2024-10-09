@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "dragnlivestock:cooked_mutton_loin_campfire_cooking"
+    ]
+  },
+  "criteria": {
+    "has_mutton_loin": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dragnlivestock:mutton_loin"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "dragnlivestock:cooked_mutton_loin_campfire_cooking"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_mutton_loin",
+      "has_the_recipe"
+    ]
+  ]
+}
