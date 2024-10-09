@@ -1,6 +1,7 @@
 package com.dragn0007.dragnlivestock.entities.sheep;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.items.LOItems;
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -190,7 +192,14 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 			}
 		}
 
-		return super.mobInteract(player, hand);
+		if (itemstack.is(Items.BUCKET) && !this.isBaby()) {
+			player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
+			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, LOItems.SHEEP_MILK_BUCKET.get().getDefaultInstance());
+			player.setItemInHand(hand, itemstack1);
+			return InteractionResult.sidedSuccess(this.level.isClientSide);
+		} else {
+			return super.mobInteract(player, hand);
+		}
 	}
 
 	public void shear(SoundSource p_29819_) {
@@ -256,10 +265,6 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 
 	protected void playStepSound(BlockPos p_28254_, BlockState p_28255_) {
 		this.playSound(SoundEvents.SHEEP_STEP, 0.15F, 1.0F);
-	}
-
-	public boolean causeFallDamage(float p_148875_, float p_148876_, DamageSource p_148877_) {
-		return false;
 	}
 
 	public boolean isFood(ItemStack p_28271_) {

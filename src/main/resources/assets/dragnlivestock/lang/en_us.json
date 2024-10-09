@@ -32,7 +32,6 @@
   "entity.dragnlivestock.o_llama_entity": "O-Llama",
 
 
-
   "item.dragnlivestock.overworld_unicorn_spawn_egg": "Overworld Unicorn Spawn Egg",
   "entity.dragnlivestock.overworld_unicorn_entity": "Overworld Unicorn",
 
@@ -40,5 +39,62 @@
   "entity.dragnlivestock.nether_unicorn_entity": "Nether Unicorn",
 
   "item.dragnlivestock.end_unicorn_spawn_egg": "End Unicorn Spawn Egg",
-  "entity.dragnlivestock.end_unicorn_entity": "End Unicorn"
+  "entity.dragnlivestock.end_unicorn_entity": "End Unicorn",
+
+
+  "item.dragnlivestock.sheep_milk_bucket": "Sheep Milk Bucket",
+  "item.dragnlivestock.llama_milk_bucket": "Llama Milk Bucket",
+
+  "item.dragnlivestock.cheese": "Cheese",
+  "item.dragnlivestock.sheep_cheese": "Sheep Cheese",
+  "item.dragnlivestock.llama_cheese": "Llama Cheese",
+
+  "item.dragnlivestock.beef_sirloin_steak": "Beef Sirloin Steak",
+  "item.dragnlivestock.beef_rib_steak": "Beef Rib Steak",
+  "item.dragnlivestock.cooked_beef_sirloin_steak": "Cooked Sirloin Steak",
+  "item.dragnlivestock.cooked_beef_rib_steak": "Cooked Beef Rib Steak",
+
+  "item.dragnlivestock.horse": "Horse",
+  "item.dragnlivestock.horse_sirloin_steak": "Horse Sirloin Steak",
+  "item.dragnlivestock.horse_rib_steak": "Horse Rib Steak",
+  "item.dragnlivestock.cooked_horse": "Cooked Horse",
+  "item.dragnlivestock.cooked_horse_sirloin_steak": "Cooked Sirloin Steak",
+  "item.dragnlivestock.cooked_horse_rib_steak": "Cooked Horse Rib Steak",
+
+  "item.dragnlivestock.llama": "Llama",
+  "item.dragnlivestock.llama_loin": "Llama Sirloin Steak",
+  "item.dragnlivestock.llama_rib": "Llama Rib Steak",
+  "item.dragnlivestock.cooked_llama": "Cooked Llama",
+  "item.dragnlivestock.cooked_llama_loin": "Cooked Sirloin Steak",
+  "item.dragnlivestock.cooked_llama_rib": "Cooked Llama Rib Steak",
+
+  "item.dragnlivestock.mutton_loin": "Mutton Loin",
+  "item.dragnlivestock.mutton_rib": "Mutton Rib ",
+  "item.dragnlivestock.cooked_mutton_loin": "Cooked Mutton Loin",
+  "item.dragnlivestock.cooked_mutton_rib": "Cooked Mutton Rib",
+
+  "item.dragnlivestock.pork_tenderloin": "Pork Tenderloin",
+  "item.dragnlivestock.pork_rib_chop": "Pork Rib Chop",
+  "item.dragnlivestock.cooked_pork_tenderloin": "Cooked Pork Tenderloin",
+  "item.dragnlivestock.cooked_pork_rib_chop": "Cooked Pork Rib Chop",
+
+  "item.dragnlivestock.fish_oil": "Fish Oil",
+  "item.dragnlivestock.roe": "Roe",
+
+  "item.dragnlivestock.chicken_thigh": "Chicken Thigh",
+  "item.dragnlivestock.cooked_chicken_thigh": "Cooked Chicken Thigh",
+
+  "item.dragnlivestock.rabbit_thigh": "Rabbit Thigh",
+  "item.dragnlivestock.cooked_rabbit_thigh": "Cooked Rabbit Thigh",
+
+  "item.dragnlivestock.unicorn": "Unicorn",
+  "item.dragnlivestock.unicorn_sirloin_steak": "Unicorn Sirloin Steak",
+  "item.dragnlivestock.unicorn_rib_steak": "Unicorn Rib Steak",
+  "item.dragnlivestock.cooked_unicorn": "Cooked Unicorn",
+  "item.dragnlivestock.cooked_unicorn_sirloin_steak": "Cooked Sirloin Steak",
+  "item.dragnlivestock.cooked_unicorn_rib_steak": "Cooked Unicorn Rib Steak",
+
+  "item.dragnlivestock.overworld_unicorn_horn": "Overworld Unicorn Horn",
+  "item.dragnlivestock.nether_unicorn_horn": "Nether Unicorn Horn",
+  "item.dragnlivestock.end_unicorn_horn": "End Unicorn Horn"
 }

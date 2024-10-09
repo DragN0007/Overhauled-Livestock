@@ -119,10 +119,6 @@ public class OPig extends Animal implements IAnimatable {
 		this.playSound(SoundEvents.PIG_STEP, 0.15F, 1.0F);
 	}
 
-	public boolean causeFallDamage(float p_148875_, float p_148876_, DamageSource p_148877_) {
-		return false;
-	}
-
 	public boolean isFood(ItemStack p_28271_) {
 		return FOOD_ITEMS.test(p_28271_);
 	}
