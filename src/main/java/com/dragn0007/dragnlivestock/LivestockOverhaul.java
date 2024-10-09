@@ -1,6 +1,5 @@
 package com.dragn0007.dragnlivestock;
 
-import com.dragn0007.dragnlivestock.blocks.LOBlocks;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.gui.LOMenuTypes;
 import com.dragn0007.dragnlivestock.items.LOItems;
@@ -26,7 +25,6 @@ import static com.dragn0007.dragnlivestock.LivestockOverhaul.MODID;
 public class LivestockOverhaul
 {
 
-    public static final Logger LOGGER = LogUtils.getLogger();
     public static final String MODID = "dragnlivestock";
 
     public LivestockOverhaul()
@@ -34,7 +32,6 @@ public class LivestockOverhaul
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         LOItems.register(eventBus);
-        LOBlocks.register(eventBus);
         LOMenuTypes.register(eventBus);
         EntityTypes.ENTITY_TYPES.register(eventBus);
 
