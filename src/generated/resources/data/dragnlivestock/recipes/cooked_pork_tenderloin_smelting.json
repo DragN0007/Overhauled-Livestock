@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "dragnlivestock:pork_tenderloin"
+  },
+  "result": "dragnlivestock:cooked_pork_tenderloin",
+  "experience": 0.35,
+  "cookingtime": 200
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "dragnlivestock:cooked_pork_tenderloin_smelting"
+    ]
+  },
+  "criteria": {
+    "has_pork_tenderloin": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dragnlivestock:pork_tenderloin"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "dragnlivestock:cooked_pork_tenderloin_smelting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_pork_tenderloin",
+      "has_the_recipe"
+    ]
+  ]
+}

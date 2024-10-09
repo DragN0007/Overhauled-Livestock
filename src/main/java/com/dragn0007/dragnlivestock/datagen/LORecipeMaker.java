@@ -133,5 +133,19 @@ public class LORecipeMaker extends RecipeProvider implements IConditionBuilder {
 
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(LOItems.LLAMA_MILK_BUCKET.get()), LOItems.LLAMA_CHEESE.get(), 0.35F, 200)
                 .unlockedBy("has_llama_milk", has(LOItems.LLAMA_MILK_BUCKET.get())).save(pFinishedRecipeConsumer, new ResourceLocation("dragnlivestock", "llama_cheese_smelting"));
+
+        SimpleCookingRecipeBuilder.smoking(Ingredient.of(LOItems.PORK_RIB_CHOP.get()), LOItems.COOKED_PORK_RIB_CHOP.get(), 0.35F, 100)
+                .unlockedBy("has_pork_rib_chop", has(LOItems.PORK_RIB_CHOP.get())).save(pFinishedRecipeConsumer, new ResourceLocation("dragnlivestock", "cooked_pork_rib_chop_smoking"));
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(LOItems.PORK_RIB_CHOP.get()), LOItems.COOKED_PORK_RIB_CHOP.get(), 0.35F, 200)
+                .unlockedBy("has_pork_rib_chop", has(LOItems.PORK_RIB_CHOP.get())).save(pFinishedRecipeConsumer, new ResourceLocation("dragnlivestock", "cooked_pork_rib_chop_smelting"));
+        SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(LOItems.PORK_RIB_CHOP.get()), LOItems.COOKED_PORK_RIB_CHOP.get(), 0.35F, 600)
+                .unlockedBy("has_pork_rib_chop", has(LOItems.PORK_RIB_CHOP.get())).save(pFinishedRecipeConsumer, new ResourceLocation("dragnlivestock", "cooked_pork_rib_chop_campfire_cooking"));
+
+        SimpleCookingRecipeBuilder.smoking(Ingredient.of(LOItems.PORK_TENDERLOIN.get()), LOItems.COOKED_PORK_TENDERLOIN.get(), 0.35F, 100)
+                .unlockedBy("has_pork_tenderloin", has(LOItems.PORK_TENDERLOIN.get())).save(pFinishedRecipeConsumer, new ResourceLocation("dragnlivestock", "cooked_pork_tenderloin_smoking"));
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(LOItems.PORK_TENDERLOIN.get()), LOItems.COOKED_PORK_TENDERLOIN.get(), 0.35F, 200)
+                .unlockedBy("has_pork_tenderloin", has(LOItems.PORK_TENDERLOIN.get())).save(pFinishedRecipeConsumer, new ResourceLocation("dragnlivestock", "cooked_pork_tenderloin_smelting"));
+        SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(LOItems.PORK_TENDERLOIN.get()), LOItems.COOKED_PORK_TENDERLOIN.get(), 0.35F, 600)
+                .unlockedBy("has_pork_tenderloin", has(LOItems.PORK_TENDERLOIN.get())).save(pFinishedRecipeConsumer, new ResourceLocation("dragnlivestock", "cooked_pork_tenderloin_campfire_cooking"));
     }
 }

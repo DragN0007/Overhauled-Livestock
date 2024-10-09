@@ -16,7 +16,6 @@ public class JsonDataGenerator {
 
         generator.addProvider(new LORecipeMaker(generator));
         generator.addProvider(new LOLootTableProvider(generator));
-        generator.addProvider(new LOBlockstateProvider(generator, existingFileHelper));
         generator.addProvider(new LOItemModelProvider(generator, existingFileHelper));
     }
 }
