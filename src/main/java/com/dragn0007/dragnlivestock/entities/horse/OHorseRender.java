@@ -24,9 +24,7 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
 
     @Override
     public void render(GeoModel model, OHorse animatable, float partialTick, RenderType type, PoseStack poseStack, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-
         if (!animatable.isBaby()) {
-
             if (animatable.isChested()) {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(false));
             } else {
@@ -36,24 +34,20 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
             if (animatable.isSaddled()) {
                 model.getBone("saddle").ifPresent(b -> b.setHidden(false));
                 model.getBone("saddle2").ifPresent(b -> b.setHidden(false));
-            } else {
-                model.getBone("saddle").ifPresent(b -> b.setHidden(true));
-                model.getBone("saddle2").ifPresent(b -> b.setHidden(true));
-            }
-
-            if (animatable.isSaddled()) {
                 model.getBone("front_right_shoe").ifPresent(b -> b.setHidden(false));
                 model.getBone("front_left_shoe").ifPresent(b -> b.setHidden(false));
                 model.getBone("back_right_shoe").ifPresent(b -> b.setHidden(false));
                 model.getBone("back_left_shoe").ifPresent(b -> b.setHidden(false));
             } else {
+                model.getBone("saddle").ifPresent(b -> b.setHidden(true));
+                model.getBone("saddle2").ifPresent(b -> b.setHidden(true));
                 model.getBone("front_right_shoe").ifPresent(b -> b.setHidden(true));
                 model.getBone("front_left_shoe").ifPresent(b -> b.setHidden(true));
                 model.getBone("back_right_shoe").ifPresent(b -> b.setHidden(true));
                 model.getBone("back_left_shoe").ifPresent(b -> b.setHidden(true));
             }
 
-            if (animatable.isWearingArmor()) {
+            if (animatable.isArmored()) {
                 model.getBone("body_armor").ifPresent(b -> b.setHidden(false));
                 model.getBone("neck_armor").ifPresent(b -> b.setHidden(false));
                 model.getBone("head_armor").ifPresent(b -> b.setHidden(false));
