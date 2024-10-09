@@ -15,7 +15,6 @@ public class JsonDataGenerator {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
         generator.addProvider(new LORecipeMaker(generator));
-        generator.addProvider(new LOLootTableProvider(generator));
         generator.addProvider(new LOItemModelProvider(generator, existingFileHelper));
     }
 }
