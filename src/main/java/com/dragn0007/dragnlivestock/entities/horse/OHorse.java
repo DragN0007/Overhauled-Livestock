@@ -1,30 +1,19 @@
 package com.dragn0007.dragnlivestock.entities.horse;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
-import com.dragn0007.dragnlivestock.Network;
-import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.HorseFollowHerdLeaderGoal;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.KeyboardInput;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -36,16 +25,9 @@ import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.animal.horse.Donkey;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -60,7 +42,6 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 public class OHorse extends AbstractOHorse implements IAnimatable {
@@ -107,6 +88,21 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D, AbstractOHorse.class));
 		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, (livingEntity) -> livingEntity instanceof Wolf));
+	}
+
+	@Override
+	public float generateRandomMaxHealth() {
+		return 15.0F + (float)this.random.nextInt(8) + (float)this.random.nextInt(9);
+	}
+
+	@Override
+	public double generateRandomJumpStrength() {
+		return (double)0.4F + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D;
+	}
+
+	@Override
+	public double generateRandomSpeed() {
+		return ((double)0.45F + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D) * 0.25D;
 	}
 
 	@Override
@@ -229,6 +225,10 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 					this.gallopSoundCounter = 0;
 				}
 
+				if (this.isSprinting()) { //walk when CTRL is toggled
+					fowardSpeed = 0.0F;
+				}
+
 				if (this.onGround && this.playerJumpPendingScale == 0.0F && this.isStanding()) {
 					sidewaysSpeed = 0.0F;
 					fowardSpeed = 0.0F;
@@ -301,11 +301,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 			double offsetY = 1.1;
 			double offsetZ = -0.2;
 
-			if (this.isSaddled() && this.isJumping()) {
-				offsetY = 2.0;
-				offsetZ = -0.5;
-			}
-
 			if (this.isSaddled() && getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
 				offsetY = 1.3;
 			}
@@ -333,19 +328,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 			double z = this.getZ() + offsetZRotated;
 
 			entity.setPos(x, y, z);
-		}
-	}
-
-	@Override
-	public void playGallopSound(SoundType soundType) {
-		super.playGallopSound(soundType);
-		if (this.random.nextInt(10) == 0) {
-			this.playSound(SoundEvents.HORSE_BREATHE, soundType.getVolume() * 0.6F, soundType.getPitch());
-		}
-
-		ItemStack stack = this.inventory.getItem(1);
-		if (this.isArmor(stack)) {
-			stack.onHorseArmorTick(level, this);
 		}
 	}
 
@@ -457,7 +439,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		if (tag.contains("Breed")) {
 			this.setBreed(tag.getInt("Breed"));
 		}
-		this.createInventory();
 	}
 
 	@Override

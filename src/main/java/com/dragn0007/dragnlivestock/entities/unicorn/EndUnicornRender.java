@@ -27,7 +27,7 @@ public class EndUnicornRender extends ExtendedGeoEntityRenderer<EndUnicorn> {
 
         if (!animatable.isBaby()) {
 
-            if (animatable.isChested()) {
+            if (animatable.hasChest()) {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(false));
             } else {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(true));
