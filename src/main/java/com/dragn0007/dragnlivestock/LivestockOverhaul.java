@@ -38,7 +38,6 @@ public class LivestockOverhaul
         LOBlocks.register(eventBus);
         LOMenuTypes.register(eventBus);
         EntityTypes.ENTITY_TYPES.register(eventBus);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onFMLCommonSetupEvent);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, LivestockOverhaulCommonConfig.SPEC, "livestock-overhaul-common.toml");
 
@@ -67,9 +66,5 @@ public class LivestockOverhaul
 
     static {
         EntityDataSerializers.registerSerializer(RESOURCE_LOCATION);
-    }
-
-    protected void onFMLCommonSetupEvent(FMLCommonSetupEvent event) {
-        LONetwork.init();
     }
 }

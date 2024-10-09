@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:beef",
+    "dragnlivestock:beef_sirloin_steak",
+    "dragnlivestock:beef_rib_steak"
+  ]
+}

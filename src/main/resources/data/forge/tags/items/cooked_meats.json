@@ -1,0 +1,24 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:cooked_beef",
+    "dragnlivestock:cooked_beef_sirloin_steak",
+    "dragnlivestock:cooked_beef_rib_steak",
+    "minecraft:cooked_chicken",
+    "dragnlivestock:cooked_chicken_thigh",
+    "dragnlivestock:cooked_horse",
+    "dragnlivestock:cooked_horse_sirloin_steak",
+    "dragnlivestock:cooked_horse_rib_steak",
+    "minecraft:cooked_mutton",
+    "dragnlivestock:cooked_mutton_loin",
+    "dragnlivestock:cooked_mutton_rib",
+    "minecraft:cooked_porkchop",
+    "dragnlivestock:cooked_pork_tenderloin",
+    "dragnlivestock:cooked_pork_rib_chop",
+    "minecraft:cooked_rabbit",
+    "dragnlivestock:cooked_rabbit_thigh",
+    "dragnlivestock:cooked_unicorn",
+    "dragnlivestock:cooked_unicorn_sirloin_steak",
+    "dragnlivestock:cooked_unicorn_rib_steak"
+  ]
+}

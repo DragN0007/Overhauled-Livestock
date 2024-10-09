@@ -20,7 +20,6 @@ import net.minecraft.world.entity.animal.horse.Llama;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import software.bernie.shadowed.eliotlash.mclib.math.functions.classic.Pi;
 
 @Mod.EventBusSubscriber(modid = LivestockOverhaul.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class SpawnReplacer {
