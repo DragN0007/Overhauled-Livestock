@@ -9,6 +9,6 @@ import net.minecraftforge.fml.common.Mod;
 public class LOWorldEvents {
     @SubscribeEvent
             public static void biomeLoadingEvent(final BiomeLoadingEvent event) {
-    CreatureSpawnGeneration.onEntitySpawn(event);
+                CreatureSpawnGeneration.onEntitySpawn(event);
     }
 }
