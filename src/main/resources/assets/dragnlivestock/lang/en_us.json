@@ -42,6 +42,9 @@
   "entity.dragnlivestock.end_unicorn": "End Unicorn",
 
 
+  "item.dragnlivestock.brand_tag": "Brand Tag",
+  "tooltip.dragnlivestock.brand_tag.tooltip": "This item isn't fully functional yet.",
+
   "item.dragnlivestock.sheep_milk_bucket": "Sheep Milk Bucket",
   "item.dragnlivestock.llama_milk_bucket": "Llama Milk Bucket",
 
