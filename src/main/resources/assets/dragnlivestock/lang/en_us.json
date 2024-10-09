@@ -2,44 +2,44 @@
   "itemGroup.overhauled_livestock": "Overhauled Livestock",
 
   "item.dragnlivestock.o_horse_spawn_egg": "O-Horse Spawn Egg",
-  "entity.dragnlivestock.o_horse_entity": "O-Horse",
+  "entity.dragnlivestock.o_horse": "O-Horse",
 
   "item.dragnlivestock.o_cow_spawn_egg": "O-Cow Spawn Egg",
-  "entity.dragnlivestock.o_cow_entity": "O-Cow",
+  "entity.dragnlivestock.o_cow": "O-Cow",
 
   "item.dragnlivestock.o_chicken_spawn_egg": "O-Chicken Spawn Egg",
-  "entity.dragnlivestock.o_chicken_entity": "O-Chicken",
+  "entity.dragnlivestock.o_chicken": "O-Chicken",
 
   "item.dragnlivestock.o_salmon_spawn_egg": "O-Salmon Spawn Egg",
-  "entity.dragnlivestock.o_salmon_entity": "O-Salmon",
+  "entity.dragnlivestock.o_salmon": "O-Salmon",
 
   "item.dragnlivestock.o_cod_spawn_egg": "O-Cod Spawn Egg",
-  "entity.dragnlivestock.o_cod_entity": "O-Cod",
+  "entity.dragnlivestock.o_cod": "O-Cod",
 
   "item.dragnlivestock.o_bee_spawn_egg": "O-Bee Spawn Egg",
-  "entity.dragnlivestock.o_bee_entity": "O-Bee",
+  "entity.dragnlivestock.o_bee": "O-Bee",
 
   "item.dragnlivestock.o_rabbit_spawn_egg": "O-Rabbit Spawn Egg",
-  "entity.dragnlivestock.o_rabbit_entity": "O-Rabbit",
+  "entity.dragnlivestock.o_rabbit": "O-Rabbit",
 
   "item.dragnlivestock.o_pig_spawn_egg": "O-Pig Spawn Egg",
-  "entity.dragnlivestock.o_pig_entity": "O-Pig",
+  "entity.dragnlivestock.o_pig": "O-Pig",
 
   "item.dragnlivestock.o_sheep_spawn_egg": "O-Sheep Spawn Egg",
-  "entity.dragnlivestock.o_sheep_entity": "O-Sheep",
+  "entity.dragnlivestock.o_sheep": "O-Sheep",
 
   "item.dragnlivestock.o_llama_spawn_egg": "O-Llama Spawn Egg",
-  "entity.dragnlivestock.o_llama_entity": "O-Llama",
+  "entity.dragnlivestock.o_llama": "O-Llama",
 
 
   "item.dragnlivestock.overworld_unicorn_spawn_egg": "Overworld Unicorn Spawn Egg",
-  "entity.dragnlivestock.overworld_unicorn_entity": "Overworld Unicorn",
+  "entity.dragnlivestock.overworld_unicorn": "Overworld Unicorn",
 
   "item.dragnlivestock.nether_unicorn_spawn_egg": "Nether Unicorn Spawn Egg",
-  "entity.dragnlivestock.nether_unicorn_entity": "Nether Unicorn",
+  "entity.dragnlivestock.nether_unicorn": "Nether Unicorn",
 
   "item.dragnlivestock.end_unicorn_spawn_egg": "End Unicorn Spawn Egg",
-  "entity.dragnlivestock.end_unicorn_entity": "End Unicorn",
+  "entity.dragnlivestock.end_unicorn": "End Unicorn",
 
 
   "item.dragnlivestock.sheep_milk_bucket": "Sheep Milk Bucket",
