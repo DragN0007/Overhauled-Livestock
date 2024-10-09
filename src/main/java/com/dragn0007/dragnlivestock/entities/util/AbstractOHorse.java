@@ -1,67 +1,36 @@
 package com.dragn0007.dragnlivestock.entities.util;
 
-import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.gui.OHorseMenu;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Saddleable;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.Nullable;
-import org.w3c.dom.Attr;
 
 import java.util.UUID;
 
-public class AbstractOHorse extends AbstractHorse implements Saddleable, Chestable {
-
-    public static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(AbstractOHorse.class, EntityDataSerializers.BOOLEAN);
-    public static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(AbstractOHorse.class, EntityDataSerializers.BOOLEAN);
-
+public class AbstractOHorse extends AbstractChestedHorse {
     public static final UUID ARMOR_MODIFIER_UUID = UUID.fromString("3c50e848-b2e3-404a-9879-7550b12dd09b");
 
-    protected float generateRandomMaxHealth() {
-        return 15.0F + (float)this.random.nextInt(8) + (float)this.random.nextInt(9);
-    }
-
-    public double generateRandomJumpStrength() {
-        return (double)0.4F + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D;
-    }
-
-    protected double generateRandomSpeed() {
-        return ((double)0.45F + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D) * 0.25D;
-    }
 
     public AbstractOHorse(EntityType<? extends AbstractOHorse> entityType, Level level) {
         super(entityType, level);
-        this.canGallop = false;
-        this.createInventory();
-    }
-
-    @Override
-    public int getInventorySize() {
-        //NOTE (EVNGLX): 2 slots for armor and saddle, 17 TOTAL slots because +15 for chest inventory
-        return this.isChested() ? 17 : 2;
     }
 
     @Override
@@ -74,8 +43,6 @@ public class AbstractOHorse extends AbstractHorse implements Saddleable, Chestab
                 data.writeInt(this.getId());
             });
         }
-
-
     }
 
     @Override
@@ -86,17 +53,6 @@ public class AbstractOHorse extends AbstractHorse implements Saddleable, Chestab
     @Override
     public double getPassengersRidingOffset() {
         return super.getPassengersRidingOffset() - 0.25D;
-    }
-
-    @Override
-    public void dropEquipment() {
-        super.dropEquipment();
-        if (this.isChested()) {
-            if (!this.level.isClientSide) {
-                this.spawnAtLocation(Blocks.CHEST);
-            }
-            this.setChested(false);
-        }
     }
 
     @Override
@@ -118,33 +74,29 @@ public class AbstractOHorse extends AbstractHorse implements Saddleable, Chestab
                 return this.fedFood(player, itemStack);
             }
 
+            InteractionResult interactionResult = itemStack.interactLivingEntity(player, this, hand);
+            if(interactionResult.consumesAction()) {
+                return interactionResult;
+            }
+
             if(!this.isTamed()) {
                 this.makeMad();
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
 
-            if(!this.isChested() && itemStack.is(Items.CHEST)) {
-                this.setChested(true);
-                this.equipChest(SoundSource.NEUTRAL);
+            if(!this.hasChest() && itemStack.is(Blocks.CHEST.asItem())) {
+                this.setChest(true);
+                this.playChestEquipsSound();
                 if(!player.getAbilities().instabuild) {
                     itemStack.shrink(1);
                 }
+
                 this.createInventory();
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
 
-            if(itemStack.getItem() instanceof HorseArmorItem horseArmorItem) {
-                if(this.isArmored()) {
-                    this.spawnAtLocation(this.inventory.getItem(1));
-                }
-
-                this.setArmorItem(horseArmorItem.getDefaultInstance());
-                this.equipArmor(SoundSource.NEUTRAL);
-
-                return InteractionResult.sidedSuccess(this.level.isClientSide);
-            }
-
-            if(!this.isBaby() && !this.isSaddled() && itemStack.is(Items.SADDLE)) {
+            boolean canSaddle = !this.isBaby() && !this.isSaddled() && itemStack.is(Items.SADDLE);
+            if(this.isArmor(itemStack) || canSaddle) {
                 this.openInventory(player);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
@@ -159,129 +111,78 @@ public class AbstractOHorse extends AbstractHorse implements Saddleable, Chestab
     }
 
     @Override
-    public void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(CHESTED, false);
-        this.entityData.define(SADDLED, false);
+    public boolean canWearArmor() {
+        return true;
     }
 
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putBoolean("Saddled", this.isSaddled());
-        compoundTag.putBoolean("Chested", this.isChested());
-
-        if(this.isChested()) {
-            ListTag listTag = new ListTag();
-
-            for(int i = 0; i < this.inventory.getContainerSize(); i++) {
-                ItemStack itemStack = this.inventory.getItem(i);
-                if(!itemStack.isEmpty()) {
-                    CompoundTag tag = new CompoundTag();
-                    tag.putByte("Slot", (byte) i);
-                    itemStack.save(tag);
-                    listTag.add(tag);
-                }
-            }
-            compoundTag.put("Items", listTag);
+        if(!this.inventory.getItem(1).isEmpty()) {
+            compoundTag.put("ArmorItem", this.inventory.getItem(1).save(new CompoundTag()));
         }
     }
 
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-
-        if(compoundTag.contains("Chested")) {
-            this.setChested(compoundTag.getBoolean("Chested"));
+        if(compoundTag.contains("ArmorItem", 10)) {
+            ItemStack itemStack = ItemStack.of(compoundTag.getCompound("ArmorItem"));
+            if(!itemStack.isEmpty() && this.isArmor(itemStack)) {
+                this.inventory.setItem(1, itemStack);
+            }
         }
 
-        if(compoundTag.contains("Saddled")) {
-            this.setSaddled(compoundTag.getBoolean("Saddled"));
+        this.updateContainerEquipment();
+    }
+
+    @Override
+    protected void playGallopSound(SoundType soundType) {
+        super.playGallopSound(soundType);
+        if(this.random.nextInt(10) == 0) {
+            this.playSound(SoundEvents.HORSE_BREATHE, soundType.getVolume() * 0.6f, soundType.getPitch());
         }
 
-        this.createInventory();
-        if(this.isChested()) {
-            ListTag listTag = compoundTag.getList("Items", 10);
+        ItemStack itemStack = this.inventory.getItem(1);
+        if(this.isArmor(itemStack)) {
+            itemStack.onHorseArmorTick(this.level, this);
+        }
+    }
 
-            for(int i = 0; i < listTag.size(); i++) {
-                CompoundTag tag = listTag.getCompound(i);
-                int j = tag.getByte("Slot") & 255;
-                if(j < this.inventory.getContainerSize()) {
-                    this.inventory.setItem(j, ItemStack.of(tag));
+    public ItemStack getArmor() {
+        return this.getItemBySlot(EquipmentSlot.CHEST);
+    }
+
+    public void setArmor(ItemStack itemStack) {
+        this.setItemSlot(EquipmentSlot.CHEST, itemStack);
+        this.setDropChance(EquipmentSlot.CHEST, 0f);
+    }
+
+    public void setArmorEquipment(ItemStack itemStack) {
+        this.setArmor(itemStack);
+        if(!this.level.isClientSide) {
+            this.getAttribute(Attributes.ARMOR).removeModifier(ARMOR_MODIFIER_UUID);
+            if(this.isArmor(itemStack)) {
+                int protection = ((HorseArmorItem)itemStack.getItem()).getProtection();
+                if(protection != 0) {
+                    this.getAttribute(Attributes.ARMOR).addTransientModifier(new AttributeModifier(ARMOR_MODIFIER_UUID, "Horse armor bonus", (double)protection, AttributeModifier.Operation.ADDITION));
                 }
             }
         }
     }
 
     @Override
-    public boolean isSaddled() {
-        return this.entityData.get(SADDLED);
-    }
-
-    public void setSaddled(boolean saddled) {
-        this.entityData.set(SADDLED, saddled);
-    }
-
-    @Override
-    public void equipSaddle(@Nullable SoundSource soundSource) {
-        if(soundSource != null) {
-            this.level.playSound(null, this, SoundEvents.HORSE_SADDLE, soundSource, 0.5F, 1F);
-        }
-    }
-
-    @Override
-    public boolean isChestable() {
-        return this.isAlive() && !this.isBaby() && this.isTamed();
-    }
-
-    @Override
-    public void equipChest(@Nullable SoundSource soundSource) {
-        if(soundSource != null) {
-            this.level.playSound(null, this, SoundEvents.MULE_CHEST, soundSource, 0.5F, 1F);
-        }
-    }
-
-    @Override
-    public boolean isChested() {
-        return this.entityData.get(CHESTED);
-    }
-
-    public void setChested(boolean chested) {
-        this.entityData.set(CHESTED, chested);
-    }
-
-    public boolean isArmored() {
-        return !this.inventory.getItem(1).isEmpty();
-    }
-
-    public void equipArmor(@Nullable SoundSource soundSource) {
-        if(soundSource != null) {
-            this.level.playSound(null, this, SoundEvents.HORSE_ARMOR, soundSource, 0.5F, 1F);
-        }
-    }
-
-    public void setArmorItem(ItemStack armorItem) {
-        this.inventory.setItem(1, armorItem);
-    }
-
-    public boolean isArmorable() {
-        return this.isAlive() && !this.isBaby() && this.isTamed();
+    public void updateContainerEquipment() {
+       super.updateContainerEquipment();
+       this.setArmorEquipment(this.inventory.getItem(1));
+       this.setDropChance(EquipmentSlot.CHEST, 0f);
     }
 
     @Override
     public void containerChanged(Container container) {
-        if(this.tickCount > 20) {
-            if (!this.isSaddled() && this.isSaddleable()) {
-                this.playSound(SoundEvents.HORSE_SADDLE, 0.5f, 1f);
-            }
-
-            if(!this.isArmored() && this.isArmorable()) {
-                this.playSound(SoundEvents.HORSE_ARMOR, 0.5f, 1f);
-                int armorAmount = ((HorseArmorItem)(this.inventory.getItem(1).getItem())).getProtection();
-                if(armorAmount != 0) {
-                    this.getAttribute(Attributes.ARMOR).addTransientModifier(new AttributeModifier(ARMOR_MODIFIER_UUID, "Horse armor bonus", armorAmount, AttributeModifier.Operation.ADDITION));
-                }
-            } else {
-                this.getAttribute(Attributes.ARMOR).removeModifier(ARMOR_MODIFIER_UUID);
-            }
+        ItemStack prevArmor = this.getArmor();
+        super.containerChanged(container);
+        ItemStack newArmor = this.getArmor();
+        if(this.tickCount > 20 && this.isArmor(newArmor) && prevArmor != newArmor) {
+            this.playSound(SoundEvents.HORSE_ARMOR, 0.5f, 1f);
         }
     }
 }

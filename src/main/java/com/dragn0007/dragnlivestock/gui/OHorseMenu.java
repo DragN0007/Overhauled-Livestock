@@ -4,7 +4,6 @@ import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -12,7 +11,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.network.IContainerFactory;
 
 public class OHorseMenu extends AbstractContainerMenu {
 
@@ -44,16 +42,16 @@ public class OHorseMenu extends AbstractContainerMenu {
         this.addSlot(new Slot(this.container, oHorseSlots++, 8, 36) {
             @Override
             public boolean mayPlace(ItemStack itemStack) {
-                return itemStack.getItem() instanceof HorseArmorItem && !this.hasItem() && OHorseMenu.this.oHorse.isArmorable();
+                return itemStack.getItem() instanceof HorseArmorItem && !this.hasItem() && OHorseMenu.this.oHorse.canWearArmor();
             }
 
             @Override
             public boolean isActive() {
-                return OHorseMenu.this.oHorse.isArmorable();
+                return OHorseMenu.this.oHorse.canWearArmor();
             }
         });
 
-        if(this.oHorse.isChested()) {
+        if(this.oHorse.hasChest()) {
             for(int y = 0; y < 3; y++) {
                 for(int x = 0; x < 5; x++) {
                     this.addSlot(new Slot(this.container, oHorseSlots++, 80 + x * 18, 18 + y * 18));
@@ -88,10 +86,10 @@ public class OHorseMenu extends AbstractContainerMenu {
         int containerSize = this.container.getContainerSize();
 
         if(slotId < containerSize) {
-            if(!this.moveItemStackTo(itemStack, containerSize, containerSize + 27, false)) {
+            if(!this.moveItemStackTo(itemStack, containerSize, containerSize + 36, true)) {
                 return ItemStack.EMPTY;
             }
-        } else if(slotId < containerSize + 27) {
+        } else if(slotId < containerSize + 36) {
             if(!this.moveItemStackTo(itemStack, 0, containerSize, false)) {
                 return ItemStack.EMPTY;
             }

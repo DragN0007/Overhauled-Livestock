@@ -24,23 +24,23 @@ public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
         RenderSystem.setShaderTexture(0, HORSE_INVENTORY_LOCATION);
-        int i = (this.width - this.imageWidth) / 2;
-        int j = (this.height - this.imageHeight) / 2;
-        this.blit(poseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
+        int x = (this.width - this.imageWidth) / 2;
+        int y = (this.height - this.imageHeight) / 2;
+        this.blit(poseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
 
-        if (this.oHorse.isChested()) {
-            this.blit(poseStack, i + 79, j + 17, 0, this.imageHeight, 90, 54);
+        if (this.oHorse.hasChest()) {
+            this.blit(poseStack, x + 79, y + 17, 0, this.imageHeight, 90, 54);
         }
 
         if (this.oHorse.isSaddleable()) {
-            this.blit(poseStack, i + 7, j + 17, 18, this.imageHeight + 54, 18, 18);
+            this.blit(poseStack, x + 7, y + 17, 18, this.imageHeight + 54, 18, 18);
         }
 
-        if (this.oHorse.isArmorable()) {
-            this.blit(poseStack, i + 7, j + 35, 0, this.imageHeight + 54, 18, 18);
+        if (this.oHorse.canWearArmor()) {
+            this.blit(poseStack, x + 7, y + 35, 0, this.imageHeight + 54, 18, 18);
         }
 
-        InventoryScreen.renderEntityInInventory(i + 51, j + 60, 17, i + 51 - mouseX, j + 25 - mouseY, this.oHorse);
+        InventoryScreen.renderEntityInInventory(x + 51, y + 60, 17, x + 51 - mouseX, y + 25 - mouseY, this.oHorse);
     }
 
     @Override

@@ -20,13 +20,12 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
     public OHorseRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new OHorseModel());
         this.addLayer(new OHorseMarkingLayer(this));
-//        this.addLayer(new OHorseArmorLayer(this));
     }
 
     @Override
     public void render(GeoModel model, OHorse animatable, float partialTick, RenderType type, PoseStack poseStack, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         if (!animatable.isBaby()) {
-            if (animatable.isChested()) {
+            if (animatable.hasChest()) {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(false));
             } else {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(true));
@@ -48,7 +47,7 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
                 model.getBone("back_left_shoe").ifPresent(b -> b.setHidden(true));
             }
 
-            if (animatable.isArmored()) {
+            if (animatable.isWearingArmor()) {
                 model.getBone("body_armor").ifPresent(b -> b.setHidden(false));
                 model.getBone("neck_armor").ifPresent(b -> b.setHidden(false));
                 model.getBone("head_armor").ifPresent(b -> b.setHidden(false));
