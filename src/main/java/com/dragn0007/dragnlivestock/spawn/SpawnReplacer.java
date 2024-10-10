@@ -7,6 +7,7 @@ import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
 import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
+import com.dragn0007.dragnlivestock.entities.horse.OHorseMarkingLayer;
 import com.dragn0007.dragnlivestock.entities.llama.OLlama;
 import com.dragn0007.dragnlivestock.entities.pig.OPig;
 import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
@@ -14,6 +15,8 @@ import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
 import com.dragn0007.dragnlivestock.entities.sheep.OSheep;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.animal.horse.Llama;
@@ -52,6 +55,9 @@ public class SpawnReplacer {
                 oHorse.setCustomName(vanillaHorse.getCustomName());
                 oHorse.setOwnerUUID(vanillaHorse.getOwnerUUID());
                 oHorse.setAge(vanillaHorse.getAge());
+                oHorse.setHealth(vanillaHorse.getHealth());
+                oHorse.setSpeed(vanillaHorse.getSpeed());
+                oHorse.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(oHorse.generateRandomJumpStrength());
 
                 //set random variants on-spawn
                 int randomVariant = event.getWorld().getRandom().nextInt(23);

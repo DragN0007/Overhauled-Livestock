@@ -40,6 +40,17 @@ public class AbstractOHorse extends AbstractHorse implements Saddleable, Chestab
 
     public static final UUID ARMOR_MODIFIER_UUID = UUID.fromString("3c50e848-b2e3-404a-9879-7550b12dd09b");
 
+    protected float generateRandomMaxHealth() {
+        return 15.0F + (float)this.random.nextInt(8) + (float)this.random.nextInt(9);
+    }
+
+    public double generateRandomJumpStrength() {
+        return (double)0.4F + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D;
+    }
+
+    protected double generateRandomSpeed() {
+        return ((double)0.45F + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D) * 0.25D;
+    }
 
     public AbstractOHorse(EntityType<? extends AbstractOHorse> entityType, Level level) {
         super(entityType, level);
