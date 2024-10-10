@@ -233,6 +233,7 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
 			} else {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
+				event.getController().setAnimationSpeed(1.2);
 			}
 		} else {
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
