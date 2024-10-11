@@ -1,10 +1,14 @@
 package com.dragn0007.dragnlivestock.entities.horse;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
+import com.dragn0007.dragnlivestock.Network;
 import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.HorseFollowHerdLeaderGoal;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.KeyboardInput;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -225,10 +229,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 					this.gallopSoundCounter = 0;
 				}
 
-				if (this.isSprinting()) { //walk when CTRL is toggled
-					fowardSpeed = 0.0F;
-				}
-
 				if (this.onGround && this.playerJumpPendingScale == 0.0F && this.isStanding()) {
 					sidewaysSpeed = 0.0F;
 					fowardSpeed = 0.0F;
@@ -300,6 +300,11 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 			double offsetX = 0;
 			double offsetY = 1.1;
 			double offsetZ = -0.2;
+
+			if (this.isSaddled() && this.isJumping()) {
+				offsetY = 2.0;
+				offsetZ = -0.5;
+			}
 
 			if (this.isSaddled() && getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
 				offsetY = 1.3;
