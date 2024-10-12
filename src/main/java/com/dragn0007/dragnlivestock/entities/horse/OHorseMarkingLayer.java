@@ -41,6 +41,7 @@ public class OHorseMarkingLayer extends GeoLayerRenderer<OHorse> {
         BLIND_EYES(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_blind_eyes.png")),
         BLUE_EYE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_blue_eye.png")),
         BROWN_EYE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_brown_eye.png")),
+        FLEABITTEN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_fleabitten.png")),
         FULL_SOCKS(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_full_socks.png")),
         FULL_SOCKS_FEATHERING(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_full_socks_feathering.png")),
         GOLD_EYE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_gold_eye.png")),
