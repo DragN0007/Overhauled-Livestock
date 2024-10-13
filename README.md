@@ -1,4 +1,4 @@
-##Servers Who Do Not Want O-Animal Conversions
+## Servers Who Do Not Want O-Animal Conversions
 For servers who don't want automatic o-animal conversions,
 download the 'dragnlivestock-common.toml' config file
 and put it into your server config folder *before*
