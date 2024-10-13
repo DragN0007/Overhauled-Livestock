@@ -4,7 +4,7 @@ download the 'dragnlivestock-common.toml' config file
 and put it into your server config folder *before*
 starting the server. Since LO converts animals by default,
 starting the server before adding the custom config file
-will replace *all* loaded animals.
+will replace loaded animals.
 
 ## Livestock Overhaul Custom Resources
 Livestock Overhaul comes with a built-in custom texture option for its animals.
