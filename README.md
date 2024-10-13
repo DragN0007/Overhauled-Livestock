@@ -1,6 +1,6 @@
 ## Servers Who Do Not Want O-Animal Conversions
 For servers who don't want automatic o-animal conversions,
-download the 'dragnlivestock-common.toml' config file
+download the 'livestock-overhaul-common.toml' config file
 and put it into your server config folder *before*
 starting the server. Since LO converts animals by default,
 starting the server before adding the custom config file
