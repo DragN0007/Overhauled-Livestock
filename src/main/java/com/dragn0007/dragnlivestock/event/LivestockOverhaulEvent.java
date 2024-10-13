@@ -27,6 +27,9 @@ import com.dragn0007.dragnlivestock.gui.LOMenuTypes;
 import com.dragn0007.dragnlivestock.gui.OHorseScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -50,8 +53,22 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
         event.put(EntityTypes.O_PIG_ENTITY.get(), OPig.createAttributes().build());
 
         event.put(EntityTypes.OVERWORLD_UNICORN_ENTITY.get(), OverworldUnicorn.createBaseHorseAttributes().build());
+        SpawnPlacements.register
+                (EntityTypes.OVERWORLD_UNICORN_ENTITY.get(),
+                        SpawnPlacements.Type.ON_GROUND,
+                        Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+
         event.put(EntityTypes.NETHER_UNICORN_ENTITY.get(), NetherUnicorn.createBaseHorseAttributes().build());
+        SpawnPlacements.register
+                (EntityTypes.NETHER_UNICORN_ENTITY.get(),
+                        SpawnPlacements.Type.ON_GROUND,
+                        Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+
         event.put(EntityTypes.END_UNICORN_ENTITY.get(), EndUnicorn.createBaseHorseAttributes().build());
+        SpawnPlacements.register
+                (EntityTypes.END_UNICORN_ENTITY.get(),
+                        SpawnPlacements.Type.ON_GROUND,
+                        Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
     }
 
     @SubscribeEvent
