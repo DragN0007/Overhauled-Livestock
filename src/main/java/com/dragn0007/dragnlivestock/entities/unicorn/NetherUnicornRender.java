@@ -20,6 +20,7 @@ public class NetherUnicornRender extends ExtendedGeoEntityRenderer<NetherUnicorn
     public NetherUnicornRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new NetherUnicornModel());
         this.addLayer(new NetherUnicornHornLayer(this));
+        this.addLayer(new NetherUnicornArmorLayer(this));
     }
 
     @Override

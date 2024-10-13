@@ -1,4 +1,4 @@
-package com.dragn0007.dragnlivestock.entities.horse;
+package com.dragn0007.dragnlivestock.entities.unicorn;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.items.LOItems;
@@ -18,13 +18,13 @@ import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class OHorseArmorLayer extends GeoLayerRenderer<OHorse> {
-    public OHorseArmorLayer(IGeoRenderer<OHorse> entityRendererIn) {
+public class NetherUnicornArmorLayer extends GeoLayerRenderer<NetherUnicorn> {
+    public NetherUnicornArmorLayer(IGeoRenderer<NetherUnicorn> entityRendererIn) {
         super(entityRendererIn);
     }
 
     @Override
-    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, OHorse entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, NetherUnicorn entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         List<ItemStack> armorSlots = (List<ItemStack>) entity.getArmorSlots();
         if (armorSlots == null || armorSlots.size() <= 2) {
             return;

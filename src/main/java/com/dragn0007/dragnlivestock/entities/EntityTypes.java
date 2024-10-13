@@ -4,8 +4,10 @@ import com.dragn0007.dragnlivestock.entities.bee.OBee;
 import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
 import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
+import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.llama.OLlama;
+import com.dragn0007.dragnlivestock.entities.mule.OMule;
 import com.dragn0007.dragnlivestock.entities.pig.OPig;
 import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
@@ -31,6 +33,18 @@ public class EntityTypes {
                     MobCategory.CREATURE)
                     .sized(2f,2f)
                     .build(new ResourceLocation(MODID,"o_horse").toString()));
+
+    public static final RegistryObject<EntityType<ODonkey>> O_DONKEY_ENTITY = ENTITY_TYPES.register("o_donkey",
+            () -> EntityType.Builder.of(ODonkey::new,
+                            MobCategory.CREATURE)
+                    .sized(2f,2f)
+                    .build(new ResourceLocation(MODID,"o_donkey").toString()));
+
+    public static final RegistryObject<EntityType<OMule>> O_MULE_ENTITY = ENTITY_TYPES.register("o_mule",
+            () -> EntityType.Builder.of(OMule::new,
+                            MobCategory.CREATURE)
+                    .sized(2f,2f)
+                    .build(new ResourceLocation(MODID,"o_mule").toString()));
 
     public static final RegistryObject<EntityType<OCow>> O_COW_ENTITY = ENTITY_TYPES.register("o_cow",
             () -> EntityType.Builder.of(OCow::new,

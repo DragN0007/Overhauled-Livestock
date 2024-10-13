@@ -1,9 +1,6 @@
-package com.dragn0007.dragnlivestock.entities.horse;
+package com.dragn0007.dragnlivestock.entities.mule;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
-import com.dragn0007.dragnlivestock.entities.EntityTypes;
-import com.dragn0007.dragnlivestock.entities.ai.HorseFollowHerdLeaderGoal;
-import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -39,23 +36,18 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Stream;
 
-public class OHorse extends AbstractOHorse implements IAnimatable {
-	public static final EntityDataAccessor<ResourceLocation> VARIANT_TEXTURE = SynchedEntityData.defineId(OHorse.class, LivestockOverhaul.RESOURCE_LOCATION);
-	public static final EntityDataAccessor<ResourceLocation> OVERLAY_TEXTURE = SynchedEntityData.defineId(OHorse.class, LivestockOverhaul.RESOURCE_LOCATION);
-	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> BREED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+public class OMule extends AbstractOHorse implements IAnimatable {
+	public static final EntityDataAccessor<ResourceLocation> VARIANT_TEXTURE = SynchedEntityData.defineId(OMule.class, LivestockOverhaul.RESOURCE_LOCATION);
+	public static final EntityDataAccessor<ResourceLocation> OVERLAY_TEXTURE = SynchedEntityData.defineId(OMule.class, LivestockOverhaul.RESOURCE_LOCATION);
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OMule.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OMule.class, EntityDataSerializers.INT);
 
 
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
-	public OHorse leader;
-	public int herdSize = 1;
 
-	public OHorse(EntityType<? extends OHorse> type, Level level) {
+	public OMule(EntityType<? extends OMule> type, Level level) {
 		super(type, level);
 		this.noCulling = true;
 	}
@@ -82,8 +74,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.4, true));
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 0.0F));
-
-		this.goalSelector.addGoal(3, new HorseFollowHerdLeaderGoal(this));
 		this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D, AbstractOHorse.class));
 		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, (livingEntity) -> livingEntity instanceof Wolf));
@@ -119,7 +109,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
 			event.getController().setAnimationSpeed(1.0);
 		} else if (event.isMoving()) {
-			if (currentSpeed > speedThreshold || this.isAggressive() || this.isSprinting()) {
+			if (currentSpeed > speedThreshold || this.isAggressive() || this.isSprinting() || this.isSwimming()) {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
 				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
 			} else {
@@ -152,58 +142,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 	public void registerControllers (AnimationData data){
 		data.addAnimationController(new AnimationController(this, "controller", 5, this::predicate));
 		data.addAnimationController(new AnimationController(this, "attackController", 1, this::attackPredicate));
-	}
-
-	public boolean isFollower() {
-		return this.leader != null && this.leader.isAlive();
-	}
-
-	public void startFollowing(OHorse horse) {
-		this.leader = horse;
-		horse.addFollower();
-	}
-
-	public void stopFollowing() {
-		this.leader.removeFollower();
-		this.leader = null;
-	}
-
-	public void addFollower() {
-		this.herdSize++;
-	}
-
-	public void removeFollower() {
-		this.herdSize--;
-	}
-
-	public boolean canBeFollowed() {
-		return this.hasFollowers() && this.herdSize < this.getMaxHerdSize();
-	}
-
-	public int getMaxHerdSize() {
-		return 3;
-	}
-
-	public boolean hasFollowers() {
-		return this.herdSize > 1;
-	}
-
-	public boolean inRangeOfLeader() {
-		return this.distanceToSqr(this.leader) <= 121.0D;
-	}
-
-	public void pathToLeader() {
-		if (this.isFollower()) {
-			this.getNavigation().moveTo(this.leader, 1.0D);
-		}
-	}
-
-	public void addFollowers(Stream<? extends OHorse> stream) {
-		stream.limit(this.getMaxHerdSize() - this.herdSize).filter((horse) -> {
-			return horse != this;
-		}).forEach((horse) -> {
-			horse.startFollowing(this);
-		});
 	}
 
 	@Override
@@ -279,13 +217,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		if (this.isSaddled() && !this.isVehicle() || this.isLeashed()) {
 			this.getNavigation().stop();
 		}
-
-		if (this.hasFollowers() && this.level.random.nextInt(200) == 1) {
-			List<? extends OHorse> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D));
-			if (list.size() <= 1) {
-				this.herdSize = 1;
-			}
-		}
 	}
 
 	@Override
@@ -299,22 +230,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 			double offsetX = 0;
 			double offsetY = 1.1;
 			double offsetZ = -0.2;
-
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
-				offsetY = 1.3;
-			}
-
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.DRAFT.resourceLocation)) {
-				offsetY = 1.45;
-			}
-
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.WARMBLOOD.resourceLocation)) {
-				offsetY = 1.35;
-			}
-
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.PONY.resourceLocation)) {
-				offsetY = 1.1;
-			}
 
 			double radYaw = Math.toRadians(this.getYRot());
 
@@ -333,44 +248,38 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 	@Override
 	public SoundEvent getAmbientSound() {
 		super.getAmbientSound();
-		return SoundEvents.HORSE_AMBIENT;
+		return SoundEvents.MULE_AMBIENT;
 	}
 
 	@Override
 	public SoundEvent getDeathSound() {
-		return SoundEvents.HORSE_DEATH;
+		return SoundEvents.MULE_DEATH;
 	}
 
 	@Nullable
 	@Override
 	public SoundEvent getEatingSound() {
-		return SoundEvents.HORSE_EAT;
+		return SoundEvents.MULE_EAT;
 	}
 
 	@Override
 	public SoundEvent getHurtSound(DamageSource damageSource) {
 		super.getHurtSound(damageSource);
-		return SoundEvents.HORSE_HURT;
+		return SoundEvents.MULE_HURT;
 	}
 
 	@Override
 	public SoundEvent getAngrySound() {
 		super.getAngrySound();
-		return SoundEvents.HORSE_ANGRY;
+		return SoundEvents.MULE_ANGRY;
 	}
 
 	public ResourceLocation getTextureLocation() {
 		return this.entityData.get(VARIANT_TEXTURE);
-//		return OHorseModel.Variant.variantFromOrdinal(getVariant()).resourceLocation;
 	}
 
 	public ResourceLocation getOverlayLocation() {
 		return this.entityData.get(OVERLAY_TEXTURE);
-//		return OHorseMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
-	}
-
-	public ResourceLocation getModelLocation() {
-		return BreedModel.breedFromOrdinal(getBreed()).resourceLocation;
 	}
 
 	public int getVariant() {
@@ -381,28 +290,20 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		return this.entityData.get(OVERLAY);
 	}
 
-	public int getBreed() {
-		return this.entityData.get(BREED);
-	}
-
 	public void setVariant(int variant) {
-		this.entityData.set(VARIANT_TEXTURE, OHorseModel.Variant.variantFromOrdinal(variant).resourceLocation);
+		this.entityData.set(VARIANT_TEXTURE, OMuleModel.Variant.variantFromOrdinal(variant).resourceLocation);
 		this.entityData.set(VARIANT, variant);
 	}
 
 	public void setOverlayVariant(int variant) {
-		this.entityData.set(OVERLAY_TEXTURE, OHorseMarkingLayer.Overlay.overlayFromOrdinal(variant).resourceLocation);
+		this.entityData.set(OVERLAY_TEXTURE, OMuleMarkingLayer.Overlay.overlayFromOrdinal(variant).resourceLocation);
 		this.entityData.set(OVERLAY, variant);
-	}
-
-	public void setBreed(int breed) {
-		this.entityData.set(BREED, breed);
 	}
 
 	public void setVariantTexture(String variant) {
 		ResourceLocation resourceLocation = ResourceLocation.tryParse(variant);
 		if (resourceLocation == null) {
-			resourceLocation = OHorseModel.Variant.BAY.resourceLocation;
+			resourceLocation = OMuleModel.Variant.DEFAULT.resourceLocation;
 		}
 		this.entityData.set(VARIANT_TEXTURE, resourceLocation);
 	}
@@ -410,7 +311,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 	public void setOverlayVariantTexture(String variant) {
 		ResourceLocation resourceLocation = ResourceLocation.tryParse(variant);
 		if (resourceLocation == null) {
-			resourceLocation = OHorseMarkingLayer.Overlay.NONE.resourceLocation;
+			resourceLocation = OMuleMarkingLayer.Overlay.NONE.resourceLocation;
 		}
 		this.entityData.set(OVERLAY_TEXTURE, resourceLocation);
 	}
@@ -434,10 +335,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		if (tag.contains("Overlay_Texture")) {
 			this.setOverlayVariantTexture(tag.getString("Overlay_Texture"));
 		}
-
-		if (tag.contains("Breed")) {
-			this.setBreed(tag.getInt("Breed"));
-		}
 	}
 
 	@Override
@@ -447,19 +344,17 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		tag.putInt("Overlay", this.getOverlayVariant());
 		tag.putString("Variant_Texture", this.getTextureLocation().toString());
 		tag.putString("Overlay_Texture", this.getOverlayLocation().toString());
-		tag.putInt("Breed", getBreed());
 	}
 
 	@Override
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		if (data == null) {
-			data = new AgeableMob.AgeableMobGroupData(0.2F);
+			data = new AgeableMobGroupData(0.2F);
 		}
 		Random random = new Random();
-		this.setVariant(random.nextInt(OHorseModel.Variant.values().length));
-		this.setOverlayVariant(random.nextInt(OHorseMarkingLayer.Overlay.values().length));
-//		setBreed(random.nextInt(BreedModel.values().length)); breeds shouldnt spawn naturally!
+		this.setVariant(random.nextInt(OMuleModel.Variant.values().length));
+		this.setOverlayVariant(random.nextInt(OMuleMarkingLayer.Overlay.values().length));
 
 		this.randomizeAttributes();
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
@@ -470,67 +365,18 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
-		this.entityData.define(BREED, 0);
-		this.entityData.define(VARIANT_TEXTURE, OHorseModel.Variant.BAY.resourceLocation);
-		this.entityData.define(OVERLAY_TEXTURE, OHorseMarkingLayer.Overlay.NONE.resourceLocation);
+		this.entityData.define(VARIANT_TEXTURE, OMuleModel.Variant.DEFAULT.resourceLocation);
+		this.entityData.define(OVERLAY_TEXTURE, OMuleMarkingLayer.Overlay.NONE.resourceLocation);
 	}
 
 
+	@Override
 	public boolean canMate(Animal animal) {
-		if (animal == this) {
-			return false;
-		} else if (!(animal instanceof ODonkey) && !(animal instanceof OHorse)) {
-			return false;
-		} else {
-			return this.canParent() && ((AbstractOHorse)animal).canParent();
-		}
+		return false;
 	}
 
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-		AbstractOHorse abstracthorse;
-		if (ageableMob instanceof ODonkey) {
-			abstracthorse = EntityTypes.O_MULE_ENTITY.get().create(serverLevel);
-		} else {
-			OHorse horse = (OHorse) ageableMob;
-			abstracthorse = EntityTypes.O_HORSE_ENTITY.get().create(serverLevel);
-
-			int i = this.random.nextInt(9);
-			int variant;
-			if (i < 4) {
-				variant = this.getVariant();
-			} else if (i < 8) {
-				variant = horse.getVariant();
-			} else {
-				variant = this.random.nextInt(OHorseModel.Variant.values().length);
-			}
-
-			int j = this.random.nextInt(5);
-			int overlay;
-			if (j < 2) {
-				overlay = this.getOverlayVariant();
-			} else if (j < 4) {
-				overlay = horse.getOverlayVariant();
-			} else {
-				overlay = this.random.nextInt(OHorseMarkingLayer.Overlay.values().length);
-			}
-
-			int k = this.random.nextInt(5);
-			int breed;
-			if (k < 2) {
-				breed = this.getBreed();
-			} else if (k < 4) {
-				breed = horse.getBreed();
-			} else {
-				breed = this.random.nextInt(BreedModel.values().length);
-			}
-
-			((OHorse) abstracthorse).setVariant(variant);
-			((OHorse) abstracthorse).setOverlayVariant(overlay);
-			((OHorse) abstracthorse).setBreed(breed);
-		}
-
-		this.setOffspringAttributes(ageableMob, abstracthorse);
-		return abstracthorse;
+		return null;
 	}
 }

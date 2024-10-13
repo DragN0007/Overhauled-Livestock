@@ -20,6 +20,7 @@ public class OverworldUnicornRender extends ExtendedGeoEntityRenderer<OverworldU
     public OverworldUnicornRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new OverworldUnicornModel());
         this.addLayer(new OverworldUnicornHornLayer(this));
+        this.addLayer(new OverworldUnicornArmorLayer(this));
     }
 
     @Override

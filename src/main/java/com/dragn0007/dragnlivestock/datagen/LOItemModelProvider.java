@@ -20,6 +20,7 @@ public class LOItemModelProvider extends ItemModelProvider {
         simpleItem(LOItems.LIVESTOCK_OVERHAUL.get());
 
         simpleItem(LOItems.BRAND_TAG.get());
+        simpleItem(LOItems.NETHERITE_HORSE_ARMOR.get());
 
         simpleItem(LOItems.SHEEP_MILK_BUCKET.get());
         simpleItem(LOItems.LLAMA_MILK_BUCKET.get());

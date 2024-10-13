@@ -23,7 +23,7 @@ public class HorseFollowHerdLeaderGoal extends Goal {
    }
 
    public boolean canUse() {
-      if (this.mob.hasFollowers()) {
+      if (this.mob.hasFollowers() && !mob.isSaddled() && !mob.isLeashed()) {
          return false;
       } else if (this.mob.isFollower()) {
          return true;

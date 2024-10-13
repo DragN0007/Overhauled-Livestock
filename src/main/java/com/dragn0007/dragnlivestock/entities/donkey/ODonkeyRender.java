@@ -1,4 +1,4 @@
-package com.dragn0007.dragnlivestock.entities.horse;
+package com.dragn0007.dragnlivestock.entities.donkey;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -15,16 +15,16 @@ import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.geo.render.built.GeoModel;
 import software.bernie.geckolib3.renderers.geo.ExtendedGeoEntityRenderer;
 
-public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
+public class ODonkeyRender extends ExtendedGeoEntityRenderer<ODonkey> {
 
-    public OHorseRender(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new OHorseModel());
-        this.addLayer(new OHorseMarkingLayer(this));
-        this.addLayer(new OHorseArmorLayer(this));
+    public ODonkeyRender(EntityRendererProvider.Context renderManager) {
+        super(renderManager, new ODonkeyModel());
+        this.addLayer(new ODonkeyMarkingLayer(this));
+        this.addLayer(new ODonkeyArmorLayer(this));
     }
 
     @Override
-    public void render(GeoModel model, OHorse animatable, float partialTick, RenderType type, PoseStack poseStack, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void render(GeoModel model, ODonkey animatable, float partialTick, RenderType type, PoseStack poseStack, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         if (!animatable.isBaby()) {
             if (animatable.hasChest()) {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(false));
@@ -69,13 +69,13 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
 
     @Nullable
     @Override
-    protected ResourceLocation getTextureForBone(String boneName, OHorse animatable) {
+    protected ResourceLocation getTextureForBone(String boneName, ODonkey animatable) {
         return null;
     }
 
     @Nullable
     @Override
-    protected ItemStack getHeldItemForBone(String boneName, OHorse animatable) {
+    protected ItemStack getHeldItemForBone(String boneName, ODonkey animatable) {
         return null;
     }
 
@@ -86,24 +86,24 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
 
     @Nullable
     @Override
-    protected BlockState getHeldBlockForBone(String boneName, OHorse animatable) {
+    protected BlockState getHeldBlockForBone(String boneName, ODonkey animatable) {
         return null;
     }
 
     @Override
-    protected void preRenderItem(PoseStack poseStack, ItemStack stack, String boneName, OHorse animatable, IBone bone) {
+    protected void preRenderItem(PoseStack poseStack, ItemStack stack, String boneName, ODonkey animatable, IBone bone) {
     }
 
     @Override
-    protected void preRenderBlock(PoseStack poseStack, BlockState state, String boneName, OHorse animatable) {
+    protected void preRenderBlock(PoseStack poseStack, BlockState state, String boneName, ODonkey animatable) {
     }
 
     @Override
-    protected void postRenderItem(PoseStack poseStack, ItemStack stack, String boneName, OHorse animatable, IBone bone) {
+    protected void postRenderItem(PoseStack poseStack, ItemStack stack, String boneName, ODonkey animatable, IBone bone) {
     }
 
     @Override
-    protected void postRenderBlock(PoseStack poseStack, BlockState state, String boneName, OHorse animatable) {
+    protected void postRenderBlock(PoseStack poseStack, BlockState state, String boneName, ODonkey animatable) {
     }
 }
 

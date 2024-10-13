@@ -20,6 +20,7 @@ public class EndUnicornRender extends ExtendedGeoEntityRenderer<EndUnicorn> {
     public EndUnicornRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new EndUnicornModel());
         this.addLayer(new EndUnicornHornLayer(this));
+        this.addLayer(new EndUnicornArmorLayer(this));
     }
 
     @Override

@@ -4,6 +4,12 @@
   "item.dragnlivestock.o_horse_spawn_egg": "O-Horse Spawn Egg",
   "entity.dragnlivestock.o_horse": "O-Horse",
 
+  "item.dragnlivestock.o_donkey_spawn_egg": "O-Donkey Spawn Egg",
+  "entity.dragnlivestock.o_donkey": "O-Donkey",
+
+  "item.dragnlivestock.o_mule_spawn_egg": "O-Mule Spawn Egg",
+  "entity.dragnlivestock.o_mule": "O-Mule",
+
   "item.dragnlivestock.o_cow_spawn_egg": "O-Cow Spawn Egg",
   "entity.dragnlivestock.o_cow": "O-Cow",
 
@@ -44,6 +50,8 @@
 
   "item.dragnlivestock.brand_tag": "Brand Tag",
   "tooltip.dragnlivestock.brand_tag.tooltip": "This item isn't fully functional yet.",
+
+  "item.dragnlivestock.netherite_horse_armor": "Netherite Horse Armor",
 
   "item.dragnlivestock.sheep_milk_bucket": "Sheep Milk Bucket",
   "item.dragnlivestock.llama_milk_bucket": "Llama Milk Bucket",
