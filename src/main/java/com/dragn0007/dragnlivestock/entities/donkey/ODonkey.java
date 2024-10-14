@@ -118,7 +118,7 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
 			} else {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
-				event.getController().setAnimationSpeed(Math.max(0.1, 0.7 * event.getController().getAnimationSpeed() + animationSpeed));
+				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
 			}
 		} else {
 			if(this.isVehicle()) {
@@ -358,7 +358,7 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 		}
 		Random random = new Random();
 		this.setVariant(random.nextInt(ODonkeyModel.Variant.values().length));
-//		this.setOverlayVariant(random.nextInt(ODonkeyMarkingLayer.Overlay.values().length));
+		this.setOverlayVariant(random.nextInt(ODonkeyMarkingLayer.Overlay.values().length));
 
 		this.randomizeAttributes();
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);

@@ -31,25 +31,25 @@ public class EntityTypes {
     public static final RegistryObject<EntityType<OHorse>> O_HORSE_ENTITY = ENTITY_TYPES.register("o_horse",
             () -> EntityType.Builder.of(OHorse::new,
                     MobCategory.CREATURE)
-                    .sized(2f,2f)
+                    .sized(1.5f,2f)
                     .build(new ResourceLocation(MODID,"o_horse").toString()));
 
     public static final RegistryObject<EntityType<ODonkey>> O_DONKEY_ENTITY = ENTITY_TYPES.register("o_donkey",
             () -> EntityType.Builder.of(ODonkey::new,
                             MobCategory.CREATURE)
-                    .sized(2f,2f)
+                    .sized(1.5f,2f)
                     .build(new ResourceLocation(MODID,"o_donkey").toString()));
 
     public static final RegistryObject<EntityType<OMule>> O_MULE_ENTITY = ENTITY_TYPES.register("o_mule",
             () -> EntityType.Builder.of(OMule::new,
                             MobCategory.CREATURE)
-                    .sized(2f,2f)
+                    .sized(1.5f,2f)
                     .build(new ResourceLocation(MODID,"o_mule").toString()));
 
     public static final RegistryObject<EntityType<OCow>> O_COW_ENTITY = ENTITY_TYPES.register("o_cow",
             () -> EntityType.Builder.of(OCow::new,
                             MobCategory.CREATURE)
-                    .sized(2f,2f)
+                    .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"o_cow").toString()));
 
     public static final RegistryObject<EntityType<OChicken>> O_CHICKEN_ENTITY = ENTITY_TYPES.register("o_chicken",
@@ -104,19 +104,19 @@ public class EntityTypes {
     public static final RegistryObject<EntityType<OverworldUnicorn>> OVERWORLD_UNICORN_ENTITY = ENTITY_TYPES.register("overworld_unicorn",
             () -> EntityType.Builder.of(OverworldUnicorn::new,
                             MobCategory.CREATURE)
-                    .sized(2f,2f)
+                    .sized(1.5f,2f)
                     .build(new ResourceLocation(MODID,"overworld_unicorn").toString()));
 
     public static final RegistryObject<EntityType<NetherUnicorn>> NETHER_UNICORN_ENTITY = ENTITY_TYPES.register("nether_unicorn",
             () -> EntityType.Builder.of(NetherUnicorn::new,
                             MobCategory.CREATURE)
-                    .sized(2f,2f)
+                    .sized(1.5f,2f)
                     .build(new ResourceLocation(MODID,"nether_unicorn").toString()));
 
     public static final RegistryObject<EntityType<EndUnicorn>> END_UNICORN_ENTITY = ENTITY_TYPES.register("end_unicorn",
             () -> EntityType.Builder.of(EndUnicorn::new,
                             MobCategory.CREATURE)
-                    .sized(2f,2f)
+                    .sized(1.5f,2f)
                     .build(new ResourceLocation(MODID,"end_unicorn").toString()));
 }
 

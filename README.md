@@ -44,42 +44,24 @@ Examples for the Template Texture Pack:
 /summon dragnlivestock:o_horse_entity ~ ~ ~ {Variant_Texture:"base_colors:my_custom_texture_name.png", Overlay_Texture:"pattern_overlays:my_custom_pattern_name.png"}
 ```
 
-### Summon command legend
+### Animals That Currently Have Dynamic Resources
 
 ```
 O-Horse
-/summon dragnlivestock:o_horse_entity ~ ~ ~ {Texture:".png"}
+/summon dragnlivestock:o_horse ~ ~ ~ {Texture:".png"}
 
 O-Mule
-/summon dragnlivestock:o_mule_entity ~ ~ ~ {Texture:".png"}
+/summon dragnlivestock:o_mule ~ ~ ~ {Texture:".png"}
 
 O-Donkey
-/summon dragnlivestock:o_donkey_entity ~ ~ ~ {Texture:".png"}
+/summon dragnlivestock:o_donkey ~ ~ ~ {Texture:".png"}
 
-O-Cow
-/summon dragnlivestock:o_cow_entity ~ ~ ~ {Texture:".png"}
+Overworld Unicorn
+/summon dragnlivestock:overworld_unicorn ~ ~ ~ {Texture:".png"}
 
-O-Chicken
-/summon dragnlivestock:o_chicken_entity ~ ~ ~ {Texture:".png"}
+Nether Unicorn
+/summon dragnlivestock:nether_unicorn ~ ~ ~ {Texture:".png"}
 
-O-Sheep
-/summon dragnlivestock:o_sheep_entity ~ ~ ~ {Texture:".png"}
-
-O-Pig
-/summon dragnlivestock:o_pig_entity ~ ~ ~ {Texture:".png"}
-
-O-Rabbit
-/summon dragnlivestock:o_rabbit_entity ~ ~ ~ {Texture:".png"}
-
-O-Llama
-/summon dragnlivestock:o_llama_entity ~ ~ ~ {Texture:".png"}
-
-O-Bee
-/summon dragnlivestock:o_bee_entity ~ ~ ~ {Texture:".png"}\
-
-O-Salmon
-/summon dragnlivestock:o_salmon_entity ~ ~ ~ {Texture:".png"}
-
-O-Cod
-/summon dragnlivestock:o_cod_entity ~ ~ ~ {Texture:".png"}
+End Unicorn
+/summon dragnlivestock:end_unicorn ~ ~ ~ {Texture:".png"}
 ```

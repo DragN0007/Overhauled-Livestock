@@ -113,9 +113,6 @@ public class SpawnReplacer {
                 int randomVariant = event.getWorld().getRandom().nextInt(23);
                 oDonkey.setVariant(randomVariant);
 
-                int randomOverlayVariant = event.getWorld().getRandom().nextInt(31);
-                oDonkey.setOverlayVariant(randomOverlayVariant);
-
                 if (event.getWorld().isClientSide) {
                     vanillaDonkey.remove(Entity.RemovalReason.DISCARDED);
                 }
@@ -158,9 +155,6 @@ public class SpawnReplacer {
 
                 int randomVariant = event.getWorld().getRandom().nextInt(23);
                 oMule.setVariant(randomVariant);
-
-                int randomOverlayVariant = event.getWorld().getRandom().nextInt(31);
-                oMule.setOverlayVariant(randomOverlayVariant);
 
                 if (event.getWorld().isClientSide) {
                     vanillaMule.remove(Entity.RemovalReason.DISCARDED);

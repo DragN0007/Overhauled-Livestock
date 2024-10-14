@@ -1,0 +1,31 @@
+
+[Spawning]
+	#Should vanilla horses be replaced by O-Horses?
+	"Replace Vanilla Horses" = false
+	#Should vanilla mules be replaced by O-Mules?
+	"Replace Vanilla Mules" = false
+	#Should vanilla donkeys be replaced by O-Donkeys?
+	"Replace Vanilla Donkeys" = false
+	#Should vanilla cows be replaced by O-Cows?
+	"Replace Vanilla Cows" = false
+	#Should vanilla chickens be replaced by O-Chickens?
+	"Replace Vanilla Chickens" = false
+	#Should vanilla sheep be replaced by O-Sheep?
+	"Replace Vanilla Sheep" = false
+	#Should vanilla pigs be replaced by O-Pigs?
+	"Replace Vanilla Pigs" = false
+	#Should vanilla llamas be replaced by O-Llamas?
+	"Replace Vanilla Llamas" = false
+	#Should vanilla rabbits be replaced by O-Rabbits?
+	"Replace Vanilla Rabbits" = false
+	#Should vanilla  be replaced by O-Salmon?
+	"Replace Vanilla Salmon" = false
+	#Should vanilla cod be replaced by O-Cod?
+	"Replace Vanilla Cod" = false
+	#Should vanilla bees be replaced by O-Bees?
+	"Replace Vanilla Bees" = false
+
+[Uninstalling]
+	#Should all O-Animals be converted back into a vanilla counterpart? WARNING: This should be used *sparingly*, and only when needed/ if this mod is about to be removed.
+	"Failsafe O-Animal -> Vanilla Animal Converter" = false
+
