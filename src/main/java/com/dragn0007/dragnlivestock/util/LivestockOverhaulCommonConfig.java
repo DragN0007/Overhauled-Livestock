@@ -18,6 +18,7 @@ public class LivestockOverhaulCommonConfig {
     public static final ForgeConfigSpec.BooleanValue REPLACE_SALMON;
     public static final ForgeConfigSpec.BooleanValue REPLACE_COD;
     public static final ForgeConfigSpec.BooleanValue REPLACE_BEES;
+    public static final ForgeConfigSpec.BooleanValue FAILSAFE_REPLACER;
 
     static {
         BUILDER.push("Spawning");
@@ -57,8 +58,15 @@ public class LivestockOverhaulCommonConfig {
 
         REPLACE_BEES = BUILDER.comment("Should vanilla bees be replaced by O-Bees?")
                 .define("Replace Vanilla Bees", true);
-
         BUILDER.pop();
+
+        BUILDER.push("Uninstalling");
+        FAILSAFE_REPLACER =
+                BUILDER.comment("Should all O-Animals be converted back into a vanilla counterpart? " +
+                                "WARNING: This should be used *sparingly*, and only when needed/ if this mod is about to be removed.")
+                        .define("Failsafe O-Animal -> Vanilla Animal Converter", false);
+        BUILDER.pop();
+
         SPEC = BUILDER.build();
     }
 }

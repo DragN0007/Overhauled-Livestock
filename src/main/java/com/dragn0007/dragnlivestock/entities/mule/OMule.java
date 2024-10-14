@@ -81,17 +81,17 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 
 	@Override
 	public float generateRandomMaxHealth() {
-		return 15.0F + (float)this.random.nextInt(8) + (float)this.random.nextInt(9);
+		return 17.0F + (float)this.random.nextInt(8) + (float)this.random.nextInt(9);
 	}
 
 	@Override
 	public double generateRandomJumpStrength() {
-		return (double)0.4F + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D;
+		return (double)0.3F + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D;
 	}
 
 	@Override
 	public double generateRandomSpeed() {
-		return ((double)0.45F + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D) * 0.25D;
+		return ((double)0.40F + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D) * 0.25D;
 	}
 
 	@Override

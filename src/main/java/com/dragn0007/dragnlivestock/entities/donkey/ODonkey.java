@@ -85,17 +85,17 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 
 	@Override
 	public float generateRandomMaxHealth() {
-		return 15.0F + (float)this.random.nextInt(8) + (float)this.random.nextInt(9);
+		return 20.0F + (float)this.random.nextInt(8) + (float)this.random.nextInt(9);
 	}
 
 	@Override
 	public double generateRandomJumpStrength() {
-		return (double)0.4F + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D;
+		return (double)0.2F + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D;
 	}
 
 	@Override
 	public double generateRandomSpeed() {
-		return ((double)0.45F + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D) * 0.25D;
+		return ((double)0.35F + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D) * 0.25D;
 	}
 
 	@Override
@@ -358,7 +358,7 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 		}
 		Random random = new Random();
 		this.setVariant(random.nextInt(ODonkeyModel.Variant.values().length));
-		this.setOverlayVariant(random.nextInt(ODonkeyMarkingLayer.Overlay.values().length));
+//		this.setOverlayVariant(random.nextInt(ODonkeyMarkingLayer.Overlay.values().length));
 
 		this.randomizeAttributes();
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
