@@ -9,14 +9,12 @@ import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.llama.OLlama;
-import com.dragn0007.dragnlivestock.entities.llama.OLlamaMarkingLayer;
 import com.dragn0007.dragnlivestock.entities.mule.OMule;
 import com.dragn0007.dragnlivestock.entities.pig.OPig;
 import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
 import com.dragn0007.dragnlivestock.entities.sheep.OSheep;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
-import com.mojang.datafixers.kinds.IdF;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -696,8 +694,6 @@ public class SpawnReplacer {
 
                 cod.setCustomName(cod1.getCustomName());
 
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
-
                 if (event.getWorld().isClientSide) {
                     cod1.remove(Entity.RemovalReason.DISCARDED);
                 }
@@ -719,8 +715,6 @@ public class SpawnReplacer {
             bee.copyPosition(oBee);
 
             bee.setCustomName(oBee.getCustomName());
-
-            int randomVariant = event.getWorld().getRandom().nextInt(23);
 
             event.setCanceled(true);
         }
@@ -825,8 +819,6 @@ public class SpawnReplacer {
 
                 pig.setCustomName(oPig1.getCustomName());
                 pig.setAge(oPig1.getAge());
-
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
 
                 if (event.getWorld().isClientSide) {
                     oPig1.remove(Entity.RemovalReason.DISCARDED);
