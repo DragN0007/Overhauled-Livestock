@@ -34,18 +34,12 @@ public class LivestockOverhaul
         LOMenuTypes.register(eventBus);
         EntityTypes.ENTITY_TYPES.register(eventBus);
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onFMLCommonSetupEvent);
-
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, LivestockOverhaulCommonConfig.SPEC, "livestock-overhaul-common.toml");
 
         GeckoLib.initialize();
 
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new SpawnReplacer());
-    }
-
-    private void onFMLCommonSetupEvent(FMLCommonSetupEvent event) {
-        Network.init();
     }
 
     public static final EntityDataSerializer<ResourceLocation> RESOURCE_LOCATION = new EntityDataSerializer<>() {
