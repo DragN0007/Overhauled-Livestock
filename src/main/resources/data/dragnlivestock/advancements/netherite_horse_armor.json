@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "dragnlivestock:netherite_horse_armor"
+    },
+    "title": "For my noble steed!",
+    "description": "Obtain Netherite Horse Armor.",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["dragnlivestock:netherite_horse_armor"]
+          }
+        ]
+      }
+    }
+  }
+}

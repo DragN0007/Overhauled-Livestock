@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "dragnlivestock:fish_oil"
+    },
+    "title": "A tonic, of sorts!",
+    "description": "Obtain Fish Oil.",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["dragnlivestock:fish_oil"]
+          }
+        ]
+      }
+    }
+  }
+}

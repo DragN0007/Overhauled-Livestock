@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "dragnlivestock:horse"
+    },
+    "title": "I'm so hungry, I could eat a...",
+    "description": "Obtain Horse Meat.",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["dragnlivestock:horse"]
+          }
+        ]
+      }
+    }
+  }
+}
