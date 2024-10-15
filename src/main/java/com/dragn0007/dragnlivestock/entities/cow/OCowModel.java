@@ -8,6 +8,7 @@ public class OCowModel extends AnimatedGeoModel<OCow> {
 
     public enum Variant {
         BLACK(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/cow_black.png")),
+        BLUE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/cow_blue.png")),
         BROWN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/cow_brown.png")),
         CHESTNUT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/cow_chestnut.png")),
         DARK_BROWN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/cow_dark_brown.png")),

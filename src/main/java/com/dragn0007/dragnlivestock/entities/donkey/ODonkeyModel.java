@@ -8,6 +8,7 @@ public class ODonkeyModel extends AnimatedGeoModel<ODonkey> {
 
     public enum Variant {
         DEFAULT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/donkey/donkey_default.png")),
+        BROWN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/donkey/donkey_brown.png")),
         PALE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/donkey/donkey_pale.png")),
         STRIPE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/donkey/donkey_stripe.png"));
 

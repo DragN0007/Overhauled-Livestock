@@ -19,6 +19,7 @@ public class OHorseModel extends AnimatedGeoModel<OHorse> {
         CHOCOLATE_ROAN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_chocolate_roan.png")),
         CHESTNUT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_chestnut.png")),
         CREAMY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_creamy.png")),
+        DARK_BAY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_dark_bay.png")),
         DARK_BROWN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_darkbrown.png")),
         FJORD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_fjord.png")),
         GREY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_grey.png")),

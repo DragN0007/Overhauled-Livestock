@@ -8,6 +8,7 @@ public class OMuleModel extends AnimatedGeoModel<OMule> {
 
     public enum Variant {
         DEFAULT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/mule/mule_default.png")),
+        BLACK(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/mule/mule_black.png")),
         GREY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/mule/mule_grey.png")),
         SMOKEY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/mule/mule_smokey.png"));
 
