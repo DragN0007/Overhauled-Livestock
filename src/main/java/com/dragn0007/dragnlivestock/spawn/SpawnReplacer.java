@@ -45,10 +45,6 @@ public class SpawnReplacer {
                 return;
             }
 
-            if (vanillaHorse.getPersistentData().getBoolean("O-Replaced")) {
-                return;
-            }
-
             OHorse oHorse = EntityTypes.O_HORSE_ENTITY.get().create(event.getWorld());
             if (oHorse != null) {
                 oHorse.copyPosition(vanillaHorse);
@@ -77,8 +73,6 @@ public class SpawnReplacer {
                 event.getWorld().addFreshEntity(oHorse);
                 vanillaHorse.remove(Entity.RemovalReason.DISCARDED);
 
-                vanillaHorse.getPersistentData().putBoolean("O-Replaced", true);
-
                 //debug only. annoying to see it spam the console
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla horse with an O-Horse!");
 
@@ -91,10 +85,6 @@ public class SpawnReplacer {
             Donkey vanillaDonkey = (Donkey) event.getEntity();
 
             if (event.getWorld().isClientSide) {
-                return;
-            }
-
-            if (vanillaDonkey.getPersistentData().getBoolean("O-Replaced")) {
                 return;
             }
 
@@ -120,8 +110,6 @@ public class SpawnReplacer {
                 event.getWorld().addFreshEntity(oDonkey);
                 vanillaDonkey.remove(Entity.RemovalReason.DISCARDED);
 
-                vanillaDonkey.getPersistentData().putBoolean("O-Replaced", true);
-
                 //debug only. annoying to see it spam the console
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla donkey with an O-Donkey!");
 
@@ -134,10 +122,6 @@ public class SpawnReplacer {
             Mule vanillaMule = (Mule) event.getEntity();
 
             if (event.getWorld().isClientSide) {
-                return;
-            }
-
-            if (vanillaMule.getPersistentData().getBoolean("O-Replaced")) {
                 return;
             }
 
@@ -163,8 +147,6 @@ public class SpawnReplacer {
                 event.getWorld().addFreshEntity(oMule);
                 vanillaMule.remove(Entity.RemovalReason.DISCARDED);
 
-                vanillaMule.getPersistentData().putBoolean("O-Replaced", true);
-
                 //debug only. annoying to see it spam the console
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla mule with an O-Mule!");
 
@@ -177,10 +159,6 @@ public class SpawnReplacer {
             Cow vanillacow = (Cow) event.getEntity();
 
             if (event.getWorld().isClientSide) {
-                return;
-            }
-
-            if (vanillacow.getPersistentData().getBoolean("O-Replaced")) {
                 return;
             }
 
@@ -205,8 +183,6 @@ public class SpawnReplacer {
                 event.getWorld().addFreshEntity(oCow);
                 vanillacow.remove(Entity.RemovalReason.DISCARDED);
 
-                vanillacow.getPersistentData().putBoolean("O-Replaced", true);
-
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla cow with an O-Cow!");
 
                 event.setCanceled(true);
@@ -218,10 +194,6 @@ public class SpawnReplacer {
             Chicken vanillachicken = (Chicken) event.getEntity();
 
             if (event.getWorld().isClientSide) {
-                return;
-            }
-
-            if (vanillachicken.getPersistentData().getBoolean("O-Replaced")) {
                 return;
             }
 
@@ -246,8 +218,6 @@ public class SpawnReplacer {
                 event.getWorld().addFreshEntity(oChicken);
                 vanillachicken.remove(Entity.RemovalReason.DISCARDED);
 
-                vanillachicken.getPersistentData().putBoolean("O-Replaced", true);
-
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla chicken with an O-Chicken!");
 
                 event.setCanceled(true);
@@ -260,10 +230,6 @@ public class SpawnReplacer {
             Salmon vanillasalmon = (Salmon) event.getEntity();
 
             if (event.getWorld().isClientSide) {
-                return;
-            }
-
-            if (vanillasalmon.getPersistentData().getBoolean("O-Replaced")) {
                 return;
             }
 
@@ -283,8 +249,6 @@ public class SpawnReplacer {
                 event.getWorld().addFreshEntity(oSalmon);
                 vanillasalmon.remove(Entity.RemovalReason.DISCARDED);
 
-                vanillasalmon.getPersistentData().putBoolean("O-Replaced", true);
-
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla salmon with an O-Salmon!");
 
                 event.setCanceled(true);
@@ -297,10 +261,6 @@ public class SpawnReplacer {
             Cod vanillacod = (Cod) event.getEntity();
 
             if (event.getWorld().isClientSide) {
-                return;
-            }
-
-            if (vanillacod.getPersistentData().getBoolean("O-Replaced")) {
                 return;
             }
 
@@ -319,8 +279,6 @@ public class SpawnReplacer {
 
                 event.getWorld().addFreshEntity(oCod);
                 vanillacod.remove(Entity.RemovalReason.DISCARDED);
-
-                vanillacod.getPersistentData().putBoolean("O-Replaced", true);
 
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla cod with an O-Cod!");
 
@@ -356,10 +314,6 @@ public class SpawnReplacer {
                 return;
             }
 
-            if (vanillarabbit.getPersistentData().getBoolean("O-Replaced")) {
-                return;
-            }
-
             if (oRabbit != null) {
                 oRabbit.copyPosition(vanillarabbit);
                 Entity entity = event.getEntity();
@@ -377,8 +331,6 @@ public class SpawnReplacer {
                 event.getWorld().addFreshEntity(oRabbit);
                 vanillarabbit.remove(Entity.RemovalReason.DISCARDED);
 
-                vanillarabbit.getPersistentData().putBoolean("O-Replaced", true);
-
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla rabbit with an O-Rabbit!");
 
                 event.setCanceled(true);
@@ -391,10 +343,6 @@ public class SpawnReplacer {
             Sheep vanillasheep = (Sheep) event.getEntity();
 
             if (event.getWorld().isClientSide) {
-                return;
-            }
-
-            if (vanillasheep.getPersistentData().getBoolean("O-Replaced")) {
                 return;
             }
 
@@ -415,8 +363,6 @@ public class SpawnReplacer {
                 event.getWorld().addFreshEntity(oSheep);
                 vanillasheep.remove(Entity.RemovalReason.DISCARDED);
 
-                vanillasheep.getPersistentData().putBoolean("O-Replaced", true);
-
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla sheep with an O-Sheep!");
 
                 event.setCanceled(true);
@@ -429,10 +375,6 @@ public class SpawnReplacer {
             Llama vanillallama = (Llama) event.getEntity();
 
             if (event.getWorld().isClientSide) {
-                return;
-            }
-
-            if (vanillallama.getPersistentData().getBoolean("O-Replaced")) {
                 return;
             }
 
@@ -454,8 +396,6 @@ public class SpawnReplacer {
                 event.getWorld().addFreshEntity(oLlama);
                 vanillallama.remove(Entity.RemovalReason.DISCARDED);
 
-                vanillallama.getPersistentData().putBoolean("O-Replaced", true);
-
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla llama with an O-Llama!");
 
                 event.setCanceled(true);
@@ -468,10 +408,6 @@ public class SpawnReplacer {
             Pig vanillapig = (Pig) event.getEntity();
 
             if (event.getWorld().isClientSide) {
-                return;
-            }
-
-            if (vanillapig.getPersistentData().getBoolean("O-Replaced")) {
                 return;
             }
 
@@ -491,8 +427,6 @@ public class SpawnReplacer {
 
                 event.getWorld().addFreshEntity(oPig);
                 vanillapig.remove(Entity.RemovalReason.DISCARDED);
-
-                vanillapig.getPersistentData().putBoolean("O-Replaced", true);
 
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla pig with an O-Llama!");
 

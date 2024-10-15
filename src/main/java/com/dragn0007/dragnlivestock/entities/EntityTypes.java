@@ -60,13 +60,13 @@ public class EntityTypes {
 
     public static final RegistryObject<EntityType<OSalmon>> O_SALMON_ENTITY = ENTITY_TYPES.register("o_salmon",
             () -> EntityType.Builder.of(OSalmon::new,
-                            MobCategory.CREATURE)
+                            MobCategory.WATER_AMBIENT)
                     .sized(0.7f, 0.4f)
                     .build(new ResourceLocation(MODID,"o_salmon").toString()));
 
     public static final RegistryObject<EntityType<OCod>> O_COD_ENTITY = ENTITY_TYPES.register("o_cod",
             () -> EntityType.Builder.of(OCod::new,
-                            MobCategory.CREATURE)
+                            MobCategory.WATER_AMBIENT)
                     .sized(0.5f, 0.3f)
                     .build(new ResourceLocation(MODID,"o_cod").toString()));
 
