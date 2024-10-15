@@ -69,47 +69,47 @@ public class NetherUnicornRender extends ExtendedGeoEntityRenderer<NetherUnicorn
     }
 
     @Override
-    protected boolean isArmorBone(GeoBone bone) {
+    public boolean isArmorBone(GeoBone bone) {
         return false;
     }
 
     @Nullable
     @Override
-    protected ResourceLocation getTextureForBone(String boneName, NetherUnicorn animatable) {
+    public ResourceLocation getTextureForBone(String boneName, NetherUnicorn animatable) {
         return null;
     }
 
     @Nullable
     @Override
-    protected ItemStack getHeldItemForBone(String boneName, NetherUnicorn animatable) {
+    public ItemStack getHeldItemForBone(String boneName, NetherUnicorn animatable) {
         return null;
     }
 
     @Override
-    protected ItemTransforms.TransformType getCameraTransformForItemAtBone(ItemStack stack, String boneName) {
+    public ItemTransforms.TransformType getCameraTransformForItemAtBone(ItemStack stack, String boneName) {
         return null;
     }
 
     @Nullable
     @Override
-    protected BlockState getHeldBlockForBone(String boneName, NetherUnicorn animatable) {
+    public BlockState getHeldBlockForBone(String boneName, NetherUnicorn animatable) {
         return null;
     }
 
     @Override
-    protected void preRenderItem(PoseStack poseStack, ItemStack stack, String boneName, NetherUnicorn animatable, IBone bone) {
+    public void preRenderItem(PoseStack poseStack, ItemStack stack, String boneName, NetherUnicorn animatable, IBone bone) {
     }
 
     @Override
-    protected void preRenderBlock(PoseStack poseStack, BlockState state, String boneName, NetherUnicorn animatable) {
+    public void preRenderBlock(PoseStack poseStack, BlockState state, String boneName, NetherUnicorn animatable) {
     }
 
     @Override
-    protected void postRenderItem(PoseStack poseStack, ItemStack stack, String boneName, NetherUnicorn animatable, IBone bone) {
+    public void postRenderItem(PoseStack poseStack, ItemStack stack, String boneName, NetherUnicorn animatable, IBone bone) {
     }
 
     @Override
-    protected void postRenderBlock(PoseStack poseStack, BlockState state, String boneName, NetherUnicorn animatable) {
+    public void postRenderBlock(PoseStack poseStack, BlockState state, String boneName, NetherUnicorn animatable) {
     }
 }
 

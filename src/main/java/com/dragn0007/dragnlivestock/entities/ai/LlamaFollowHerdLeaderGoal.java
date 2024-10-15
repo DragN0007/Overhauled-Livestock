@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class LlamaFollowHerdLeaderGoal extends Goal {
-   protected static final int INTERVAL_TICKS = 200;
-   protected final OLlama mob;
-   protected int timeToRecalcPath;
-   protected int nextStartTick;
+   public static final int INTERVAL_TICKS = 200;
+   public final OLlama mob;
+   public int timeToRecalcPath;
+   public int nextStartTick;
 
    public LlamaFollowHerdLeaderGoal(OLlama p_25249_) {
       this.mob = p_25249_;
       this.nextStartTick = this.nextStartTick(p_25249_);
    }
 
-   protected int nextStartTick(OLlama cow) {
+   public int nextStartTick(OLlama cow) {
       return reducedTickDelay(200 + cow.getRandom().nextInt(200) % 20);
    }
 

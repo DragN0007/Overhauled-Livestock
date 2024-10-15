@@ -14,7 +14,7 @@ public class LOMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, LivestockOverhaul.MODID);
     public static final RegistryObject<MenuType<OHorseMenu>> O_HORSE_MENU = registerMenuType("ohorse_menu", OHorseMenu::new);
 
-    private static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
+    public static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENU_TYPES.register(name, () -> IForgeMenuType.create(factory));
     }
 

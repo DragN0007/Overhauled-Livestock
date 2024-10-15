@@ -66,16 +66,16 @@ import java.util.stream.Stream;
 public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestable, ContainerListener, RangedAttackMob {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-	protected static final Ingredient FOOD_ITEMS = Ingredient.of(Items.WHEAT, Blocks.HAY_BLOCK.asItem());
-	protected static final EntityDataAccessor<Integer> DATA_STRENGTH_ID = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
-	protected static final EntityDataAccessor<Integer> DATA_SWAG_ID = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
+	public static final Ingredient FOOD_ITEMS = Ingredient.of(Items.WHEAT, Blocks.HAY_BLOCK.asItem());
+	public static final EntityDataAccessor<Integer> DATA_STRENGTH_ID = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> DATA_SWAG_ID = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
 	boolean didSpit;
 	@Nullable
-	protected OLlama caravanHead;
+	public OLlama caravanHead;
 	@Nullable
-	protected OLlama caravanTail;
+	public OLlama caravanTail;
 
-	protected static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.BOOLEAN);
 
 	public OLlama(EntityType<? extends OLlama> type, Level level) {
 		super(type, level);
@@ -89,7 +89,7 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 				.add(Attributes.FOLLOW_RANGE, 40.0D);
 	}
 
-	protected void registerGoals() {
+	public void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new RunAroundLikeCrazyGoal(this, 1.2D));
 		this.goalSelector.addGoal(2, new OLlamaFollowCaravanGoal(this, (double)2.1F));
@@ -106,11 +106,11 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		this.goalSelector.addGoal(3, new LlamaFollowHerdLeaderGoal(this));
 	}
 
-	protected LazyOptional<?> itemHandler = null;
-	protected OLlama leader;
-	protected int herdSize = 1;
+	public LazyOptional<?> itemHandler = null;
+	public OLlama leader;
+	public int herdSize = 1;
 
-	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
 		double animationSpeed = Math.max(0.1, movementSpeed);
 
@@ -129,7 +129,7 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		return PlayState.CONTINUE;
 	}
 
-	protected PlayState attackPredicate(AnimationEvent event) {
+	public PlayState attackPredicate(AnimationEvent event) {
 		if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
 			event.getController().markNeedsReload();
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
@@ -160,11 +160,11 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		this.leader = null;
 	}
 
-	protected void addFollower() {
+	public void addFollower() {
 		++this.herdSize;
 	}
 
-	protected void removeFollower() {
+	public void removeFollower() {
 		--this.herdSize;
 	}
 
@@ -241,7 +241,7 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		}
 	}
 
-	protected void doPlayerRide(Player p_30634_) {
+	public void doPlayerRide(Player p_30634_) {
 		if (!this.level.isClientSide) {
 			p_30634_.setYRot(this.getYRot());
 			p_30634_.setXRot(this.getXRot());
@@ -249,7 +249,7 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		}
 	}
 
-	protected void updateInventory() {
+	public void updateInventory() {
 		SimpleContainer tempInventory = this.inventory;
 		this.inventory = new SimpleContainer(this.getInventorySize());
 
@@ -299,7 +299,7 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 	}
 
 	@Override
-	protected void dropEquipment() {
+	public void dropEquipment() {
 		if(!this.level.isClientSide) {
 			super.dropEquipment();
 			if(this.isChested()) {
@@ -318,8 +318,8 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		return OLlamaMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
 	}
 
-	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
-	protected static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -406,7 +406,7 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	public void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
@@ -415,7 +415,7 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		this.entityData.define(DATA_SWAG_ID, -1);
 	}
 
-	protected boolean canParent() {
+	public boolean canParent() {
 		return !this.isVehicle() && !this.isPassenger() && !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
 	}
 
@@ -484,15 +484,15 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		return this.entityData.get(CHESTED);
 	}
 
-	protected void setChested(boolean chested) {
+	public void setChested(boolean chested) {
 		this.entityData.set(CHESTED, chested);
 	}
 
-	protected void setStrength(int p_30841_) {
+	public void setStrength(int p_30841_) {
 		this.entityData.set(DATA_STRENGTH_ID, Math.max(1, Math.min(5, p_30841_)));
 	}
 
-	protected void setRandomStrength() {
+	public void setRandomStrength() {
 		int i = this.random.nextFloat() < 0.04F ? 5 : 3;
 		this.setStrength(1 + this.random.nextInt(i));
 	}
@@ -501,7 +501,7 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		return this.entityData.get(DATA_STRENGTH_ID);
 	}
 
-	protected int getInventorySize() {
+	public int getInventorySize() {
 		return this.hasChest() ? 2 + 3 * this.getInventoryColumns() : super.getInventorySize();
 	}
 
@@ -517,7 +517,7 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		return FOOD_ITEMS.test(p_30832_);
 	}
 
-	protected boolean handleEating(Player p_30796_, ItemStack p_30797_) {
+	public boolean handleEating(Player p_30796_, ItemStack p_30797_) {
 		int i = 0;
 		int j = 0;
 		float f = 0.0F;
@@ -570,36 +570,36 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		return flag;
 	}
 
-	protected boolean isImmobile() {
+	public boolean isImmobile() {
 		return this.isDeadOrDying() || this.isEating();
 	}
 
-	protected SoundEvent getAngrySound() {
+	public SoundEvent getAngrySound() {
 		return SoundEvents.LLAMA_ANGRY;
 	}
 
-	protected SoundEvent getAmbientSound() {
+	public SoundEvent getAmbientSound() {
 		return SoundEvents.LLAMA_AMBIENT;
 	}
 
-	protected SoundEvent getHurtSound(DamageSource p_30803_) {
+	public SoundEvent getHurtSound(DamageSource p_30803_) {
 		return SoundEvents.LLAMA_HURT;
 	}
 
-	protected SoundEvent getDeathSound() {
+	public SoundEvent getDeathSound() {
 		return SoundEvents.LLAMA_DEATH;
 	}
 
 	@Nullable
-	protected SoundEvent getEatingSound() {
+	public SoundEvent getEatingSound() {
 		return SoundEvents.LLAMA_EAT;
 	}
 
-	protected void playStepSound(BlockPos p_30790_, BlockState p_30791_) {
+	public void playStepSound(BlockPos p_30790_, BlockState p_30791_) {
 		this.playSound(SoundEvents.LLAMA_STEP, 0.15F, 1.0F);
 	}
 
-	protected void playChestEquipsSound() {
+	public void playChestEquipsSound() {
 		this.playSound(SoundEvents.LLAMA_CHEST, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
 	}
 
@@ -697,19 +697,19 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 
 	}
 
-	protected void updateContainerEquipment() {
+	public void updateContainerEquipment() {
 		if (!this.level.isClientSide) {
 			super.updateContainerEquipment();
 			this.setSwag(getDyeColor(this.inventory.getItem(1)));
 		}
 	}
 
-	protected void setSwag(@Nullable DyeColor p_30772_) {
+	public void setSwag(@Nullable DyeColor p_30772_) {
 		this.entityData.set(DATA_SWAG_ID, p_30772_ == null ? -1 : p_30772_.getId());
 	}
 
 	@Nullable
-	protected static DyeColor getDyeColor(ItemStack p_30836_) {
+	public static DyeColor getDyeColor(ItemStack p_30836_) {
 		Block block = Block.byItem(p_30836_.getItem());
 		return block instanceof WoolCarpetBlock ? ((WoolCarpetBlock)block).getColor() : null;
 	}
@@ -723,7 +723,7 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 	public int getMaxTemper() {
 		return 30;
 	}
-	protected void spit(LivingEntity p_30828_) {
+	public void spit(LivingEntity p_30828_) {
 		OLlamaSpit llamaspit = new OLlamaSpit(this.level, this);
 		double d0 = p_30828_.getX() - this.getX();
 		double d1 = p_30828_.getY(0.3333333333333333D) - llamaspit.getY();
@@ -787,11 +787,11 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		return this.caravanHead;
 	}
 
-	protected double followLeashSpeed() {
+	public double followLeashSpeed() {
 		return 2.0D;
 	}
 
-	protected void followMommy() {
+	public void followMommy() {
 		if (!this.inCaravan() && this.isBaby()) {
 			super.followMommy();
 		}
@@ -817,7 +817,7 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 			});
 		}
 
-		protected double getFollowDistance() {
+		public double getFollowDistance() {
 			return super.getFollowDistance() * 0.25D;
 		}
 	}

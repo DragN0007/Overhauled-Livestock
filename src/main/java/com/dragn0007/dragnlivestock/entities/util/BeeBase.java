@@ -130,7 +130,7 @@ public class BeeBase extends Animal implements NeutralMob, FlyingAnimal {
         return null;
     }
 
-    protected void defineSynchedData() {
+    public void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_FLAGS_ID, (byte)0);
         this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
@@ -140,7 +140,7 @@ public class BeeBase extends Animal implements NeutralMob, FlyingAnimal {
         return p_27789_.getBlockState(p_27788_).isAir() ? 10.0F : 0.0F;
     }
 
-    protected void registerGoals() {
+    public void registerGoals() {
         this.goalSelector.addGoal(0, new BeeBase.BeeAttackGoal(this, (double)1.4F, true));
         this.goalSelector.addGoal(1, new BeeBase.BeeEnterHiveGoal());
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
@@ -320,7 +320,7 @@ public class BeeBase extends Animal implements NeutralMob, FlyingAnimal {
 
     }
 
-    protected void customServerAiStep() {
+    public void customServerAiStep() {
         boolean flag = this.hasStung();
         if (this.isInWaterOrBubble()) {
             ++this.underWaterTicks;
@@ -507,7 +507,7 @@ public class BeeBase extends Animal implements NeutralMob, FlyingAnimal {
                 .add(Attributes.FOLLOW_RANGE, 48.0D);
     }
 
-    protected PathNavigation createNavigation(Level p_27815_) {
+    public PathNavigation createNavigation(Level p_27815_) {
         FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, p_27815_) {
             public boolean isStableDestination(BlockPos p_27947_) {
                 return !this.level.getBlockState(p_27947_.below()).isAir();
@@ -533,26 +533,26 @@ public class BeeBase extends Animal implements NeutralMob, FlyingAnimal {
         return this.level.isLoaded(p_27897_) && this.level.getBlockState(p_27897_).is(BlockTags.FLOWERS);
     }
 
-    protected void playStepSound(BlockPos p_27820_, BlockState p_27821_) {
+    public void playStepSound(BlockPos p_27820_, BlockState p_27821_) {
     }
 
-    protected SoundEvent getAmbientSound() {
+    public SoundEvent getAmbientSound() {
         return null;
     }
 
-    protected SoundEvent getHurtSound(DamageSource p_27845_) {
+    public SoundEvent getHurtSound(DamageSource p_27845_) {
         return SoundEvents.BEE_HURT;
     }
 
-    protected SoundEvent getDeathSound() {
+    public SoundEvent getDeathSound() {
         return SoundEvents.BEE_DEATH;
     }
 
-    protected float getSoundVolume() {
+    public float getSoundVolume() {
         return 0.4F;
     }
 
-    protected float getStandingEyeHeight(Pose p_27804_, EntityDimensions p_27805_) {
+    public float getStandingEyeHeight(Pose p_27804_, EntityDimensions p_27805_) {
         return this.isBaby() ? p_27805_.height * 0.5F : p_27805_.height * 0.5F;
     }
 
@@ -560,7 +560,7 @@ public class BeeBase extends Animal implements NeutralMob, FlyingAnimal {
         return false;
     }
 
-    protected void checkFallDamage(double p_27754_, boolean p_27755_, BlockState p_27756_, BlockPos p_27757_) {
+    public void checkFallDamage(double p_27754_, boolean p_27755_, BlockState p_27756_, BlockPos p_27757_) {
     }
 
     public boolean isFlapping() {
@@ -592,7 +592,7 @@ public class BeeBase extends Animal implements NeutralMob, FlyingAnimal {
         return MobType.ARTHROPOD;
     }
 
-    protected void jumpInLiquid(TagKey<Fluid> p_204061_) {
+    public void jumpInLiquid(TagKey<Fluid> p_204061_) {
         this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.01D, 0.0D));
     }
 
@@ -917,7 +917,7 @@ public class BeeBase extends Animal implements NeutralMob, FlyingAnimal {
             return BeeBase.this.isAngry() && super.canContinueToUse();
         }
 
-        protected void alertOther(Mob p_28035_, LivingEntity p_28036_) {
+        public void alertOther(Mob p_28035_, LivingEntity p_28036_) {
             if (p_28035_ instanceof BeeBase && this.mob.hasLineOfSight(p_28036_)) {
                 p_28035_.setTarget(p_28036_);
             }
@@ -973,7 +973,7 @@ public class BeeBase extends Animal implements NeutralMob, FlyingAnimal {
             }
         }
 
-        protected boolean resetXRotOnTick() {
+        public boolean resetXRotOnTick() {
             return !BeeBase.this.beePollinateGoal.isPollinating();
         }
     }

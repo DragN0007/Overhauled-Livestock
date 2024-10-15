@@ -18,9 +18,9 @@ public class OLlamaFollowCaravanGoal extends Goal {
    }
 
    public final OLlama llama;
-   private double speedModifier;
-   private static final int CARAVAN_LIMIT = 8;
-   private int distCheckCounter;
+   public double speedModifier;
+   public static final int CARAVAN_LIMIT = 8;
+   public int distCheckCounter;
 
    public boolean canUse() {
       if (!this.llama.isLeashed() && !this.llama.inCaravan()) {
@@ -112,7 +112,7 @@ public class OLlamaFollowCaravanGoal extends Goal {
       }
    }
 
-   private boolean firstIsLeashed(OLlama p_25507_, int p_25508_) {
+   public boolean firstIsLeashed(OLlama p_25507_, int p_25508_) {
       if (p_25508_ > 8) {
          return false;
       } else if (p_25507_.inCaravan()) {

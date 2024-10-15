@@ -138,7 +138,7 @@ public class AbstractOHorse extends AbstractChestedHorse {
     }
 
     @Override
-    protected void playGallopSound(SoundType soundType) {
+    public void playGallopSound(SoundType soundType) {
         super.playGallopSound(soundType);
         if(this.random.nextInt(10) == 0) {
             this.playSound(SoundEvents.HORSE_BREATHE, soundType.getVolume() * 0.6f, soundType.getPitch());

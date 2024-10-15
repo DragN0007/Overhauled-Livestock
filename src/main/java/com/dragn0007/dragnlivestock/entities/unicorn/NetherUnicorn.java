@@ -49,7 +49,7 @@ public class NetherUnicorn extends OHorse implements IAnimatable {
 	}
 
 	@Override
-	protected void randomizeAttributes() {
+	public void randomizeAttributes() {
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.generateRandomMaxHealth());
 		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(this.generateRandomSpeed());
 		this.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(this.generateRandomJumpStrength());
@@ -76,7 +76,7 @@ public class NetherUnicorn extends OHorse implements IAnimatable {
 	}
 
 	@Override
-	protected void registerGoals() {
+	public void registerGoals() {
 		super.registerGoals();
 		this.goalSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.7D));
@@ -104,7 +104,7 @@ public class NetherUnicorn extends OHorse implements IAnimatable {
 	}
 
 	@Override
-	protected void tryAddSoulSpeed() {
+	public void tryAddSoulSpeed() {
 		super.tryAddSoulSpeed();
 	}
 

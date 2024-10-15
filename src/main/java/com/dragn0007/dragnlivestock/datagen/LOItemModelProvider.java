@@ -16,7 +16,7 @@ public class LOItemModelProvider extends ItemModelProvider {
     }
 
     @Override
-    protected void registerModels() {
+    public void registerModels() {
         simpleItem(LOItems.LIVESTOCK_OVERHAUL.get());
 
         simpleItem(LOItems.BRAND_TAG.get());
@@ -79,31 +79,31 @@ public class LOItemModelProvider extends ItemModelProvider {
         simpleItem(LOItems.END_UNICORN_HORN.get());
     }
 
-    protected ItemModelBuilder simpleSpriteBlockItem(Block block) {
+    public ItemModelBuilder simpleSpriteBlockItem(Block block) {
         return withExistingParent(block.getRegistryName().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(LivestockOverhaul.MODID,"block/" + block.getRegistryName().getPath()));
     }
 
-    protected ItemModelBuilder simpleItem(Item item) {
+    public ItemModelBuilder simpleItem(Item item) {
         return withExistingParent(item.getRegistryName().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(LivestockOverhaul.MODID,"item/" + item.getRegistryName().getPath()));
     }
 
-    protected ItemModelBuilder itemNameBlockItem(Item item, String getTextureName) {
+    public ItemModelBuilder itemNameBlockItem(Item item, String getTextureName) {
         return withExistingParent(item.getRegistryName().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(LivestockOverhaul.MODID,"block/" + getTextureName));
     }
 
-    protected ItemModelBuilder advancedItem(Item item, String getTextureName) {
+    public ItemModelBuilder advancedItem(Item item, String getTextureName) {
         return withExistingParent(item.getRegistryName().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(LivestockOverhaul.MODID,"item/" + getTextureName));
     }
 
-    protected ItemModelBuilder handheldItem(Item item) {
+    public ItemModelBuilder handheldItem(Item item) {
         return withExistingParent(item.getRegistryName().getPath(),
                 new ResourceLocation("item/handheld")).texture("layer0",
                 new ResourceLocation(LivestockOverhaul.MODID,"item/" + item.getRegistryName().getPath()));

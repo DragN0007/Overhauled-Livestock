@@ -60,14 +60,14 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 	}
 
 	@Override
-	protected void randomizeAttributes() {
+	public void randomizeAttributes() {
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.generateRandomMaxHealth());
 		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(this.generateRandomSpeed());
 		this.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(this.generateRandomJumpStrength());
 	}
 
 	@Override
-	protected void registerGoals() {
+	public void registerGoals() {
 		super.registerGoals();
 		this.goalSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.7D));
@@ -99,7 +99,7 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 		return false;
 	}
 
-	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
 		double animationSpeed = Math.max(0.1, movementSpeed);
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
@@ -128,7 +128,7 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 		return PlayState.CONTINUE;
 	}
 
-	protected PlayState attackPredicate(AnimationEvent event) {
+	public PlayState attackPredicate(AnimationEvent event) {
 		if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
 			event.getController().markNeedsReload();
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE));

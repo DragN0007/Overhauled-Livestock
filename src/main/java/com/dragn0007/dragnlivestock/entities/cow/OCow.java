@@ -54,10 +54,10 @@ import java.util.stream.Stream;
 public class OCow extends Animal implements IAnimatable, Chestable, ContainerListener {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-	protected static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.BOOLEAN);
 
-	protected OCow leader;
-	protected int herdSize = 1;
+	public OCow leader;
+	public int herdSize = 1;
 
 	public OCow(EntityType<? extends OCow> type, Level level) {
 		super(type, level);
@@ -71,7 +71,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 				.add(Attributes.MOVEMENT_SPEED, 0.17F);
 	}
 
-	protected void registerGoals() {
+	public void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 2.0D));
 		this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
@@ -95,9 +95,9 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 	}
 
 	public SimpleContainer inventory;
-	protected LazyOptional<?> itemHandler = null;
+	public LazyOptional<?> itemHandler = null;
 
-	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double currentSpeed = this.getDeltaMovement().lengthSqr(); //grabbing the speed of the cow to see if it should run the "run" animation. particularly for avoiding the OHorse.
 		double speedThreshold = 0.01;
 
@@ -114,7 +114,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		return PlayState.CONTINUE;
 	}
 
-	protected PlayState attackPredicate(AnimationEvent event) {
+	public PlayState attackPredicate(AnimationEvent event) {
 		if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
 			event.getController().markNeedsReload();
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
@@ -150,11 +150,11 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		this.leader = null;
 	}
 
-	protected void addFollower() {
+	public void addFollower() {
 		++this.herdSize;
 	}
 
-	protected void removeFollower() {
+	public void removeFollower() {
 		--this.herdSize;
 	}
 
@@ -200,7 +200,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		});
 	}
 
-	protected void updateInventory() {
+	public void updateInventory() {
 		SimpleContainer tempInventory = this.inventory;
 		this.inventory = new SimpleContainer(this.getInventorySize());
 
@@ -238,7 +238,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 	}
 
 	@Override
-	protected void dropEquipment() {
+	public void dropEquipment() {
 		if (!this.level.isClientSide) {
 			super.dropEquipment();
 			if (this.isChested()) {
@@ -260,22 +260,22 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		}
 	}
 
-	protected SoundEvent getAmbientSound() {
+	public SoundEvent getAmbientSound() {
 		super.getAmbientSound();
 		return SoundEvents.COW_AMBIENT;
 	}
 
-	protected SoundEvent getDeathSound() {
+	public SoundEvent getDeathSound() {
 		super.getDeathSound();
 		return SoundEvents.COW_DEATH;
 	}
 
-	protected SoundEvent getHurtSound(DamageSource p_30720_) {
+	public SoundEvent getHurtSound(DamageSource p_30720_) {
 		super.getHurtSound(p_30720_);
 		return SoundEvents.COW_HURT;
 	}
 
-	protected void playStepSound(BlockPos p_28301_, BlockState p_28302_) {
+	public void playStepSound(BlockPos p_28301_, BlockState p_28302_) {
 		this.playSound(SoundEvents.COW_STEP, 0.15F, 1.0F);
 	}
 
@@ -292,9 +292,9 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		return OCowHornLayer.HornOverlay.hornOverlayFromOrdinal(getHornVariant()).resourceLocation;
 	}
 
-	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
-	protected static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
-	protected static final EntityDataAccessor<Integer> HORNS = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> HORNS = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -366,7 +366,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	public void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
@@ -374,7 +374,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		this.entityData.define(CHESTED, false);
 	}
 
-	protected boolean canParent() {
+	public boolean canParent() {
 		return !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
 	}
 
@@ -427,7 +427,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		return oCow;
 	}
 
-	protected int getInventorySize() {
+	public int getInventorySize() {
 		return this.isChested() ? 51 : 1;
 	}
 
@@ -448,7 +448,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		return this.entityData.get(CHESTED);
 	}
 
-	protected void setChested(boolean chested) {
+	public void setChested(boolean chested) {
 		this.entityData.set(CHESTED, chested);
 	}
 

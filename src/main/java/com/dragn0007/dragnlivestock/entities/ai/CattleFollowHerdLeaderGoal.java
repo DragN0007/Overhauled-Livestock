@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class CattleFollowHerdLeaderGoal extends Goal {
-   protected static final int INTERVAL_TICKS = 200;
-   protected final OCow mob;
-   protected int timeToRecalcPath;
-   protected int nextStartTick;
+   public static final int INTERVAL_TICKS = 200;
+   public final OCow mob;
+   public int timeToRecalcPath;
+   public int nextStartTick;
 
    public CattleFollowHerdLeaderGoal(OCow p_25249_) {
       this.mob = p_25249_;
       this.nextStartTick = this.nextStartTick(p_25249_);
    }
 
-   protected int nextStartTick(OCow cow) {
+   public int nextStartTick(OCow cow) {
       return reducedTickDelay(200 + cow.getRandom().nextInt(200) % 20);
    }
 

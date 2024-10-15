@@ -53,28 +53,28 @@ import java.util.stream.Collectors;
 
 public class OSheep extends Animal implements Shearable, net.minecraftforge.common.IForgeShearable, IAnimatable {
 
-	protected static final int EAT_ANIMATION_TICKS = 40;
+	public static final int EAT_ANIMATION_TICKS = 40;
 
-	protected static final EntityDataAccessor<Byte> DATA_WOOL_ID = SynchedEntityData.defineId(OSheep.class, EntityDataSerializers.BYTE);
+	public static final EntityDataAccessor<Byte> DATA_WOOL_ID = SynchedEntityData.defineId(OSheep.class, EntityDataSerializers.BYTE);
 
-	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OSheep.class, EntityDataSerializers.INT);
-	protected static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OSheep.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OSheep.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OSheep.class, EntityDataSerializers.INT);
 
-	protected static final Map<DyeColor, OSheepWoolLayer.Overlay> OVERLAY_MAP = new HashMap<>() {{
+	public static final Map<DyeColor, OSheepWoolLayer.Overlay> OVERLAY_MAP = new HashMap<>() {{
 		put(DyeColor.WHITE, OSheepWoolLayer.Overlay.WHITE);
 	}};
 
-	protected static final Map<DyeColor, ItemLike> ITEM_BY_DYE = Util.make(Maps.newEnumMap(DyeColor.class), (p_29841_) -> {
+	public static final Map<DyeColor, ItemLike> ITEM_BY_DYE = Util.make(Maps.newEnumMap(DyeColor.class), (p_29841_) -> {
 		p_29841_.put(DyeColor.WHITE, Blocks.WHITE_WOOL);
 	});
 
-	protected static final Map<DyeColor, float[]> COLORARRAY_BY_COLOR = Maps.<DyeColor, float[]>newEnumMap(Arrays.stream(DyeColor.values()).collect(Collectors.toMap((p_29868_) -> p_29868_, OSheep::createSheepColor)));
+	public static final Map<DyeColor, float[]> COLORARRAY_BY_COLOR = Maps.<DyeColor, float[]>newEnumMap(Arrays.stream(DyeColor.values()).collect(Collectors.toMap((p_29868_) -> p_29868_, OSheep::createSheepColor)));
 
 	public static float[] getColorArray(DyeColor p_29830_) {
 		return COLORARRAY_BY_COLOR.get(p_29830_);
 	}
 
-	protected static float[] createSheepColor(DyeColor p_29866_) {
+	public static float[] createSheepColor(DyeColor p_29866_) {
 		if (p_29866_ == DyeColor.WHITE) {
 			return new float[]{0.9019608F, 0.9019608F, 0.9019608F};
 		} else {
@@ -96,9 +96,9 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 				.add(Attributes.MOVEMENT_SPEED, 0.18F);
 	}
 
-	protected static final Ingredient FOOD_ITEMS = Ingredient.of(Items.WHEAT);
+	public static final Ingredient FOOD_ITEMS = Ingredient.of(Items.WHEAT);
 
-	protected void registerGoals() {
+	public void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.8F));
 		this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
@@ -111,8 +111,8 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 	}
 
 	public class EatGrassGoal extends Goal {
-		protected final OSheep sheep;
-		protected int eatAnimationTick;
+		public final OSheep sheep;
+		public int eatAnimationTick;
 
 		public EatGrassGoal(OSheep sheep) {
 			this.sheep = sheep;
@@ -224,7 +224,7 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 		return 1F;
 	}
 
-	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
 		double speedThreshold = 0.01;
 
@@ -252,19 +252,19 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 		return factory;
 	}
 
-	protected SoundEvent getAmbientSound() {
+	public SoundEvent getAmbientSound() {
 		return SoundEvents.SHEEP_AMBIENT;
 	}
 
-	protected SoundEvent getDeathSound() {
+	public SoundEvent getDeathSound() {
 		return SoundEvents.SHEEP_DEATH;
 	}
 
-	protected SoundEvent getHurtSound(DamageSource p_30720_) {
+	public SoundEvent getHurtSound(DamageSource p_30720_) {
 		return SoundEvents.SHEEP_HURT;
 	}
 
-	protected void playStepSound(BlockPos p_28254_, BlockState p_28255_) {
+	public void playStepSound(BlockPos p_28254_, BlockState p_28255_) {
 		this.playSound(SoundEvents.SHEEP_STEP, 0.15F, 1.0F);
 	}
 
@@ -319,14 +319,14 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	public void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
 		this.entityData.define(DATA_WOOL_ID, (byte)0);
 	}
 
-	protected boolean canParent() {
+	public boolean canParent() {
 		return !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
 	}
 

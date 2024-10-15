@@ -18,7 +18,7 @@ public class LORecipeMaker extends RecipeProvider implements IConditionBuilder {
     }
 
     @Override
-    protected void buildCraftingRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
+    public void buildCraftingRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
 
         SimpleCookingRecipeBuilder.smoking(Ingredient.of(LOItems.BEEF_RIB_STEAK.get()), LOItems.COOKED_BEEF_RIB_STEAK.get(), 0.35F, 100)
                 .unlockedBy("has_beef_rib_steak", has(LOItems.BEEF_RIB_STEAK.get())).save(pFinishedRecipeConsumer, new ResourceLocation("dragnlivestock", "cooked_beef_rib_steak_smoking"));

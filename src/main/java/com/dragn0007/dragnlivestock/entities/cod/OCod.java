@@ -47,23 +47,23 @@ public class OCod extends AbstractSchoolingFish implements IAnimatable {
 		return new ItemStack(Items.COD_BUCKET);
 	}
 
-	protected SoundEvent getAmbientSound() {
+	public SoundEvent getAmbientSound() {
 		return SoundEvents.COD_AMBIENT;
 	}
 
-	protected SoundEvent getDeathSound() {
+	public SoundEvent getDeathSound() {
 		return SoundEvents.COD_DEATH;
 	}
 
-	protected SoundEvent getHurtSound(DamageSource p_29795_) {
+	public SoundEvent getHurtSound(DamageSource p_29795_) {
 		return SoundEvents.COD_HURT;
 	}
 
-	protected SoundEvent getFlopSound() {
+	public SoundEvent getFlopSound() {
 		return SoundEvents.COD_FLOP;
 	}
 
-	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
 		double speedThreshold = 0.04;
 
@@ -95,7 +95,7 @@ public class OCod extends AbstractSchoolingFish implements IAnimatable {
 		return OCodModel.Variant.variantFromOrdinal(getVariant()).resourceLocation;
 	}
 
-	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OCod.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OCod.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -121,7 +121,7 @@ public class OCod extends AbstractSchoolingFish implements IAnimatable {
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	public void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 	}

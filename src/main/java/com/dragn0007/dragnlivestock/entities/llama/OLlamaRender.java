@@ -44,47 +44,47 @@ public class OLlamaRender extends ExtendedGeoEntityRenderer<OLlama> {
     }
 
     @Override
-    protected boolean isArmorBone(GeoBone bone) {
+    public boolean isArmorBone(GeoBone bone) {
         return false;
     }
 
     @Nullable
     @Override
-    protected ResourceLocation getTextureForBone(String boneName, OLlama animatable) {
+    public ResourceLocation getTextureForBone(String boneName, OLlama animatable) {
         return null;
     }
 
     @Nullable
     @Override
-    protected ItemStack getHeldItemForBone(String boneName, OLlama animatable) {
+    public ItemStack getHeldItemForBone(String boneName, OLlama animatable) {
         return null;
     }
 
     @Override
-    protected ItemTransforms.TransformType getCameraTransformForItemAtBone(ItemStack stack, String boneName) {
+    public ItemTransforms.TransformType getCameraTransformForItemAtBone(ItemStack stack, String boneName) {
         return null;
     }
 
     @Nullable
     @Override
-    protected BlockState getHeldBlockForBone(String boneName, OLlama animatable) {
+    public BlockState getHeldBlockForBone(String boneName, OLlama animatable) {
         return null;
     }
 
     @Override
-    protected void preRenderItem(PoseStack poseStack, ItemStack stack, String boneName, OLlama animatable, IBone bone) {
+    public void preRenderItem(PoseStack poseStack, ItemStack stack, String boneName, OLlama animatable, IBone bone) {
     }
 
     @Override
-    protected void preRenderBlock(PoseStack poseStack, BlockState state, String boneName, OLlama animatable) {
+    public void preRenderBlock(PoseStack poseStack, BlockState state, String boneName, OLlama animatable) {
     }
 
     @Override
-    protected void postRenderItem(PoseStack poseStack, ItemStack stack, String boneName, OLlama animatable, IBone bone) {
+    public void postRenderItem(PoseStack poseStack, ItemStack stack, String boneName, OLlama animatable, IBone bone) {
     }
 
     @Override
-    protected void postRenderBlock(PoseStack poseStack, BlockState state, String boneName, OLlama animatable) {
+    public void postRenderBlock(PoseStack poseStack, BlockState state, String boneName, OLlama animatable) {
     }
 }
 

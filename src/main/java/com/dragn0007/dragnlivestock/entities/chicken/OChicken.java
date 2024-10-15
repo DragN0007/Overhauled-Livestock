@@ -56,9 +56,9 @@ public class OChicken extends Animal implements IAnimatable {
 				.add(Attributes.MOVEMENT_SPEED, 0.16F);
 	}
 
-	protected static final Ingredient FOOD_ITEMS = Ingredient.of(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
+	public static final Ingredient FOOD_ITEMS = Ingredient.of(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 
-	protected void registerGoals() {
+	public void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.8F));
 		this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
@@ -74,7 +74,7 @@ public class OChicken extends Animal implements IAnimatable {
 		return 1F;
 	}
 
-	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
 		double speedThreshold = 0.01;
 
@@ -123,22 +123,22 @@ public class OChicken extends Animal implements IAnimatable {
 
 	}
 
-	protected SoundEvent getAmbientSound() {
+	public SoundEvent getAmbientSound() {
 		super.getAmbientSound();
 		return SoundEvents.CHICKEN_AMBIENT;
 	}
 
-	protected SoundEvent getDeathSound() {
+	public SoundEvent getDeathSound() {
 		super.getDeathSound();
 		return SoundEvents.CHICKEN_DEATH;
 	}
 
-	protected SoundEvent getHurtSound(DamageSource p_30720_) {
+	public SoundEvent getHurtSound(DamageSource p_30720_) {
 		super.getHurtSound(p_30720_);
 		return SoundEvents.CHICKEN_HURT;
 	}
 
-	protected void playStepSound(BlockPos p_28254_, BlockState p_28255_) {
+	public void playStepSound(BlockPos p_28254_, BlockState p_28255_) {
 		this.playSound(SoundEvents.CHICKEN_STEP, 0.15F, 1.0F);
 	}
 
@@ -150,7 +150,7 @@ public class OChicken extends Animal implements IAnimatable {
 		return FOOD_ITEMS.test(p_28271_);
 	}
 
-	protected int getExperienceReward(Player p_28259_) {
+	public int getExperienceReward(Player p_28259_) {
 		return this.isChickenJockey() ? 10 : super.getExperienceReward(p_28259_);
 	}
 
@@ -163,8 +163,8 @@ public class OChicken extends Animal implements IAnimatable {
 		return OChickenMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
 	}
 
-	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OChicken.class, EntityDataSerializers.INT);
-	protected static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OChicken.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OChicken.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OChicken.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -224,13 +224,13 @@ public class OChicken extends Animal implements IAnimatable {
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	public void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
 	}
 
-	protected boolean canParent() {
+	public boolean canParent() {
 		return !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
 	}
 

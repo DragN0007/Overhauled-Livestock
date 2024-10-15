@@ -20,7 +20,7 @@ public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
         this.oHorse = oHorseMenu.oHorse;
     }
 
-    protected void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
+    public void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
         RenderSystem.setShaderTexture(0, HORSE_INVENTORY_LOCATION);

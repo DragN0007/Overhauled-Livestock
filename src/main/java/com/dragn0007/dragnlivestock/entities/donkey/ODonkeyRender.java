@@ -63,47 +63,47 @@ public class ODonkeyRender extends ExtendedGeoEntityRenderer<ODonkey> {
     }
 
     @Override
-    protected boolean isArmorBone(GeoBone bone) {
+    public boolean isArmorBone(GeoBone bone) {
         return false;
     }
 
     @Nullable
     @Override
-    protected ResourceLocation getTextureForBone(String boneName, ODonkey animatable) {
+    public ResourceLocation getTextureForBone(String boneName, ODonkey animatable) {
         return null;
     }
 
     @Nullable
     @Override
-    protected ItemStack getHeldItemForBone(String boneName, ODonkey animatable) {
+    public ItemStack getHeldItemForBone(String boneName, ODonkey animatable) {
         return null;
     }
 
     @Override
-    protected ItemTransforms.TransformType getCameraTransformForItemAtBone(ItemStack stack, String boneName) {
+    public ItemTransforms.TransformType getCameraTransformForItemAtBone(ItemStack stack, String boneName) {
         return null;
     }
 
     @Nullable
     @Override
-    protected BlockState getHeldBlockForBone(String boneName, ODonkey animatable) {
+    public BlockState getHeldBlockForBone(String boneName, ODonkey animatable) {
         return null;
     }
 
     @Override
-    protected void preRenderItem(PoseStack poseStack, ItemStack stack, String boneName, ODonkey animatable, IBone bone) {
+    public void preRenderItem(PoseStack poseStack, ItemStack stack, String boneName, ODonkey animatable, IBone bone) {
     }
 
     @Override
-    protected void preRenderBlock(PoseStack poseStack, BlockState state, String boneName, ODonkey animatable) {
+    public void preRenderBlock(PoseStack poseStack, BlockState state, String boneName, ODonkey animatable) {
     }
 
     @Override
-    protected void postRenderItem(PoseStack poseStack, ItemStack stack, String boneName, ODonkey animatable, IBone bone) {
+    public void postRenderItem(PoseStack poseStack, ItemStack stack, String boneName, ODonkey animatable, IBone bone) {
     }
 
     @Override
-    protected void postRenderBlock(PoseStack poseStack, BlockState state, String boneName, ODonkey animatable) {
+    public void postRenderBlock(PoseStack poseStack, BlockState state, String boneName, ODonkey animatable) {
     }
 }
 

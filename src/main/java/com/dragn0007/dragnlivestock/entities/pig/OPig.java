@@ -53,9 +53,9 @@ public class OPig extends Animal implements IAnimatable {
 				.add(Attributes.MOVEMENT_SPEED, 0.18D);
 	}
 
-	private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.CARROT, Items.POTATO, Items.BEETROOT);
+	public static final Ingredient FOOD_ITEMS = Ingredient.of(Items.CARROT, Items.POTATO, Items.BEETROOT);
 
-	protected void registerGoals() {
+	public void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.25D));
 		this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
@@ -72,7 +72,7 @@ public class OPig extends Animal implements IAnimatable {
 		return 1F;
 	}
 
-	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
 		double speedThreshold = 0.02;
 
@@ -100,22 +100,22 @@ public class OPig extends Animal implements IAnimatable {
 		return factory;
 	}
 
-	protected SoundEvent getAmbientSound() {
+	public SoundEvent getAmbientSound() {
 		super.getAmbientSound();
 		return SoundEvents.PIG_AMBIENT;
 	}
 
-	protected SoundEvent getDeathSound() {
+	public SoundEvent getDeathSound() {
 		super.getDeathSound();
 		return SoundEvents.PIG_DEATH;
 	}
 
-	protected SoundEvent getHurtSound(DamageSource p_30720_) {
+	public SoundEvent getHurtSound(DamageSource p_30720_) {
 		super.getHurtSound(p_30720_);
 		return SoundEvents.PIG_HURT;
 	}
 
-	protected void playStepSound(BlockPos p_28254_, BlockState p_28255_) {
+	public void playStepSound(BlockPos p_28254_, BlockState p_28255_) {
 		this.playSound(SoundEvents.PIG_STEP, 0.15F, 1.0F);
 	}
 
@@ -132,8 +132,8 @@ public class OPig extends Animal implements IAnimatable {
 		return OPigMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
 	}
 
-	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OPig.class, EntityDataSerializers.INT);
-	protected static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OPig.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OPig.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OPig.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -184,13 +184,13 @@ public class OPig extends Animal implements IAnimatable {
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	public void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
 	}
 
-	protected boolean canParent() {
+	public boolean canParent() {
 		return !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
 	}
 

@@ -43,47 +43,47 @@ public class OSheepRender extends ExtendedGeoEntityRenderer<OSheep> {
     }
 
     @Override
-    protected boolean isArmorBone(GeoBone bone) {
+    public boolean isArmorBone(GeoBone bone) {
         return false;
     }
 
     @Nullable
     @Override
-    protected ResourceLocation getTextureForBone(String boneName, OSheep animatable) {
+    public ResourceLocation getTextureForBone(String boneName, OSheep animatable) {
         return null;
     }
 
     @Nullable
     @Override
-    protected ItemStack getHeldItemForBone(String boneName, OSheep animatable) {
+    public ItemStack getHeldItemForBone(String boneName, OSheep animatable) {
         return null;
     }
 
     @Override
-    protected ItemTransforms.TransformType getCameraTransformForItemAtBone(ItemStack stack, String boneName) {
+    public ItemTransforms.TransformType getCameraTransformForItemAtBone(ItemStack stack, String boneName) {
         return null;
     }
 
     @Nullable
     @Override
-    protected BlockState getHeldBlockForBone(String boneName, OSheep animatable) {
+    public BlockState getHeldBlockForBone(String boneName, OSheep animatable) {
         return null;
     }
 
     @Override
-    protected void preRenderItem(PoseStack poseStack, ItemStack stack, String boneName, OSheep animatable, IBone bone) {
+    public void preRenderItem(PoseStack poseStack, ItemStack stack, String boneName, OSheep animatable, IBone bone) {
     }
 
     @Override
-    protected void preRenderBlock(PoseStack poseStack, BlockState state, String boneName, OSheep animatable) {
+    public void preRenderBlock(PoseStack poseStack, BlockState state, String boneName, OSheep animatable) {
     }
 
     @Override
-    protected void postRenderItem(PoseStack poseStack, ItemStack stack, String boneName, OSheep animatable, IBone bone) {
+    public void postRenderItem(PoseStack poseStack, ItemStack stack, String boneName, OSheep animatable, IBone bone) {
     }
 
     @Override
-    protected void postRenderBlock(PoseStack poseStack, BlockState state, String boneName, OSheep animatable) {
+    public void postRenderBlock(PoseStack poseStack, BlockState state, String boneName, OSheep animatable) {
     }
 }
 

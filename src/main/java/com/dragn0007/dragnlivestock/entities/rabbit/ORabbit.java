@@ -60,9 +60,9 @@ public class ORabbit extends Animal implements IAnimatable {
 				.add(Attributes.MOVEMENT_SPEED, 0.16F);
 	}
 
-	protected static final Ingredient FOOD_ITEMS = Ingredient.of(Items.CARROT, Items.GOLDEN_CARROT, Blocks.DANDELION);
+	public static final Ingredient FOOD_ITEMS = Ingredient.of(Items.CARROT, Items.GOLDEN_CARROT, Blocks.DANDELION);
 
-	protected void registerGoals() {
+	public void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.8F));
 		this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
@@ -78,7 +78,7 @@ public class ORabbit extends Animal implements IAnimatable {
 	}
 
 	static class RabbitAvoidEntityGoal<T extends LivingEntity> extends AvoidEntityGoal<T> {
-		protected final ORabbit rabbit;
+		public final ORabbit rabbit;
 
 		public RabbitAvoidEntityGoal(ORabbit p_29743_, Class<T> p_29744_, float p_29745_, double p_29746_, double p_29747_) {
 			super(p_29743_, p_29744_, p_29745_, p_29746_, p_29747_);
@@ -91,7 +91,7 @@ public class ORabbit extends Animal implements IAnimatable {
 		return 1F;
 	}
 
-	protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
 		double speedThreshold = 0.01;
 
@@ -120,9 +120,9 @@ public class ORabbit extends Animal implements IAnimatable {
 	}
 
 	static class RaidGardenGoal extends MoveToBlockGoal {
-		protected final ORabbit rabbit;
-		protected boolean wantsToRaid;
-		protected boolean canRaid;
+		public final ORabbit rabbit;
+		public boolean wantsToRaid;
+		public boolean canRaid;
 
 		public RaidGardenGoal(ORabbit p_29782_) {
 			super(p_29782_, (double)0.7F, 16);
@@ -174,7 +174,7 @@ public class ORabbit extends Animal implements IAnimatable {
 
 		}
 
-		protected boolean isValidTarget(LevelReader p_29785_, BlockPos p_29786_) {
+		public boolean isValidTarget(LevelReader p_29785_, BlockPos p_29786_) {
 			BlockState blockstate = p_29785_.getBlockState(p_29786_);
 			if (blockstate.is(Blocks.FARMLAND) && this.wantsToRaid && !this.canRaid) {
 				blockstate = p_29785_.getBlockState(p_29786_.above());
@@ -193,22 +193,22 @@ public class ORabbit extends Animal implements IAnimatable {
 		return factory;
 	}
 
-	protected SoundEvent getAmbientSound() {
+	public SoundEvent getAmbientSound() {
 		super.getAmbientSound();
 		return SoundEvents.RABBIT_AMBIENT;
 	}
 
-	protected SoundEvent getDeathSound() {
+	public SoundEvent getDeathSound() {
 		super.getDeathSound();
 		return SoundEvents.RABBIT_DEATH;
 	}
 
-	protected SoundEvent getHurtSound(DamageSource p_30720_) {
+	public SoundEvent getHurtSound(DamageSource p_30720_) {
 		super.getHurtSound(p_30720_);
 		return SoundEvents.RABBIT_HURT;
 	}
 
-	protected void playStepSound(BlockPos p_28254_, BlockState p_28255_) {
+	public void playStepSound(BlockPos p_28254_, BlockState p_28255_) {
 		this.playSound(SoundEvents.RABBIT_JUMP, 0.15F, 1.0F);
 	}
 
@@ -229,8 +229,8 @@ public class ORabbit extends Animal implements IAnimatable {
 		return ORabbitMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
 	}
 
-	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(ORabbit.class, EntityDataSerializers.INT);
-	protected static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(ORabbit.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(ORabbit.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(ORabbit.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -281,13 +281,13 @@ public class ORabbit extends Animal implements IAnimatable {
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	public void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
 	}
 
-	protected boolean canParent() {
+	public boolean canParent() {
 		return !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
 	}
 

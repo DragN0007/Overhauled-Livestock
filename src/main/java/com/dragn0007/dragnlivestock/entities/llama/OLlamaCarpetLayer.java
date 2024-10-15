@@ -14,7 +14,7 @@ import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
 @OnlyIn(Dist.CLIENT)
 public class OLlamaCarpetLayer extends GeoLayerRenderer<OLlama> {
-    private static final ResourceLocation[] TEXTURE_LOCATION = new ResourceLocation[]{
+    public static final ResourceLocation[] TEXTURE_LOCATION = new ResourceLocation[]{
             new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/white.png"),
             new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/orange.png"),
             new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/magenta.png"),
