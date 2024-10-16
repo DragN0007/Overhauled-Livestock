@@ -137,6 +137,11 @@ public class EndUnicorn extends OHorse implements IAnimatable {
 			double offsetY = 1.4;
 			double offsetZ = -0.2;
 
+			if (this.isJumping()) {
+				offsetY = 1.7;
+				offsetZ = -0.9;
+			}
+
 			double radYaw = Math.toRadians(this.getYRot());
 
 			double offsetXRotated = offsetX * Math.cos(radYaw) - offsetZ * Math.sin(radYaw);

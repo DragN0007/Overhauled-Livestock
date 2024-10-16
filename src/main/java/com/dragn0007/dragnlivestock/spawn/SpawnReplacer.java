@@ -54,8 +54,8 @@ public class SpawnReplacer {
                 oHorse.setCustomName(vanillaHorse.getCustomName());
                 oHorse.setOwnerUUID(vanillaHorse.getOwnerUUID());
                 oHorse.setAge(vanillaHorse.getAge());
-                oHorse.setHealth(vanillaHorse.getHealth());
-                oHorse.setSpeed(vanillaHorse.getSpeed());
+                oHorse.getAttribute(Attributes.MAX_HEALTH).setBaseValue(oHorse.generateRandomMaxHealth());
+                oHorse.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(oHorse.generateRandomSpeed());
                 oHorse.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(oHorse.generateRandomJumpStrength());
 
                 //set random variants on-spawn
@@ -96,8 +96,8 @@ public class SpawnReplacer {
                 oDonkey.setCustomName(vanillaDonkey.getCustomName());
                 oDonkey.setOwnerUUID(vanillaDonkey.getOwnerUUID());
                 oDonkey.setAge(vanillaDonkey.getAge());
-                oDonkey.setHealth(vanillaDonkey.getHealth());
-                oDonkey.setSpeed(vanillaDonkey.getSpeed());
+                oDonkey.getAttribute(Attributes.MAX_HEALTH).setBaseValue(oDonkey.generateRandomMaxHealth());
+                oDonkey.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(oDonkey.generateRandomSpeed());
                 oDonkey.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(oDonkey.generateRandomJumpStrength());
 
                 int randomVariant = event.getWorld().getRandom().nextInt(23);
@@ -133,8 +133,8 @@ public class SpawnReplacer {
                 oMule.setCustomName(vanillaMule.getCustomName());
                 oMule.setOwnerUUID(vanillaMule.getOwnerUUID());
                 oMule.setAge(vanillaMule.getAge());
-                oMule.setHealth(vanillaMule.getHealth());
-                oMule.setSpeed(vanillaMule.getSpeed());
+                oMule.getAttribute(Attributes.MAX_HEALTH).setBaseValue(oMule.generateRandomMaxHealth());
+                oMule.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(oMule.generateRandomSpeed());
                 oMule.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(oMule.generateRandomJumpStrength());
 
                 int randomVariant = event.getWorld().getRandom().nextInt(23);

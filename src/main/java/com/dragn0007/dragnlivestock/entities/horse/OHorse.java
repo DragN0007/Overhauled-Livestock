@@ -64,7 +64,8 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		return Mob.createMobAttributes()
 				.add(Attributes.JUMP_STRENGTH)
 				.add(Attributes.MAX_HEALTH, 53.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.235F);
+				.add(Attributes.MOVEMENT_SPEED, 0.235F)
+				.add(Attributes.ATTACK_DAMAGE, 1D);
 	}
 
 	@Override
@@ -314,6 +315,11 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 
 			if (this.isSaddled() && getModelLocation().equals(BreedModel.PONY.resourceLocation)) {
 				offsetY = 1.1;
+			}
+
+			if (this.isJumping()) {
+				offsetY = 1.7;
+				offsetZ = -0.9;
 			}
 
 			double radYaw = Math.toRadians(this.getYRot());

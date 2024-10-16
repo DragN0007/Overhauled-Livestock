@@ -18,6 +18,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
@@ -56,7 +57,8 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 		return Mob.createMobAttributes()
 				.add(Attributes.JUMP_STRENGTH)
 				.add(Attributes.MAX_HEALTH, 53.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.235F);
+				.add(Attributes.MOVEMENT_SPEED, 0.235F)
+				.add(Attributes.ATTACK_DAMAGE, 2D);
 	}
 
 	@Override
@@ -76,7 +78,7 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 0.0F));
 		this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D, AbstractOHorse.class));
 		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, (livingEntity) -> livingEntity instanceof Wolf));
+		this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, Wolf.class, false));
 	}
 
 	@Override
@@ -228,8 +230,13 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 	public void positionRider(Entity entity) {
 		if (this.hasPassenger(entity)) {
 			double offsetX = 0;
-			double offsetY = 1.1;
+			double offsetY = 1.2;
 			double offsetZ = -0.2;
+
+			if (this.isJumping()) {
+				offsetY = 1.7;
+				offsetZ = -0.9;
+			}
 
 			double radYaw = Math.toRadians(this.getYRot());
 
