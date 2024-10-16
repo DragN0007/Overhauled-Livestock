@@ -50,6 +50,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class OSheep extends Animal implements Shearable, net.minecraftforge.common.IForgeShearable, IAnimatable {
 
@@ -108,6 +109,74 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 		this.goalSelector.addGoal(8, new EatGrassGoal(this));
+	}
+
+	public OSheep leader;
+	public int herdSize = 1;
+
+	public boolean isFollower() {
+		return this.leader != null && this.leader.isAlive();
+	}
+
+	public OSheep startFollowing(OSheep cow) {
+		this.leader = cow;
+		cow.addFollower();
+		return cow;
+	}
+
+	public void stopFollowing() {
+		this.leader.removeFollower();
+		this.leader = null;
+	}
+
+	public void addFollower() {
+		++this.herdSize;
+	}
+
+	public void removeFollower() {
+		--this.herdSize;
+	}
+
+	public boolean canBeFollowed() {
+		return this.hasFollowers() && this.herdSize < this.getMaxHerdSize();
+	}
+
+	public void tick() {
+		super.tick();
+		if (this.hasFollowers() && this.level.random.nextInt(200) == 1) {
+			List<? extends OSheep> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D));
+			if (list.size() <= 1) {
+				this.herdSize = 1;
+			}
+		}
+
+	}
+
+	public int getMaxHerdSize() {
+		return 8;
+	}
+
+	public boolean hasFollowers() {
+		return this.herdSize > 1;
+	}
+
+	public boolean inRangeOfLeader() {
+		return this.distanceToSqr(this.leader) <= 121.0D;
+	}
+
+	public void pathToLeader() {
+		if (this.isFollower()) {
+			this.getNavigation().moveTo(this.leader, 1.0D);
+		}
+
+	}
+
+	public void addFollowers(Stream<? extends OSheep> p_27534_) {
+		p_27534_.limit((long)(this.getMaxHerdSize() - this.herdSize)).filter((cow) -> {
+			return cow != this;
+		}).forEach((cow) -> {
+			cow.startFollowing(this);
+		});
 	}
 
 	public class EatGrassGoal extends Goal {
