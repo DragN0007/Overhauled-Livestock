@@ -176,6 +176,9 @@ public class SpawnReplacer {
                 int randomOverlayVariant = event.getWorld().getRandom().nextInt(31);
                 oCow.setOverlayVariant(randomOverlayVariant);
 
+                int randomHorns = event.getWorld().getRandom().nextInt(31);
+                oCow.setHornVariant(randomHorns);
+
                 if (event.getWorld().isClientSide) {
                     vanillacow.remove(Entity.RemovalReason.DISCARDED);
                 }
