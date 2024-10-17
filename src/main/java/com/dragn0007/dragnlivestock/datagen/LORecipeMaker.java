@@ -4,10 +4,7 @@ import com.dragn0007.dragnlivestock.items.LOItems;
 import com.dragn0007.dragnlivestock.util.LOTags;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
-import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -22,6 +19,18 @@ public class LORecipeMaker extends RecipeProvider implements IConditionBuilder {
 
     @Override
     public void buildCraftingRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
+
+        ShapedRecipeBuilder.shaped(Items.CAKE)
+                .define('A', LOTags.Items.MILK)
+                .define('C', Items.SUGAR)
+                .define('D', Items.WHEAT)
+                .define('E', LOTags.Items.EGG)
+                .pattern("AAA")
+                .pattern("CEC")
+                .pattern("DDD")
+                .unlockedBy("has_wheat", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Items.WHEAT).build()))
+                .save(pFinishedRecipeConsumer);
 
         ShapelessRecipeBuilder.shapeless(LOItems.COW_MILK_JUG.get(), 3)
                 .requires(Items.MILK_BUCKET)
