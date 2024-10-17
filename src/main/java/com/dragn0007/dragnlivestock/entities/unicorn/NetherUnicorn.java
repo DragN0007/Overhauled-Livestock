@@ -20,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
@@ -37,6 +38,12 @@ public class NetherUnicorn extends OHorse implements IAnimatable {
 		this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
 		this.noCulling = true;
 		this.xpReward = 50;
+	}
+
+	@Override
+	public Vec3 getLeashOffset() {
+		return new Vec3(0D, (double)this.getEyeHeight() * 1F, (double)(this.getBbWidth() * 1.4F));
+		//              ^ Side offset                      ^ Height offset                   ^ Length offset
 	}
 
 	public static AttributeSupplier.Builder createBaseHorseAttributes() {

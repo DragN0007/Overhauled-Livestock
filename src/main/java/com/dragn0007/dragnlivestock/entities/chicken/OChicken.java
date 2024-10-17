@@ -45,6 +45,12 @@ public class OChicken extends Animal implements IAnimatable {
 	public int eggTime = this.random.nextInt(6000) + 6000;
 	public boolean isChickenJockey;
 
+	@Override
+	public Vec3 getLeashOffset() {
+		return new Vec3(0D, (double)this.getEyeHeight() * 0.8F, (double)(this.getBbWidth() * 0.4F));
+		//              ^ Side offset                      ^ Height offset                   ^ Length offset
+	}
+
 	public OChicken(EntityType<? extends OChicken> type, Level level) {
 		super(type, level);
 		this.noCulling = true;

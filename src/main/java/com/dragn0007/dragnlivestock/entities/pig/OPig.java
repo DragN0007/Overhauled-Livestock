@@ -26,6 +26,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -45,6 +46,12 @@ public class OPig extends Animal implements IAnimatable {
 	public OPig(EntityType<? extends OPig> type, Level level) {
 		super(type, level);
 		this.noCulling = true;
+	}
+
+	@Override
+	public Vec3 getLeashOffset() {
+		return new Vec3(0D, (double)this.getEyeHeight() * 0.8F, (double)(this.getBbWidth() * 0.9F));
+		//              ^ Side offset                      ^ Height offset                   ^ Length offset
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {

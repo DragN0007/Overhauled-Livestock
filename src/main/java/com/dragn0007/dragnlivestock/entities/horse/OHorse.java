@@ -3,6 +3,7 @@ package com.dragn0007.dragnlivestock.entities.horse;
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.HorseFollowHerdLeaderGoal;
+import com.dragn0007.dragnlivestock.entities.ai.LookAtPlayerWhileLeashedGoal;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import net.minecraft.nbt.CompoundTag;
@@ -58,6 +59,12 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 	public OHorse(EntityType<? extends OHorse> type, Level level) {
 		super(type, level);
 		this.noCulling = true;
+	}
+
+	@Override
+	public Vec3 getLeashOffset() {
+		return new Vec3(0D, (double)this.getEyeHeight() * 0.8F, (double)(this.getBbWidth() * 1.2F));
+		//              ^ Side offset                      ^ Height offset                   ^ Length offset
 	}
 
 	public static AttributeSupplier.Builder createBaseHorseAttributes() {

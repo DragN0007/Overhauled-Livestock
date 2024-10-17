@@ -45,6 +45,11 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OMule.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OMule.class, EntityDataSerializers.INT);
 
+	@Override
+	public Vec3 getLeashOffset() {
+		return new Vec3(0D, (double)this.getEyeHeight() * 0.9F, (double)(this.getBbWidth() * 1.1F));
+		//              ^ Side offset                      ^ Height offset                   ^ Length offset
+	}
 
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 

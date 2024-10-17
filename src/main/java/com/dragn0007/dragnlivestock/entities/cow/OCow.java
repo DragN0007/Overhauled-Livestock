@@ -31,6 +31,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -63,6 +64,12 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		super(type, level);
 		this.noCulling = true;
 		this.updateInventory();
+	}
+
+	@Override
+	public Vec3 getLeashOffset() {
+		return new Vec3(0D, (double)this.getEyeHeight() * 1.0F, (double)(this.getBbWidth() * 0.9F));
+		//              ^ Side offset                      ^ Height offset                   ^ Length offset
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {

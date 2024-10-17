@@ -57,6 +57,12 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 		this.noCulling = true;
 	}
 
+	@Override
+	public Vec3 getLeashOffset() {
+		return new Vec3(0D, (double)this.getEyeHeight() * 0.6F, (double)(this.getBbWidth() * 1F));
+		//              ^ Side offset                      ^ Height offset                   ^ Length offset
+	}
+
 	public static AttributeSupplier.Builder createBaseHorseAttributes() {
 		return Mob.createMobAttributes()
 				.add(Attributes.JUMP_STRENGTH)

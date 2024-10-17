@@ -21,6 +21,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
@@ -31,6 +32,12 @@ import java.util.Random;
 public class EndUnicorn extends OHorse implements IAnimatable {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 	public int pearlTime = this.random.nextInt(6000) + 6000;
+
+	@Override
+	public Vec3 getLeashOffset() {
+		return new Vec3(0D, (double)this.getEyeHeight() * 1F, (double)(this.getBbWidth() * 1.4F));
+		//              ^ Side offset                      ^ Height offset                   ^ Length offset
+	}
 
 	public EndUnicorn(EntityType<? extends EndUnicorn> type, Level level) {
 		super(type, level);
