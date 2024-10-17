@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "dragnlivestock:sheep_cheese_smelting"
+      "dragnlivestock:egg_salad"
     ]
   },
   "criteria": {
-    "has_sheep_milk": {
+    "has_egg": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "dragnlivestock:sheep_milk_jug"
+              "minecraft:egg"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "dragnlivestock:sheep_cheese_smelting"
+        "recipe": "dragnlivestock:egg_salad"
       }
     }
   },
   "requirements": [
     [
-      "has_sheep_milk",
+      "has_egg",
       "has_the_recipe"
     ]
   ]

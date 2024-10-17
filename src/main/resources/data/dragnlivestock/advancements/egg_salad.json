@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "dragnlivestock:egg_salad"
+    },
+    "title": "Eggscelent!",
+    "description": "Make Egg Salad.",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["dragnlivestock:egg_salad"]
+          }
+        ]
+      }
+    }
+  }
+}

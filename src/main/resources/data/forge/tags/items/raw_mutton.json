@@ -3,6 +3,10 @@
   "values": [
     "minecraft:mutton",
     "dragnlivestock:mutton_loin",
-    "dragnlivestock:mutton_rib"
+    "dragnlivestock:mutton_rib",
+
+    "dragnlivestock:llama",
+    "dragnlivestock:llama_loin",
+    "dragnlivestock:llama_rib"
   ]
 }

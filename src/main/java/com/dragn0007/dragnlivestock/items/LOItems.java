@@ -8,10 +8,7 @@ import com.dragn0007.dragnlivestock.items.custom.UnicornHornItem;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.HorseArmorItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.MilkBucketItem;
+import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -69,12 +66,22 @@ public class LOItems {
     public static final RegistryObject<Item> LLAMA_MILK_BUCKET = ITEMS.register("llama_milk_bucket",
             () -> new MilkBucketItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(1).build()).craftRemainder(Items.BUCKET).stacksTo(1).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
 
+    public static final RegistryObject<Item> COW_MILK_JUG = ITEMS.register("cow_milk_jug",
+            () -> new Item(new Item.Properties().tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+    public static final RegistryObject<Item> SHEEP_MILK_JUG = ITEMS.register("sheep_milk_jug",
+            () -> new Item(new Item.Properties().tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+    public static final RegistryObject<Item> LLAMA_MILK_JUG = ITEMS.register("llama_milk_jug",
+            () -> new Item(new Item.Properties().tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+
     public static final RegistryObject<Item> CHEESE = ITEMS.register("cheese",
             () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).effect(new MobEffectInstance(MobEffects.ABSORPTION, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
     public static final RegistryObject<Item> SHEEP_CHEESE = ITEMS.register("sheep_cheese",
             () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).effect(new MobEffectInstance(MobEffects.ABSORPTION, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
     public static final RegistryObject<Item> LLAMA_CHEESE = ITEMS.register("llama_cheese",
             () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).effect(new MobEffectInstance(MobEffects.ABSORPTION, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+
+    public static final RegistryObject<Item> EGG_SALAD = ITEMS.register("egg_salad",
+            () -> new BowlFoodItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).build()).stacksTo(1).craftRemainder(Items.BOWL).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
 
     public static final RegistryObject<Item> BEEF_RIB_STEAK = ITEMS.register("beef_rib_steak",
             () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));

@@ -3,6 +3,14 @@
   "values": [
     "minecraft:beef",
     "dragnlivestock:beef_sirloin_steak",
-    "dragnlivestock:beef_rib_steak"
+    "dragnlivestock:beef_rib_steak",
+
+    "dragnlivestock:horse",
+    "dragnlivestock:horse_sirloin_steak",
+    "dragnlivestock:horse_rib_steak",
+
+    "dragnlivestock:unicorn",
+    "dragnlivestock:unicorn_sirloin_steak",
+    "dragnlivestock:unicorn_rib_steak"
   ]
 }

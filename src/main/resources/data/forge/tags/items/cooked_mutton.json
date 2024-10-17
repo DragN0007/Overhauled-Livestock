@@ -3,6 +3,10 @@
   "values": [
     "minecraft:cooked_mutton",
     "dragnlivestock:cooked_mutton_loin",
-    "dragnlivestock:cooked_mutton_rib"
+    "dragnlivestock:cooked_mutton_rib",
+
+    "dragnlivestock:cooked_llama",
+    "dragnlivestock:cooked_llama_loin",
+    "dragnlivestock:cooked_llama_rib"
   ]
 }

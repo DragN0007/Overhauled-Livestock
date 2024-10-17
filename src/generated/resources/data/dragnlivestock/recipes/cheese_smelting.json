@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "item": "minecraft:milk_bucket"
+    "item": "dragnlivestock:cow_milk_jug"
   },
   "result": "dragnlivestock:cheese",
   "experience": 0.35,

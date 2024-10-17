@@ -56,9 +56,15 @@
   "item.dragnlivestock.sheep_milk_bucket": "Sheep Milk Bucket",
   "item.dragnlivestock.llama_milk_bucket": "Llama Milk Bucket",
 
+  "item.dragnlivestock.cow_milk_jug": "Cow Milk Jug",
+  "item.dragnlivestock.sheep_milk_jug": "Sheep Milk Jug",
+  "item.dragnlivestock.llama_milk_jug": "Llama Milk Jug",
+
   "item.dragnlivestock.cheese": "Cheese",
   "item.dragnlivestock.sheep_cheese": "Sheep Cheese",
   "item.dragnlivestock.llama_cheese": "Llama Cheese",
+
+  "item.dragnlivestock.egg_salad": "Egg Salad",
 
   "item.dragnlivestock.beef_sirloin_steak": "Beef Sirloin Steak",
   "item.dragnlivestock.beef_rib_steak": "Beef Rib Steak",

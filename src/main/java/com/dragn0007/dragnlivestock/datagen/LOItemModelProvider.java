@@ -29,6 +29,12 @@ public class LOItemModelProvider extends ItemModelProvider {
         simpleItem(LOItems.SHEEP_CHEESE.get());
         simpleItem(LOItems.LLAMA_CHEESE.get());
 
+        simpleItem(LOItems.COW_MILK_JUG.get());
+        simpleItem(LOItems.SHEEP_MILK_JUG.get());
+        simpleItem(LOItems.LLAMA_MILK_JUG.get());
+
+        simpleItem(LOItems.EGG_SALAD.get());
+
         simpleItem(LOItems.BEEF_RIB_STEAK.get());
         simpleItem(LOItems.BEEF_SIRLOIN_STEAK.get());
         simpleItem(LOItems.COOKED_BEEF_RIB_STEAK.get());

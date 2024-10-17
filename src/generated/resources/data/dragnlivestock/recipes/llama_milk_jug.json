@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "dragnlivestock:llama_milk_bucket"
+    }
+  ],
+  "result": {
+    "item": "dragnlivestock:llama_milk_jug",
+    "count": 3
+  }
+}

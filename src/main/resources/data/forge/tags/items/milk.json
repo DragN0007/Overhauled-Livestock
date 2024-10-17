@@ -3,6 +3,10 @@
   "values": [
     "minecraft:milk_bucket",
     "dragnlivestock:sheep_milk_bucket",
-    "dragnlivestock:llama_milk_bucket"
+    "dragnlivestock:llama_milk_bucket",
+
+    "dragnlivestock:cow_milk_jug",
+    "dragnlivestock:sheep_milk_jug",
+    "dragnlivestock:llama_milk_jug"
   ]
 }

@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "dragnlivestock:sheep_cheese_smelting"
+      "dragnlivestock:cow_milk_jug"
     ]
   },
   "criteria": {
-    "has_sheep_milk": {
+    "has_milk": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "dragnlivestock:sheep_milk_jug"
-            ]
+            "tag": "forge:milk"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "dragnlivestock:sheep_cheese_smelting"
+        "recipe": "dragnlivestock:cow_milk_jug"
       }
     }
   },
   "requirements": [
     [
-      "has_sheep_milk",
+      "has_milk",
       "has_the_recipe"
     ]
   ]
