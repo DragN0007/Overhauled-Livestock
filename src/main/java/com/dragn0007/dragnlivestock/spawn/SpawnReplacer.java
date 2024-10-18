@@ -37,6 +37,7 @@ public class SpawnReplacer {
     @SubscribeEvent
     public static void onSpawn(EntityJoinWorldEvent event) {
 
+
         //Horse
         if (!LivestockOverhaulCommonConfig.FAILSAFE_REPLACER.get() && LivestockOverhaulCommonConfig.REPLACE_HORSES.get() && event.getEntity() instanceof Horse) {
             Horse vanillaHorse = (Horse) event.getEntity();
@@ -290,18 +291,18 @@ public class SpawnReplacer {
         }
 
         //Bee
-        if (!LivestockOverhaulCommonConfig.FAILSAFE_REPLACER.get() && LivestockOverhaulCommonConfig.REPLACE_BEES.get() && event.getEntity() instanceof Bee vanillaBee) {
+        if (!LivestockOverhaulCommonConfig.FAILSAFE_REPLACER.get() && LivestockOverhaulCommonConfig.REPLACE_BEES.get() &&
+                (event.getEntity() instanceof Bee bee && !(bee instanceof OBee))) {
+
             OBee oBee = EntityTypes.O_BEE_ENTITY.get().create(event.getWorld());
 
-            vanillaBee.remove(Entity.RemovalReason.DISCARDED);
+            bee.remove(Entity.RemovalReason.DISCARDED);
             event.getWorld().addFreshEntity(oBee);
+            oBee.copyPosition(bee);
+            oBee.setCustomName(bee.getCustomName());
 
-                oBee.copyPosition(vanillaBee);
-
-                oBee.setCustomName(vanillaBee.getCustomName());
-
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
-                oBee.setVariant(randomVariant);
+            int randomVariant = event.getWorld().getRandom().nextInt(23);
+            oBee.setVariant(randomVariant);
 
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla bee with an O-Bee!");
 
@@ -639,14 +640,10 @@ public class SpawnReplacer {
         //Bee
         if (LivestockOverhaulCommonConfig.FAILSAFE_REPLACER.get() && !LivestockOverhaulCommonConfig.REPLACE_BEES.get() && event.getEntity() instanceof OBee oBee) {
             Bee bee = EntityType.BEE.create(event.getWorld());
-
             oBee.remove(Entity.RemovalReason.DISCARDED);
             event.getWorld().addFreshEntity(bee);
-
             bee.copyPosition(oBee);
-
             bee.setCustomName(oBee.getCustomName());
-
             event.setCanceled(true);
         }
 
