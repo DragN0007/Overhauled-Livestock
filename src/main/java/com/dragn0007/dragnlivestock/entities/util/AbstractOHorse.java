@@ -1,7 +1,11 @@
 package com.dragn0007.dragnlivestock.entities.util;
 
+import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.gui.OHorseMenu;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
@@ -10,6 +14,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
@@ -20,12 +26,25 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import org.checkerframework.checker.units.qual.A;
+import software.bernie.geckolib3.core.AnimationState;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 
 import java.util.UUID;
 
 public class AbstractOHorse extends AbstractChestedHorse {
     public static final UUID ARMOR_MODIFIER_UUID = UUID.fromString("3c50e848-b2e3-404a-9879-7550b12dd09b");
+    public static final UUID SPRINT_SPEED_MOD_UUID = UUID.fromString("c9379664-01b5-4e19-a7e9-11264453bdce");
+    public static final UUID WALK_SPEED_MOD_UUID = UUID.fromString("59b55c98-e39b-45e2-846c-f91f3e9ea861");
+
+    public static final AttributeModifier SPRINT_SPEED_MOD = new AttributeModifier(SPRINT_SPEED_MOD_UUID, "Sprint speed mod", 0.3D, AttributeModifier.Operation.MULTIPLY_TOTAL);
+    public static final AttributeModifier WALK_SPEED_MOD = new AttributeModifier(WALK_SPEED_MOD_UUID, "Walk speed mod", -0.7D, AttributeModifier.Operation.MULTIPLY_TOTAL); // KEEP THIS NEGATIVE. It is calculated by adding 1. So -0.1 actually means 0.9
 
 
     public AbstractOHorse(EntityType<? extends AbstractOHorse> entityType, Level level) {
@@ -186,6 +205,28 @@ public class AbstractOHorse extends AbstractChestedHorse {
         ItemStack newArmor = this.getArmor();
         if(this.tickCount > 20 && this.isArmor(newArmor) && prevArmor != newArmor) {
             this.playSound(SoundEvents.HORSE_ARMOR, 0.5f, 1f);
+        }
+    }
+
+    @Override
+    public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
+        this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(SPRINT_SPEED_MOD);
+        this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(WALK_SPEED_MOD);
+        return super.getDismountLocationForPassenger(livingEntity);
+    }
+
+
+    public void handleSpeedRequest(int speedMod) {
+        AttributeInstance movementSpeed = this.getAttribute(Attributes.MOVEMENT_SPEED);
+
+        if(speedMod == -1 && movementSpeed.hasModifier(SPRINT_SPEED_MOD)) {
+            movementSpeed.removeModifier(SPRINT_SPEED_MOD);
+        } else if(speedMod == -1 && !movementSpeed.hasModifier(WALK_SPEED_MOD)) {
+            movementSpeed.addTransientModifier(WALK_SPEED_MOD);
+        } else if(speedMod == 1 && movementSpeed.hasModifier(WALK_SPEED_MOD)) {
+            movementSpeed.removeModifier(WALK_SPEED_MOD);
+        } else if(speedMod == 1 && !movementSpeed.hasModifier(SPRINT_SPEED_MOD)) {
+            movementSpeed.addTransientModifier(SPRINT_SPEED_MOD);
         }
     }
 }

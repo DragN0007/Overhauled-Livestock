@@ -1,6 +1,7 @@
 package com.dragn0007.dragnlivestock;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import com.dragn0007.dragnlivestock.gui.LOMenuTypes;
 import com.dragn0007.dragnlivestock.items.LOItems;
 import com.dragn0007.dragnlivestock.spawn.SpawnReplacer;
@@ -22,7 +23,6 @@ import static com.dragn0007.dragnlivestock.LivestockOverhaul.MODID;
 @Mod(MODID)
 public class LivestockOverhaul
 {
-
     public static final String MODID = "dragnlivestock";
 
     public LivestockOverhaul()
@@ -40,6 +40,7 @@ public class LivestockOverhaul
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new SpawnReplacer());
     }
+
 
     public static final EntityDataSerializer<ResourceLocation> RESOURCE_LOCATION = new EntityDataSerializer<>() {
         @Override

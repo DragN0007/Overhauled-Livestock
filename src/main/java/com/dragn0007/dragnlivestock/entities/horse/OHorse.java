@@ -118,7 +118,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 	}
 
 	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-		double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
+		double movementSpeed = this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
 		double animationSpeed = Math.max(0.1, movementSpeed);
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
 		double speedThreshold = 0.02;
@@ -127,7 +127,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
 			event.getController().setAnimationSpeed(1.0);
 		} else if (event.isMoving()) {
-			if (currentSpeed > speedThreshold || this.isAggressive() || this.isSprinting()) {
+			if(currentSpeed > speedThreshold || this.isAggressive()) {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
 				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
 			} else {
@@ -158,8 +158,8 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 
 	@Override
 	public void registerControllers (AnimationData data){
-		data.addAnimationController(new AnimationController(this, "controller", 5, this::predicate));
-		data.addAnimationController(new AnimationController(this, "attackController", 1, this::attackPredicate));
+		data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
+		data.addAnimationController(new AnimationController<>(this, "attackController", 1, this::attackPredicate));
 	}
 
 	public boolean isFollower() {
@@ -212,72 +212,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		}).forEach((horse) -> {
 			horse.startFollowing(this);
 		});
-	}
-
-	@Override
-	public void travel(Vec3 travel) {
-		if (this.isAlive()) {
-			if (this.isVehicle() && this.canBeControlledByRider() && this.isSaddled()) {
-				LivingEntity livingentity = (LivingEntity)this.getControllingPassenger();
-				this.setYRot(livingentity.getYRot());
-				this.yRotO = this.getYRot();
-				this.setXRot(livingentity.getXRot() * 0.5F);
-				this.setRot(this.getYRot(), this.getXRot());
-				this.yBodyRot = this.getYRot();
-				this.yHeadRot = this.yBodyRot;
-				float sidewaysSpeed = livingentity.xxa * 0.5F;
-				float fowardSpeed = livingentity.zza;
-				if (fowardSpeed <= 0.0F) {
-					fowardSpeed *= 0.25F;
-					this.gallopSoundCounter = 0;
-				}
-
-				if (this.isSprinting()) { //walk when CTRL is toggled
-					fowardSpeed = 0.0F;
-				}
-
-				if (this.onGround && this.playerJumpPendingScale == 0.0F && this.isStanding()) {
-					sidewaysSpeed = 0.0F;
-					fowardSpeed = 0.0F;
-				}
-
-				if (this.playerJumpPendingScale > 0.0F && !this.isJumping() && this.onGround) {
-					double d0 = this.getCustomJump() * (double)this.playerJumpPendingScale * (double)this.getBlockJumpFactor();
-					double d1 = d0 + this.getJumpBoostPower();
-					Vec3 vec3 = this.getDeltaMovement();
-					this.setDeltaMovement(vec3.x, d1, vec3.z);
-					this.setIsJumping(true);
-					this.hasImpulse = true;
-					net.minecraftforge.common.ForgeHooks.onLivingJump(this);
-					if (fowardSpeed > 0.0F) {
-						float f2 = Mth.sin(this.getYRot() * ((float)Math.PI / 180F));
-						float f3 = Mth.cos(this.getYRot() * ((float)Math.PI / 180F));
-						this.setDeltaMovement(this.getDeltaMovement().add(-0.4F * f2 * this.playerJumpPendingScale, 0.0D, 0.4F * f3 * this.playerJumpPendingScale));
-					}
-
-					this.playerJumpPendingScale = 0.0F;
-				}
-
-				this.flyingSpeed = this.getSpeed() * 0.1F;
-				if (this.isControlledByLocalInstance()) {
-					this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
-					super.travel(new Vec3(sidewaysSpeed, travel.y, fowardSpeed));
-				} else if (livingentity instanceof Player) {
-					this.setDeltaMovement(Vec3.ZERO);
-				}
-
-				if (this.onGround) {
-					this.playerJumpPendingScale = 0.0F;
-					this.setIsJumping(false);
-				}
-
-				this.calculateEntityAnimation(this, false);
-				this.tryCheckInsideBlocks();
-			} else {
-				this.flyingSpeed = 0.02F;
-				super.travel(travel);
-			}
-		}
 	}
 
 	//ground tie
@@ -460,7 +394,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		tag.putInt("Overlay", this.getOverlayVariant());
 		tag.putString("Variant_Texture", this.getTextureLocation().toString());
 		tag.putString("Overlay_Texture", this.getOverlayLocation().toString());
-		tag.putInt("Breed", getBreed());
+		tag.putInt("Breed", this.getBreed());
 	}
 
 	@Override

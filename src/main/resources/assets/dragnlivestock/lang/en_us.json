@@ -113,5 +113,9 @@
 
   "item.dragnlivestock.overworld_unicorn_horn": "Overworld Unicorn Horn",
   "item.dragnlivestock.nether_unicorn_horn": "Nether Unicorn Horn",
-  "item.dragnlivestock.end_unicorn_horn": "End Unicorn Horn"
+  "item.dragnlivestock.end_unicorn_horn": "End Unicorn Horn",
+
+  "key.dragnlivestock.categories.dragnlivestock": "DragN's Overhauled Livestock",
+  "key.dragnlivestock.horse_decrease_speed": "Decrease horse speed",
+  "key.dragnlivestock.horse_increase_speed": "Increase horse speed"
 }
