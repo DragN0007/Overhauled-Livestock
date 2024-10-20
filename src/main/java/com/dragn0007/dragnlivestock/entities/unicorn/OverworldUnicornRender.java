@@ -1,5 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.unicorn;
 
+import com.dragn0007.dragnlivestock.entities.horse.OHorseCarpetLayer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -20,6 +21,7 @@ public class OverworldUnicornRender extends ExtendedGeoEntityRenderer<OverworldU
     public OverworldUnicornRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new OverworldUnicornModel());
         this.addLayer(new OverworldUnicornHornLayer(this));
+        this.addLayer(new OverworldUnicornCarpetLayer(this));
         this.addLayer(new OverworldUnicornArmorLayer(this));
     }
 

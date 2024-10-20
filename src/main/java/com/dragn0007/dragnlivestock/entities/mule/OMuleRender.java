@@ -1,5 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.mule;
 
+import com.dragn0007.dragnlivestock.entities.horse.OHorseCarpetLayer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -20,6 +21,7 @@ public class OMuleRender extends ExtendedGeoEntityRenderer<OMule> {
     public OMuleRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new OMuleModel());
         this.addLayer(new OMuleMarkingLayer(this));
+        this.addLayer(new OMuleCarpetLayer(this));
         this.addLayer(new OMuleArmorLayer(this));
     }
 

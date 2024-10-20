@@ -1,5 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.unicorn;
 
+import com.dragn0007.dragnlivestock.entities.horse.OHorseCarpetLayer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -20,6 +21,7 @@ public class EndUnicornRender extends ExtendedGeoEntityRenderer<EndUnicorn> {
     public EndUnicornRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new EndUnicornModel());
         this.addLayer(new EndUnicornHornLayer(this));
+        this.addLayer(new EndUnicornCarpetLayer(this));
         this.addLayer(new EndUnicornArmorLayer(this));
     }
 

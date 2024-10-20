@@ -1,5 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.unicorn;
 
+import com.dragn0007.dragnlivestock.entities.horse.OHorseCarpetLayer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -20,6 +21,7 @@ public class NetherUnicornRender extends ExtendedGeoEntityRenderer<NetherUnicorn
     public NetherUnicornRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new NetherUnicornModel());
         this.addLayer(new NetherUnicornHornLayer(this));
+        this.addLayer(new NetherUnicornCarpetLayer(this));
         this.addLayer(new NetherUnicornArmorLayer(this));
     }
 
