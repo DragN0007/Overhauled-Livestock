@@ -251,7 +251,6 @@ public class AbstractOHorse extends AbstractChestedHorse {
         return super.getDismountLocationForPassenger(livingEntity);
     }
 
-
     public void handleSpeedRequest(int speedMod) {
             AttributeInstance movementSpeed = this.getAttribute(Attributes.MOVEMENT_SPEED);
 
