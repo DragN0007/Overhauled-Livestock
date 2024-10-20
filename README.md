@@ -6,6 +6,16 @@ starting the server. Since LO converts animals by default,
 starting the server before adding the custom config file
 will replace loaded animals.
 
+## Livestock Overhaul: Credits
+
+EvangeliX - Code, Bug Fix Help (Thank you!)
+
+Buu - Animations (Thank you!)
+
+FrostedWyvern - Animations (Thank you!)
+
+DragN0007 - Producer, Assets, Code
+
 ## Livestock Overhaul Custom Resources
 Livestock Overhaul comes with a built-in custom texture option for its animals.
 This means you can create your own textures, whilst still keeping the OG ones from the mod intact.

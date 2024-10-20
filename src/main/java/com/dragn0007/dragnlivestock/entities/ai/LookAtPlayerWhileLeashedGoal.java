@@ -1,7 +1,5 @@
 package com.dragn0007.dragnlivestock.entities.ai;
 
-import java.util.EnumSet;
-import javax.annotation.Nullable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -9,6 +7,9 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
+
+import javax.annotation.Nullable;
+import java.util.EnumSet;
 
 public class LookAtPlayerWhileLeashedGoal extends Goal {
    public static final float DEFAULT_PROBABILITY = 0.02F;

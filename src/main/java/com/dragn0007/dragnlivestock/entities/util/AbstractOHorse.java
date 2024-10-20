@@ -1,6 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.util;
 
-import com.dragn0007.dragnlivestock.LivestockOverhaul;
+import com.dragn0007.dragnlivestock.entities.llama.OLlama;
 import com.dragn0007.dragnlivestock.gui.OHorseMenu;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -20,22 +21,19 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.WoolCarpetBlock;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-import org.checkerframework.checker.units.qual.A;
-import software.bernie.geckolib3.core.AnimationState;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class AbstractOHorse extends AbstractChestedHorse {
@@ -46,6 +44,7 @@ public class AbstractOHorse extends AbstractChestedHorse {
     public static final AttributeModifier SPRINT_SPEED_MOD = new AttributeModifier(SPRINT_SPEED_MOD_UUID, "Sprint speed mod", 0.3D, AttributeModifier.Operation.MULTIPLY_TOTAL);
     public static final AttributeModifier WALK_SPEED_MOD = new AttributeModifier(WALK_SPEED_MOD_UUID, "Walk speed mod", -0.7D, AttributeModifier.Operation.MULTIPLY_TOTAL); // KEEP THIS NEGATIVE. It is calculated by adding 1. So -0.1 actually means 0.9
 
+    public static final EntityDataAccessor<Integer> DATA_CARPET_ID = SynchedEntityData.defineId(AbstractOHorse.class, EntityDataSerializers.INT);
 
     public AbstractOHorse(EntityType<? extends AbstractOHorse> entityType, Level level) {
         super(entityType, level);
@@ -69,7 +68,7 @@ public class AbstractOHorse extends AbstractChestedHorse {
 
     @Override
     public boolean isArmor(ItemStack itemStack) {
-        return itemStack.getItem() instanceof HorseArmorItem;
+        return itemStack.getItem() instanceof HorseArmorItem || itemStack.is(ItemTags.CARPETS);
     }
 
     @Override
@@ -137,10 +136,20 @@ public class AbstractOHorse extends AbstractChestedHorse {
         return true;
     }
 
+    @Override
+    public void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_CARPET_ID, -1);
+    }
+
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         if(!this.inventory.getItem(1).isEmpty()) {
             compoundTag.put("ArmorItem", this.inventory.getItem(1).save(new CompoundTag()));
+        }
+
+        if (!this.inventory.getItem(1).isEmpty()) {
+            compoundTag.put("DecorItem", this.inventory.getItem(1).save(new CompoundTag()));
         }
     }
 
@@ -151,6 +160,10 @@ public class AbstractOHorse extends AbstractChestedHorse {
             if(!itemStack.isEmpty() && this.isArmor(itemStack)) {
                 this.inventory.setItem(1, itemStack);
             }
+        }
+
+        if (compoundTag.contains("DecorItem", 10)) {
+            this.inventory.setItem(1, ItemStack.of(compoundTag.getCompound("DecorItem")));
         }
 
         this.updateContainerEquipment();
@@ -180,12 +193,15 @@ public class AbstractOHorse extends AbstractChestedHorse {
 
     public void setArmorEquipment(ItemStack itemStack) {
         this.setArmor(itemStack);
-        if(!this.level.isClientSide) {
+        if (!this.level.isClientSide) {
             this.getAttribute(Attributes.ARMOR).removeModifier(ARMOR_MODIFIER_UUID);
-            if(this.isArmor(itemStack)) {
-                int protection = ((HorseArmorItem)itemStack.getItem()).getProtection();
-                if(protection != 0) {
-                    this.getAttribute(Attributes.ARMOR).addTransientModifier(new AttributeModifier(ARMOR_MODIFIER_UUID, "Horse armor bonus", (double)protection, AttributeModifier.Operation.ADDITION));
+
+            if (itemStack.getItem() instanceof HorseArmorItem horseArmorItem) {
+                int protection = horseArmorItem.getProtection();
+                if (protection > 0) {
+                    this.getAttribute(Attributes.ARMOR).addTransientModifier(
+                            new AttributeModifier(ARMOR_MODIFIER_UUID, "Horse armor bonus", (double) protection, AttributeModifier.Operation.ADDITION)
+                    );
                 }
             }
         }
@@ -196,6 +212,26 @@ public class AbstractOHorse extends AbstractChestedHorse {
        super.updateContainerEquipment();
        this.setArmorEquipment(this.inventory.getItem(1));
        this.setDropChance(EquipmentSlot.CHEST, 0f);
+        if (!this.level.isClientSide) {
+            super.updateContainerEquipment();
+            this.setCarpet(getDyeColor(this.inventory.getItem(1)));
+        }
+    }
+
+    public void setCarpet(@Nullable DyeColor p_30772_) {
+        this.entityData.set(DATA_CARPET_ID, p_30772_ == null ? -1 : p_30772_.getId());
+    }
+
+    @Nullable
+    public static DyeColor getDyeColor(ItemStack p_30836_) {
+        Block block = Block.byItem(p_30836_.getItem());
+        return block instanceof WoolCarpetBlock ? ((WoolCarpetBlock)block).getColor() : null;
+    }
+
+    @Nullable
+    public DyeColor getCarpet() {
+        int i = this.entityData.get(DATA_CARPET_ID);
+        return i == -1 ? null : DyeColor.byId(i);
     }
 
     @Override
