@@ -116,6 +116,6 @@
   "item.dragnlivestock.end_unicorn_horn": "End Unicorn Horn",
 
   "key.dragnlivestock.categories.dragnlivestock": "DragN's Overhauled Livestock",
-  "key.dragnlivestock.horse_decrease_speed": "Decrease horse speed",
-  "key.dragnlivestock.horse_increase_speed": "Increase horse speed"
+  "key.dragnlivestock.horse_speed_up": "Speed up horse",
+  "key.dragnlivestock.horse_slow_down": "Slow down horse"
 }
