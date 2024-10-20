@@ -2,6 +2,7 @@ package com.dragn0007.dragnlivestock.gui;
 
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -42,7 +43,12 @@ public class OHorseMenu extends AbstractContainerMenu {
         this.addSlot(new Slot(this.container, oHorseSlots++, 8, 36) {
             @Override
             public boolean mayPlace(ItemStack itemStack) {
-                return itemStack.getItem() instanceof HorseArmorItem && !this.hasItem() && OHorseMenu.this.oHorse.canWearArmor();
+                if (itemStack.getItem() instanceof HorseArmorItem) {
+                    return !this.hasItem() && OHorseMenu.this.oHorse.canWearArmor();
+                } else if (itemStack.is(ItemTags.CARPETS)) {
+                    return !this.hasItem() && OHorseMenu.this.oHorse.canWearArmor();
+                }
+                return false;
             }
 
             @Override

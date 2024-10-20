@@ -20,6 +20,7 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
     public OHorseRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new OHorseModel());
         this.addLayer(new OHorseMarkingLayer(this));
+        this.addLayer(new OHorseCarpetLayer(this));
         this.addLayer(new OHorseArmorLayer(this));
     }
 

@@ -611,62 +611,6 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 
 	}
 
-//	public InteractionResult mobInteract(Player player, InteractionHand hand) {
-//		ItemStack itemstack = player.getItemInHand(hand);
-//
-//		if (this.isFood(itemstack) && this.isTamed()) {
-//			if (this.getHealth() < this.getMaxHealth()) {
-//				this.usePlayerItem(player, hand, itemstack);
-//				this.heal(itemstack.getFoodProperties(this).getNutrition());
-//				this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
-//				return InteractionResult.sidedSuccess(this.level.isClientSide);
-//			}
-//		}
-//
-//		if (this.isFood(itemstack) && this.isTamed()) {
-//			if (this.canFallInLove() && !this.level.isClientSide) {
-//				this.usePlayerItem(player, hand, itemstack);
-//				this.setInLove(player);
-//				this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
-//				return InteractionResult.SUCCESS;
-//			}
-//		}
-//
-//		if (this.isBaby()) {
-//			return super.mobInteract(player, hand);
-//		}
-//
-//		if (!this.isTamed() && this.isFood(itemstack)) {
-//			return this.fedFood(player, itemstack);
-//		}
-//
-//		if (this.isTamed() && player.isSecondaryUseActive()) {
-//			this.openInventory(player);
-//			return InteractionResult.sidedSuccess(this.level.isClientSide);
-//		}
-//
-//		if (this.isVehicle()) {
-//			return super.mobInteract(player, hand);
-//		}
-//
-//		if (!itemstack.isEmpty()) {
-//			if (!this.isTamed()) {
-//				this.makeMad();
-//				return InteractionResult.sidedSuccess(this.level.isClientSide);
-//			}
-//		}
-//
-//		if (itemstack.is(Items.CHEST) && this.isChestable()) {
-//			this.setChested(true);
-//			this.equipChest(SoundSource.NEUTRAL);
-//			this.updateInventory();
-//			return InteractionResult.sidedSuccess(this.level.isClientSide);
-//		}
-//
-//		this.doPlayerRide(player);
-//		return InteractionResult.sidedSuccess(this.level.isClientSide);
-//	}
-
 	public int getInventoryColumns() {
 		return this.getStrength();
 	}
