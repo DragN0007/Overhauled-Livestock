@@ -107,41 +107,4 @@ public class LivestockOverhaulEvent {
 
         MenuScreens.register(LOMenuTypes.O_HORSE_MENU.get(), OHorseScreen::new);
     }
-
-    public static final KeyMapping HORSE_DECREASE_SPEED = new KeyMapping("key.dragnlivestock.horse_decrease_speed", InputConstants.KEY_LALT, "key.dragnlivestock.categories.dragnlivestock");
-    public static final KeyMapping HORSE_INCREASE_SPEED = new KeyMapping("key.dragnlivestock.horse_increase_speed", InputConstants.KEY_LCONTROL, "key.dragnlivestock.categories.dragnlivestock");
-
-    @Mod.EventBusSubscriber(modid = LivestockOverhaul.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class LivestockOverhaulClientEvents {
-        @SubscribeEvent
-        public static void registerKeyBindings(FMLClientSetupEvent event) {
-            ClientRegistry.registerKeyBinding(HORSE_DECREASE_SPEED);
-            ClientRegistry.registerKeyBinding(HORSE_INCREASE_SPEED);
-        }
-    }
-
-    @Mod.EventBusSubscriber(modid = LivestockOverhaul.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
-    public static class ForgeClientEvents {
-        @SubscribeEvent
-        public static void onKeyPressEvent(InputEvent.KeyInputEvent event) {
-            if(event.getAction() != GLFW.GLFW_RELEASE) {
-                return;
-            }
-
-            Player player = Minecraft.getInstance().player;
-            if(player == null) return;
-
-            if(HORSE_INCREASE_SPEED.getKey().getValue() == event.getKey()) {
-                while(HORSE_INCREASE_SPEED.consumeClick()) {
-                    LONetwork.INSTANCE.sendToServer(new LONetwork.HandleHorseSpeedRequest(1));
-                }
-            }
-
-            if(HORSE_DECREASE_SPEED.getKey().getValue() == event.getKey()) {
-                while(HORSE_DECREASE_SPEED.consumeClick()) {
-                    LONetwork.INSTANCE.sendToServer(new LONetwork.HandleHorseSpeedRequest(-1));
-                }
-            }
-        }
-    }
 }
