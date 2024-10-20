@@ -114,18 +114,24 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 		double movementSpeed = this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
 		double animationSpeed = Math.max(0.1, movementSpeed);
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
-		double speedThreshold = 0.02;
+		double sprintSpeedThreshold = 0.04;
+		double runSpeedThreshold = 0.02;
 
 		if (this.isJumping() || !this.isOnGround()) {
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
 			event.getController().setAnimationSpeed(1.0);
 		} else if (event.isMoving()) {
-			if(currentSpeed > speedThreshold || this.isAggressive()) {
+			if(this.isSprinting()) {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
-				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
+				event.getController().setAnimationSpeed(Math.max(0.1, 0.9 * event.getController().getAnimationSpeed() + animationSpeed));
+
+			} if(currentSpeed > runSpeedThreshold || this.isAggressive() && currentSpeed < sprintSpeedThreshold) {
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
+				event.getController().setAnimationSpeed(Math.max(0.1, 0.85 * event.getController().getAnimationSpeed() + animationSpeed));
+
 			} else {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
-				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
+				event.getController().setAnimationSpeed(Math.max(0.1, 0.85 * event.getController().getAnimationSpeed() + animationSpeed));
 			}
 		} else {
 			if(this.isVehicle()) {
