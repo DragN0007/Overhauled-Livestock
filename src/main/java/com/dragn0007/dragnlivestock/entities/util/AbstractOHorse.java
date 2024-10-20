@@ -1,6 +1,7 @@
 package com.dragn0007.dragnlivestock.entities.util;
 
 import com.dragn0007.dragnlivestock.entities.llama.OLlama;
+import com.dragn0007.dragnlivestock.event.LivestockOverhaulClientEvent;
 import com.dragn0007.dragnlivestock.gui.OHorseMenu;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -31,6 +32,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WoolCarpetBlock;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -263,5 +266,21 @@ public class AbstractOHorse extends AbstractChestedHorse {
             } else if (speedMod == 1 && !movementSpeed.hasModifier(SPRINT_SPEED_MOD)) {
                 movementSpeed.addTransientModifier(SPRINT_SPEED_MOD);
             }
+    }
+
+    protected boolean isBowing;
+
+    public void setIsBowing(boolean b) {
+        this.isBowing = b;
+    }
+
+    public void handleEmoteRequest(int id) {
+        if (LivestockOverhaulClientEvent.HORSE_BOW.isDown()) {
+            this.setIsBowing(true);
+        }
+    }
+
+    public boolean isBowing() {
+        return this.isBowing;
     }
 }

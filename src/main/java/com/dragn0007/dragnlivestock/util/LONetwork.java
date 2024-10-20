@@ -45,6 +45,34 @@ public class LONetwork {
         }
     }
 
+    public static class HandleHorseEmoteRequest {
+        private final int id;
+
+        public HandleHorseEmoteRequest(int id) {
+            this.id = id;
+        }
+
+        public static void encode(HandleHorseEmoteRequest msg, FriendlyByteBuf buffer) {
+            buffer.writeInt(msg.id);
+        }
+
+        public static HandleHorseEmoteRequest decode(FriendlyByteBuf buffer) {
+            return new HandleHorseEmoteRequest(buffer.readInt());
+        }
+
+        public static void handle(HandleHorseEmoteRequest msg, Supplier<NetworkEvent.Context> context) {
+            NetworkEvent.Context ctx = context.get();
+            ctx.enqueueWork(() -> {
+                ServerPlayer player = ctx.getSender();
+                if(player != null) {
+                    if(player.getVehicle() instanceof AbstractOHorse oHorse) {
+                        oHorse.handleEmoteRequest(msg.id);
+                    }
+                }
+            });
+            ctx.setPacketHandled(true);
+        }
+    }
 
     public static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
@@ -58,6 +86,7 @@ public class LONetwork {
     public static void commonSetupEvent(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             INSTANCE.registerMessage(0, HandleHorseSpeedRequest.class, HandleHorseSpeedRequest::encode, HandleHorseSpeedRequest::decode, HandleHorseSpeedRequest::handle);
+            INSTANCE.registerMessage(1, HandleHorseEmoteRequest.class, HandleHorseEmoteRequest::encode, HandleHorseEmoteRequest::decode, HandleHorseEmoteRequest::handle);
         });
     }
 }

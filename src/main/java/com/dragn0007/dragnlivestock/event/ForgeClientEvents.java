@@ -28,5 +28,9 @@ public class ForgeClientEvents {
         if(LivestockOverhaulClientEvent.HORSE_SLOW_DOWN.getKey().getValue() == event.getKey()) {
             LONetwork.INSTANCE.sendToServer(new LONetwork.HandleHorseSpeedRequest(-1));
         }
+
+        if(LivestockOverhaulClientEvent.HORSE_BOW.getKey().getValue() == event.getKey()) {
+            LONetwork.INSTANCE.sendToServer(new LONetwork.HandleHorseEmoteRequest(1));
+        }
     }
 }
