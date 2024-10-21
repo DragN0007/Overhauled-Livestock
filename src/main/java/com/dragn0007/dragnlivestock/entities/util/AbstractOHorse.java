@@ -1,8 +1,7 @@
 package com.dragn0007.dragnlivestock.entities.util;
 
-import com.dragn0007.dragnlivestock.entities.llama.OLlama;
-import com.dragn0007.dragnlivestock.event.LivestockOverhaulClientEvent;
 import com.dragn0007.dragnlivestock.gui.OHorseMenu;
+import com.dragn0007.dragnlivestock.util.LONetwork;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -32,9 +31,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WoolCarpetBlock;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -48,6 +46,8 @@ public class AbstractOHorse extends AbstractChestedHorse {
     public static final AttributeModifier WALK_SPEED_MOD = new AttributeModifier(WALK_SPEED_MOD_UUID, "Walk speed mod", -0.7D, AttributeModifier.Operation.MULTIPLY_TOTAL); // KEEP THIS NEGATIVE. It is calculated by adding 1. So -0.1 actually means 0.9
 
     public static final EntityDataAccessor<Integer> DATA_CARPET_ID = SynchedEntityData.defineId(AbstractOHorse.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> BOWING = SynchedEntityData.defineId(AbstractOHorse.class, EntityDataSerializers.BOOLEAN);
+
 
     public AbstractOHorse(EntityType<? extends AbstractOHorse> entityType, Level level) {
         super(entityType, level);
@@ -143,6 +143,7 @@ public class AbstractOHorse extends AbstractChestedHorse {
     public void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_CARPET_ID, -1);
+        this.entityData.define(BOWING, false);
     }
 
     public void addAdditionalSaveData(CompoundTag compoundTag) {
@@ -255,32 +256,24 @@ public class AbstractOHorse extends AbstractChestedHorse {
     }
 
     public void handleSpeedRequest(int speedMod) {
-            AttributeInstance movementSpeed = this.getAttribute(Attributes.MOVEMENT_SPEED);
+        AttributeInstance movementSpeed = this.getAttribute(Attributes.MOVEMENT_SPEED);
 
-            if (speedMod == -1 && movementSpeed.hasModifier(SPRINT_SPEED_MOD)) {
-                movementSpeed.removeModifier(SPRINT_SPEED_MOD);
-            } else if (speedMod == -1 && !movementSpeed.hasModifier(WALK_SPEED_MOD)) {
-                movementSpeed.addTransientModifier(WALK_SPEED_MOD);
-            } else if (speedMod == 1 && movementSpeed.hasModifier(WALK_SPEED_MOD)) {
-                movementSpeed.removeModifier(WALK_SPEED_MOD);
-            } else if (speedMod == 1 && !movementSpeed.hasModifier(SPRINT_SPEED_MOD)) {
-                movementSpeed.addTransientModifier(SPRINT_SPEED_MOD);
-            }
-    }
-
-    protected boolean isBowing;
-
-    public void setIsBowing(boolean b) {
-        this.isBowing = b;
-    }
-
-    public void handleEmoteRequest(int id) {
-        if (LivestockOverhaulClientEvent.HORSE_BOW.isDown()) {
-            this.setIsBowing(true);
+        if (speedMod == -1 && movementSpeed.hasModifier(SPRINT_SPEED_MOD)) {
+            movementSpeed.removeModifier(SPRINT_SPEED_MOD);
+        } else if (speedMod == -1 && !movementSpeed.hasModifier(WALK_SPEED_MOD)) {
+            movementSpeed.addTransientModifier(WALK_SPEED_MOD);
+        } else if (speedMod == 1 && movementSpeed.hasModifier(WALK_SPEED_MOD)) {
+            movementSpeed.removeModifier(WALK_SPEED_MOD);
+        } else if (speedMod == 1 && !movementSpeed.hasModifier(SPRINT_SPEED_MOD)) {
+            movementSpeed.addTransientModifier(SPRINT_SPEED_MOD);
         }
     }
 
+    public void setBowing(boolean bowing) {
+        this.entityData.set(BOWING, bowing);
+    }
+
     public boolean isBowing() {
-        return this.isBowing;
+        return this.entityData.get(BOWING);
     }
 }

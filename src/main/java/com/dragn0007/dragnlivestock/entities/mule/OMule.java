@@ -2,6 +2,7 @@ package com.dragn0007.dragnlivestock.entities.mule;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
+import com.dragn0007.dragnlivestock.util.LONetwork;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -106,54 +107,60 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 	}
 
 	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-		double movementSpeed = this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
-		double animationSpeed = Math.max(0.1, movementSpeed);
-		double currentSpeed = this.getDeltaMovement().lengthSqr();
-		double runSpeedThreshold = 0.02;
+		if(event.isMoving()) {
+			double movementSpeed = this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
+			double animationSpeed = Math.max(0.1, movementSpeed);
 
-		if (this.isJumping() || !this.isOnGround()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
-			event.getController().setAnimationSpeed(1.0);
-		} else if (event.isMoving()) {
-			if(this.isSprinting() && currentSpeed > runSpeedThreshold) {
+			if(this.isJumping() || !this.isOnGround()) {
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+				event.getController().setAnimationSpeed(1.0);
+			} else if(this.isAggressive() || (this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD))) {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
-				event.getController().setAnimationSpeed(Math.max(0.1, 0.9 * event.getController().getAnimationSpeed() + animationSpeed));
-
-			} if(currentSpeed > runSpeedThreshold || this.isAggressive()) {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
-				event.getController().setAnimationSpeed(Math.max(0.1, 0.85 * event.getController().getAnimationSpeed() + animationSpeed));
-
+				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
 			} else {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
 				event.getController().setAnimationSpeed(Math.max(0.1, 0.85 * event.getController().getAnimationSpeed() + animationSpeed));
 			}
 		} else {
-			if(this.isVehicle()) {
+			if (this.isVehicle()) {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
 			} else {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle3", ILoopType.EDefaultLoopTypes.LOOP));
 			}
 			event.getController().setAnimationSpeed(1.0);
 		}
-
 		return PlayState.CONTINUE;
 	}
 
-	public PlayState attackPredicate(AnimationEvent event) {
+	public <T extends IAnimatable> PlayState attackPredicate(AnimationEvent<T> event) {
 		if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
 			event.getController().markNeedsReload();
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
 			this.swinging = false;
 		}
-
 		return PlayState.CONTINUE;
 	}
 
+	public <T extends IAnimatable> PlayState emotePredicate(AnimationEvent<T> event) {
+		if(event.isMoving()) {
+			LONetwork.INSTANCE.sendToServer(new LONetwork.HandleHorseEmoteRequest(false));
+			return PlayState.STOP;
+		}
+
+		if(this.isBowing()) {
+			event.getController().markNeedsReload();
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("bow", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+			event.getController().setAnimationSpeed(1.0);
+			LONetwork.INSTANCE.sendToServer(new LONetwork.HandleHorseEmoteRequest(false));
+		}
+		return PlayState.CONTINUE;
+	}
 
 	@Override
 	public void registerControllers (AnimationData data){
 		data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
 		data.addAnimationController(new AnimationController<>(this, "attackController", 1, this::attackPredicate));
+		data.addAnimationController(new AnimationController<>(this, "emoteController", 5, this::emotePredicate));
 	}
 
 	//ground tie

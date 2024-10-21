@@ -46,18 +46,18 @@ public class LONetwork {
     }
 
     public static class HandleHorseEmoteRequest {
-        private final int id;
+        public final boolean shouldBow;
 
-        public HandleHorseEmoteRequest(int id) {
-            this.id = id;
+        public HandleHorseEmoteRequest(boolean shouldBow) {
+            this.shouldBow = shouldBow;
         }
 
         public static void encode(HandleHorseEmoteRequest msg, FriendlyByteBuf buffer) {
-            buffer.writeInt(msg.id);
+            buffer.writeBoolean(msg.shouldBow);
         }
 
         public static HandleHorseEmoteRequest decode(FriendlyByteBuf buffer) {
-            return new HandleHorseEmoteRequest(buffer.readInt());
+            return new HandleHorseEmoteRequest(buffer.readBoolean());
         }
 
         public static void handle(HandleHorseEmoteRequest msg, Supplier<NetworkEvent.Context> context) {
@@ -66,7 +66,7 @@ public class LONetwork {
                 ServerPlayer player = ctx.getSender();
                 if(player != null) {
                     if(player.getVehicle() instanceof AbstractOHorse oHorse) {
-                        oHorse.handleEmoteRequest(msg.id);
+                        oHorse.setBowing(msg.shouldBow);
                     }
                 }
             });

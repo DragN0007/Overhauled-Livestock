@@ -30,7 +30,7 @@ public class ForgeClientEvents {
         }
 
         if(LivestockOverhaulClientEvent.HORSE_BOW.getKey().getValue() == event.getKey()) {
-            LONetwork.INSTANCE.sendToServer(new LONetwork.HandleHorseEmoteRequest(1));
+            LONetwork.INSTANCE.sendToServer(new LONetwork.HandleHorseEmoteRequest(true));
         }
     }
 }
