@@ -1,6 +1,7 @@
 package com.dragn0007.dragnlivestock.entities.donkey;
 
 import com.dragn0007.dragnlivestock.entities.horse.OHorseCarpetLayer;
+import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -28,7 +29,8 @@ public class ODonkeyRender extends ExtendedGeoEntityRenderer<ODonkey> {
     @Override
     public void render(GeoModel model, ODonkey animatable, float partialTick, RenderType type, PoseStack poseStack, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         if (!animatable.isBaby()) {
-            if (animatable.hasChest()) {
+
+            if (animatable.hasChest() && LivestockOverhaulCommonConfig.HORSE_SADDLEBAG_RENDER.get()) {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(false));
             } else {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(true));

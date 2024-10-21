@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "dragnlivestock:netherite_horse_armor"
+  },
+  "addition": {
+    "item": "minecraft:iron_ingot"
+  },
+  "result": {
+    "item": "dragnlivestock:griffith_inspired_horse_armor"
+  }
+}

@@ -58,6 +58,8 @@ public class LOItems {
             () -> new BrandTagItem(new Item.Properties()));
     public static final RegistryObject<Item> NETHERITE_HORSE_ARMOR = ITEMS.register("netherite_horse_armor",
             () -> new HorseArmorItem(15, "netherite", (new Item.Properties()).stacksTo(1).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+    public static final RegistryObject<Item> GRIFFITH_INSPIRED_HORSE_ARMOR = ITEMS.register("griffith_inspired_horse_armor",
+            () -> new HorseArmorItem(15, "griffth", (new Item.Properties()).stacksTo(1)));
 
 
     //Food/ Items
