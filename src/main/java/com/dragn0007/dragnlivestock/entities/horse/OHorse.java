@@ -250,6 +250,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 	@Override
 	public void positionRider(Entity entity) {
 		if (this.hasPassenger(entity)) {
+
 			double offsetX = 0;
 			double offsetY = 1.1;
 			double offsetZ = -0.2;
@@ -273,6 +274,11 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 			if (this.isJumping()) {
 				offsetY = 1.7;
 				offsetZ = -0.9;
+			}
+
+			if (this.isBowing()) {
+				offsetY = 1.0;
+				offsetZ = 0.2;
 			}
 
 			double radYaw = Math.toRadians(this.getYRot());

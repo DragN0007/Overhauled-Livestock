@@ -1,7 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.util;
 
 import com.dragn0007.dragnlivestock.gui.OHorseMenu;
-import com.dragn0007.dragnlivestock.util.LONetwork;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -32,7 +31,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WoolCarpetBlock;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
