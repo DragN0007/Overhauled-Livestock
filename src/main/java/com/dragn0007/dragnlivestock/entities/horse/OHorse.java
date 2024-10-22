@@ -117,29 +117,30 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 	}
 
 	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-		if(event.isMoving()) {
 			double movementSpeed = this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
 			double animationSpeed = Math.max(0.1, movementSpeed);
 
-			if(this.isJumping() || !this.isOnGround()) {
+			if(this.isJumping() || !this.isOnGround())
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
 				event.getController().setAnimationSpeed(1.0);
-			} else if(this.isAggressive() || (this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD))) {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
-				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
+
+			if(event.isMoving()) {
+				if(this.isAggressive() || (this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD))) {
+					event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
+					event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
+				} else {
+					event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
+					event.getController().setAnimationSpeed(Math.max(0.1, 0.85 * event.getController().getAnimationSpeed() + animationSpeed));
+				}
 			} else {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
-				event.getController().setAnimationSpeed(Math.max(0.1, 0.85 * event.getController().getAnimationSpeed() + animationSpeed));
+				if (this.isVehicle()) {
+					event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
+				} else {
+					event.getController().setAnimation(new AnimationBuilder().addAnimation("idle3", ILoopType.EDefaultLoopTypes.LOOP));
+				}
+				event.getController().setAnimationSpeed(1.0);
 			}
-		} else {
-			if (this.isVehicle()) {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
-			} else {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("idle3", ILoopType.EDefaultLoopTypes.LOOP));
-			}
-			event.getController().setAnimationSpeed(1.0);
-		}
-		return PlayState.CONTINUE;
+			return PlayState.CONTINUE;
 	}
 
 	public <T extends IAnimatable> PlayState attackPredicate(AnimationEvent<T> event) {
