@@ -13,7 +13,7 @@ You do not have permission to redistribute this mod.
 Code licensing goes under GNU; which means you may use it.
 
 Asset licensing goes under All Rights Reserved; 
-you may not use models, textures, animations, or any other assets in your standalone mod(s) or other projects.
+you may *not* use models, textures, animations, or any other assets in your standalone mod(s) or other projects.
 
 Texturepacks and Livestock Overhaul-Dependent Addons are okay, and encouraged!
 
