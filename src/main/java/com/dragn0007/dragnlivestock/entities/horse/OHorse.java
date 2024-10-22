@@ -276,10 +276,10 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 				offsetZ = -0.9;
 			}
 
-			if (this.isBowing()) {
-				offsetY = 1.0;
-				offsetZ = 0.2;
-			}
+//			if (isBowing()) {
+//				offsetY = 1.0;
+//				offsetZ = 0.2;
+//			}
 
 			double radYaw = Math.toRadians(this.getYRot());
 
