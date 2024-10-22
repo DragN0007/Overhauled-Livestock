@@ -6,6 +6,16 @@ starting the server. Since LO converts animals by default,
 starting the server before adding the custom config file
 will replace loaded animals.
 
+## Licensing & Copyrights
+
+You do not have permission to redistribute this mod. 
+Code licensing goes under GNU; which means you may use it.
+Asset licensing goes under All Rights Reserved; 
+you may not use models, textures, animations, or any other assets.
+
+Texturepacks and Livestock Overhaul-Dependent Addons are okay, and encouraged!
+
+
 ## Livestock Overhaul: Credits
 
 EvangeliX - Code, Bug Fix Help (Thank you!)
