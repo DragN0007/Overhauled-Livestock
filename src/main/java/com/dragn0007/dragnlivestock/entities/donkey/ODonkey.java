@@ -125,7 +125,7 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
 			} else {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
-				event.getController().setAnimationSpeed(Math.max(0.1, 0.85 * event.getController().getAnimationSpeed() + animationSpeed));
+				event.getController().setAnimationSpeed(Math.max(0.1, 0.82 * event.getController().getAnimationSpeed() + animationSpeed));
 			}
 		} else {
 			if (this.isVehicle()) {
