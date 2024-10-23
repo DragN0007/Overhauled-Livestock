@@ -120,11 +120,11 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 			double movementSpeed = this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
 			double animationSpeed = Math.max(0.1, movementSpeed);
 
-			if(this.isJumping() || !this.isOnGround())
+			if(this.isJumping() || !this.isOnGround()) {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
 				event.getController().setAnimationSpeed(1.0);
 
-			if(event.isMoving()) {
+			} else if(event.isMoving()) {
 				if(this.isAggressive() || (this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD))) {
 					event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
 					event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
