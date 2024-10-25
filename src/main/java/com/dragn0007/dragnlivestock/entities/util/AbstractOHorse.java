@@ -35,7 +35,7 @@ import net.minecraftforge.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class AbstractOHorse extends AbstractChestedHorse {
+public abstract class AbstractOHorse extends AbstractChestedHorse {
     public static final UUID ARMOR_MODIFIER_UUID = UUID.fromString("3c50e848-b2e3-404a-9879-7550b12dd09b");
     public static final UUID SPRINT_SPEED_MOD_UUID = UUID.fromString("c9379664-01b5-4e19-a7e9-11264453bdce");
     public static final UUID WALK_SPEED_MOD_UUID = UUID.fromString("59b55c98-e39b-45e2-846c-f91f3e9ea861");
@@ -44,12 +44,13 @@ public class AbstractOHorse extends AbstractChestedHorse {
     public static final AttributeModifier WALK_SPEED_MOD = new AttributeModifier(WALK_SPEED_MOD_UUID, "Walk speed mod", -0.7D, AttributeModifier.Operation.MULTIPLY_TOTAL); // KEEP THIS NEGATIVE. It is calculated by adding 1. So -0.1 actually means 0.9
 
     public static final EntityDataAccessor<Integer> DATA_CARPET_ID = SynchedEntityData.defineId(AbstractOHorse.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> BOWING = SynchedEntityData.defineId(AbstractOHorse.class, EntityDataSerializers.BOOLEAN);
 
 
     public AbstractOHorse(EntityType<? extends AbstractOHorse> entityType, Level level) {
         super(entityType, level);
     }
+
+    public abstract void playEmote(String emoteName);
 
     @Override
     public void openInventory(Player player) {
@@ -141,7 +142,6 @@ public class AbstractOHorse extends AbstractChestedHorse {
     public void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_CARPET_ID, -1);
-        this.entityData.define(BOWING, false);
     }
 
     public void addAdditionalSaveData(CompoundTag compoundTag) {
@@ -265,13 +265,5 @@ public class AbstractOHorse extends AbstractChestedHorse {
         } else if (speedMod == 1 && !movementSpeed.hasModifier(SPRINT_SPEED_MOD)) {
             movementSpeed.addTransientModifier(SPRINT_SPEED_MOD);
         }
-    }
-
-    public void setBowing(boolean bowing) {
-        this.entityData.set(BOWING, bowing);
-    }
-
-    public boolean isBowing() {
-        return this.entityData.get(BOWING);
     }
 }

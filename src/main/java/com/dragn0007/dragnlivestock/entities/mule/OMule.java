@@ -28,6 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.Animation;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -107,15 +108,14 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 	}
 
 	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-		if(event.isMoving()) {
-			double movementSpeed = this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
-			double animationSpeed = Math.max(0.1, movementSpeed);
+		double movementSpeed = this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
+		double animationSpeed = Math.max(0.1, movementSpeed);
 
-			if(this.isJumping() || !this.isOnGround()) {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
-				event.getController().setAnimationSpeed(1.0);
-
-			} else if(this.isAggressive() || (this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD))) {
+		if(this.isJumping() || !this.isOnGround()) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("jump", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+			event.getController().setAnimationSpeed(1.0);
+		} else if(event.isMoving()) {
+			if(this.isAggressive() || (this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD))) {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
 				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
 			} else {
@@ -144,24 +144,30 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 
 	public <T extends IAnimatable> PlayState emotePredicate(AnimationEvent<T> event) {
 		if(event.isMoving()) {
-			LONetwork.INSTANCE.sendToServer(new LONetwork.HandleHorseEmoteRequest(false));
+			event.getController().setAnimation(new AnimationBuilder().clearAnimations());
 			return PlayState.STOP;
 		}
 
-		if(this.isBowing()) {
-			event.getController().markNeedsReload();
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("bow", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
-			event.getController().setAnimationSpeed(1.0);
-			LONetwork.INSTANCE.sendToServer(new LONetwork.HandleHorseEmoteRequest(false));
-		}
 		return PlayState.CONTINUE;
 	}
 
 	@Override
-	public void registerControllers (AnimationData data){
+	public void registerControllers (AnimationData data) {
 		data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
 		data.addAnimationController(new AnimationController<>(this, "attackController", 1, this::attackPredicate));
 		data.addAnimationController(new AnimationController<>(this, "emoteController", 5, this::emotePredicate));
+	}
+
+	@Override
+	public void playEmote(String emoteName) {
+		AnimationController<?> controller = GeckoLibUtil.getControllerForID(this.factory, this.getId(), "emoteController");
+		Animation animation = controller.getCurrentAnimation();
+		if(animation != null && !emoteName.equals(animation.animationName)) {
+			controller.setAnimation(new AnimationBuilder().clearAnimations());
+		}
+
+		controller.markNeedsReload();
+		controller.setAnimation(new AnimationBuilder().addAnimation(emoteName, ILoopType.EDefaultLoopTypes.PLAY_ONCE));
 	}
 
 	//ground tie
