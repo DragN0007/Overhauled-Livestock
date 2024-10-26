@@ -15,7 +15,7 @@ Code licensing goes under GNU; which means you may use it.
 Asset licensing goes under All Rights Reserved; 
 you may *not* use models, textures, animations, or any other assets in your standalone mod(s) or other projects.
 
-Texturepacks and Livestock Overhaul-Dependent Addons are okay, and encouraged!
+Texture Packs and Livestock Overhaul-Dependent Addons are okay, and encouraged!
 
 
 ## Livestock Overhaul: Credits
