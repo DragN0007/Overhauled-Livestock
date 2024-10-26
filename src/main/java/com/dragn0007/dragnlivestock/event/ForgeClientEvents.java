@@ -34,5 +34,9 @@ public class ForgeClientEvents {
         if(LivestockOverhaulClientEvent.HORSE_BOW.getKey().getValue() == event.getKey()) {
             LONetwork.INSTANCE.sendToServer(new LONetwork.PlayEmoteRequest("bow"));
         }
+
+        if(LivestockOverhaulClientEvent.HORSE_PIAFFE.getKey().getValue() == event.getKey()) {
+            LONetwork.INSTANCE.sendToServer(new LONetwork.PlayEmoteRequest("piaffe"));
+        }
     }
 }
