@@ -32,7 +32,10 @@ public class OHorseModel extends AnimatedGeoModel<OHorse> {
         STRAWBERRY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_strawberry.png")),
         WARM_BLACK(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_warmblack.png")),
         WARM_GREY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_warmgrey.png")),
-        WHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_white.png"));
+        WHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_white.png")),
+        DAPPLE_BLUE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_dapple_blue.png")),
+        DAPPLE_BROWN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_dapple_brown.png")),
+        DAPPLE_GREY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horse_dapple_grey.png"));
 
         //Add new entries to bottom when mod is public, else horses will change textures during update.
 
