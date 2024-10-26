@@ -11,6 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import org.lwjgl.glfw.GLFW;
+import software.bernie.geckolib3.core.builder.ILoopType;
 
 @Mod.EventBusSubscriber(modid = LivestockOverhaul.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ForgeClientEvents {
@@ -32,11 +33,11 @@ public class ForgeClientEvents {
         }
 
         if(LivestockOverhaulClientEvent.HORSE_BOW.getKey().getValue() == event.getKey()) {
-            LONetwork.INSTANCE.sendToServer(new LONetwork.PlayEmoteRequest("bow"));
+            LONetwork.INSTANCE.sendToServer(new LONetwork.PlayEmoteRequest("bow", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
         }
 
         if(LivestockOverhaulClientEvent.HORSE_PIAFFE.getKey().getValue() == event.getKey()) {
-            LONetwork.INSTANCE.sendToServer(new LONetwork.PlayEmoteRequest("piaffe"));
+            LONetwork.INSTANCE.sendToServer(new LONetwork.PlayEmoteRequest("piaffe", ILoopType.EDefaultLoopTypes.LOOP));
         }
     }
 }
