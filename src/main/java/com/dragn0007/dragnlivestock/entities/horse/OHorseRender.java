@@ -74,7 +74,13 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
             Entity entity = animatable.getControllingPassenger();
             if(entity != null) {
                 Vector3d bonePos = bone.get().getWorldPosition();
-                entity.setPos(bonePos.x, bonePos.y + 0.2, bonePos.z);
+                Vector3d boneRot = bone.get().getRotation();
+
+                entity.setPos(
+                        bonePos.x,
+                        bonePos.y + 0.1,
+                        bonePos.z - 0.2 //sets the player offset weird when the horse turns for some reason
+                );
             }
         }
 
