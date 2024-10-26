@@ -6,7 +6,6 @@ import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.horse.OHorseMarkingLayer;
 import com.dragn0007.dragnlivestock.entities.mule.OMule;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
-import com.dragn0007.dragnlivestock.util.LONetwork;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -171,7 +170,7 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 	}
 
 	@Override
-	public void playEmote(String emoteName) {
+	public void playEmote(String emoteName, ILoopType.EDefaultLoopTypes loopType) {
 		AnimationController<?> controller = GeckoLibUtil.getControllerForID(this.factory, this.getId(), "emoteController");
 		Animation animation = controller.getCurrentAnimation();
 		if(animation != null && !emoteName.equals(animation.animationName)) {
@@ -179,7 +178,7 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 		}
 
 		controller.markNeedsReload();
-		controller.setAnimation(new AnimationBuilder().addAnimation(emoteName, ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+		controller.setAnimation(new AnimationBuilder().addAnimation(emoteName, loopType));
 	}
 
 	//ground tie

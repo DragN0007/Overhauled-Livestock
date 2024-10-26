@@ -5,7 +5,6 @@ import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.HorseFollowHerdLeaderGoal;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
-import com.dragn0007.dragnlivestock.util.LONetwork;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -27,7 +26,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -38,12 +36,10 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.model.provider.GeoModelProvider;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -179,7 +175,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 	}
 
 	@Override
-	public void playEmote(String emoteName) {
+	public void playEmote(String emoteName, ILoopType.EDefaultLoopTypes loopType) {
 		AnimationController<?> controller = GeckoLibUtil.getControllerForID(this.factory, this.getId(), "emoteController");
 		Animation animation = controller.getCurrentAnimation();
 		if(animation != null && !emoteName.equals(animation.animationName)) {
@@ -187,7 +183,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		}
 
 		controller.markNeedsReload();
-		controller.setAnimation(new AnimationBuilder().addAnimation(emoteName, ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+		controller.setAnimation(new AnimationBuilder().addAnimation(emoteName, loopType));
 	}
 
 

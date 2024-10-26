@@ -15,6 +15,7 @@ import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
+import software.bernie.geckolib3.core.builder.ILoopType;
 
 import java.util.function.Supplier;
 
@@ -52,17 +53,22 @@ public class LONetwork {
 
     public static class PlayEmoteRequest {
         public final String emoteName;
+        public final ILoopType.EDefaultLoopTypes loopType;
 
-        public PlayEmoteRequest( String emoteName) {
+        public PlayEmoteRequest(String emoteName, ILoopType.EDefaultLoopTypes loopType) {
             this.emoteName = emoteName;
+            this.loopType = loopType;
         }
 
         public static void encode(PlayEmoteRequest msg, FriendlyByteBuf buffer) {
             buffer.writeUtf(msg.emoteName);
+            buffer.writeEnum(msg.loopType);
         }
 
         public static PlayEmoteRequest decode(FriendlyByteBuf buffer) {
-            return new PlayEmoteRequest(buffer.readUtf());
+            String emoteName = buffer.readUtf();
+            ILoopType.EDefaultLoopTypes loopType = buffer.readEnum(ILoopType.EDefaultLoopTypes.class);
+            return new PlayEmoteRequest(emoteName, loopType);
         }
 
         public static void handle(PlayEmoteRequest msg, Supplier<NetworkEvent.Context> context) {
@@ -72,7 +78,7 @@ public class LONetwork {
                 if(player != null) {
                     if(player.getVehicle() instanceof AbstractOHorse oHorse) {
                         int id = oHorse.getId();
-                        INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> oHorse), new PlayEmoteResponse(id, msg.emoteName));
+                        INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> oHorse), new PlayEmoteResponse(id, msg.emoteName, msg.loopType));
                     }
                 }
             });
@@ -84,21 +90,25 @@ public class LONetwork {
     public static class PlayEmoteResponse {
         public final int id;
         public final String emoteName;
+        public final ILoopType.EDefaultLoopTypes loopType;
 
-        public PlayEmoteResponse(int id, String emoteName) {
+        public PlayEmoteResponse(int id, String emoteName, ILoopType.EDefaultLoopTypes loopType) {
             this.id = id;
             this.emoteName = emoteName;
+            this.loopType = loopType;
         }
 
         public static void encode(PlayEmoteResponse msg, FriendlyByteBuf buffer) {
             buffer.writeInt(msg.id);
             buffer.writeUtf(msg.emoteName);
+            buffer.writeEnum(msg.loopType);
         }
 
         public static PlayEmoteResponse decode(FriendlyByteBuf buffer) {
             int id = buffer.readInt();
             String emoteName = buffer.readUtf();
-            return new PlayEmoteResponse(id, emoteName);
+            ILoopType.EDefaultLoopTypes loopType = buffer.readEnum(ILoopType.EDefaultLoopTypes.class);
+            return new PlayEmoteResponse(id, emoteName, loopType);
         }
 
         public static void handle(PlayEmoteResponse msg, Supplier<NetworkEvent.Context> context) {
@@ -108,7 +118,7 @@ public class LONetwork {
                 if(level != null) {
                     Entity entity = level.getEntity(msg.id);
                     if(entity instanceof AbstractOHorse oHorse) {
-                        oHorse.playEmote(msg.emoteName);
+                        oHorse.playEmote(msg.emoteName, msg.loopType);
                     }
                 }
             });

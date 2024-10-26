@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WoolCarpetBlock;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import software.bernie.geckolib3.core.builder.ILoopType;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -50,7 +51,7 @@ public abstract class AbstractOHorse extends AbstractChestedHorse {
         super(entityType, level);
     }
 
-    public abstract void playEmote(String emoteName);
+    public abstract void playEmote(String emoteName, ILoopType.EDefaultLoopTypes loopType);
 
     @Override
     public void openInventory(Player player) {
