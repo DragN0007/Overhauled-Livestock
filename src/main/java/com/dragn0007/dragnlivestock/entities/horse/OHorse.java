@@ -38,6 +38,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.model.provider.GeoModelProvider;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -258,45 +259,45 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 
 	@Override
 	public void positionRider(Entity entity) {
-		if (this.hasPassenger(entity)) {
-
-			double offsetX = 0;
-			double offsetY = 1.1;
-			double offsetZ = -0.2;
-
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
-				offsetY = 1.3;
-			}
-
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.DRAFT.resourceLocation)) {
-				offsetY = 1.45;
-			}
-
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.WARMBLOOD.resourceLocation)) {
-				offsetY = 1.35;
-			}
-
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.PONY.resourceLocation)) {
-				offsetY = 1.1;
-			}
-
-			if (this.isJumping()) {
-				offsetY = 1.7;
-				offsetZ = -0.9;
-			}
-
-			double radYaw = Math.toRadians(this.getYRot());
-
-			double offsetXRotated = offsetX * Math.cos(radYaw) - offsetZ * Math.sin(radYaw);
-			double offsetYRotated = offsetY;
-			double offsetZRotated = offsetX * Math.sin(radYaw) + offsetZ * Math.cos(radYaw);
-
-			double x = this.getX() + offsetXRotated;
-			double y = this.getY() + offsetYRotated;
-			double z = this.getZ() + offsetZRotated;
-
-			entity.setPos(x, y, z);
-		}
+//		if (this.hasPassenger(entity)) {
+//
+//			double offsetX = 0;
+//			double offsetY = 1.1;
+//			double offsetZ = -0.2;
+//
+//			if (this.isSaddled() && getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
+//				offsetY = 1.3;
+//			}
+//
+//			if (this.isSaddled() && getModelLocation().equals(BreedModel.DRAFT.resourceLocation)) {
+//				offsetY = 1.45;
+//			}
+//
+//			if (this.isSaddled() && getModelLocation().equals(BreedModel.WARMBLOOD.resourceLocation)) {
+//				offsetY = 1.35;
+//			}
+//
+//			if (this.isSaddled() && getModelLocation().equals(BreedModel.PONY.resourceLocation)) {
+//				offsetY = 1.1;
+//			}
+//
+//			if (this.isJumping()) {
+//				offsetY = 1.7;
+//				offsetZ = -0.9;
+//			}
+//
+//			double radYaw = Math.toRadians(this.getYRot());
+//
+//			double offsetXRotated = offsetX * Math.cos(radYaw) - offsetZ * Math.sin(radYaw);
+//			double offsetYRotated = offsetY;
+//			double offsetZRotated = offsetX * Math.sin(radYaw) + offsetZ * Math.cos(radYaw);
+//
+//			double x = this.getX() + offsetXRotated;
+//			double y = this.getY() + offsetYRotated;
+//			double z = this.getZ() + offsetZRotated;
+//
+//			entity.setPos(x, y, z);
+//		}
 	}
 
 	@Override

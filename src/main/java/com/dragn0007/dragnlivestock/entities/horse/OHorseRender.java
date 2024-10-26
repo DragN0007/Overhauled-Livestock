@@ -3,18 +3,23 @@ package com.dragn0007.dragnlivestock.entities.horse;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3d;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.geo.render.built.GeoModel;
 import software.bernie.geckolib3.renderers.geo.ExtendedGeoEntityRenderer;
+
+import java.util.Optional;
 
 public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
 
@@ -62,7 +67,18 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
             }
         }
 
+
         super.render(model, animatable, partialTick, type, poseStack, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        Optional<GeoBone> bone = model.getBone("saddle");
+        if(bone.isPresent()) {
+            Entity entity = animatable.getControllingPassenger();
+            if(entity != null) {
+                Vector3d bonePos = bone.get().getWorldPosition();
+                entity.setPos(bonePos.x, bonePos.y + 0.2, bonePos.z);
+            }
+        }
+
+
     }
 
     @Override
