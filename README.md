@@ -10,10 +10,10 @@ will replace loaded animals.
 
 You do not have permission to redistribute this mod. 
 
-Code licensing goes under GNU; which means you may use it.
+**Code** licensing goes under **GNU**; which means you may use it under their standards (as seen in CODE_LICENSE.txt).
 
-Asset licensing goes under All Rights Reserved; 
-you may *not* use models, textures, animations, or any other assets in your standalone mod(s) or other projects.
+**Asset** licensing goes under **All Rights Reserved**; 
+you may ***not*** use models, textures, animations, or any other assets in your standalone mod(s) or other projects.
 
 Texture Packs and Livestock Overhaul-Dependent Addons are okay, and encouraged!
 
