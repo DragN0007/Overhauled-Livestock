@@ -6,6 +6,7 @@ import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
+import com.dragn0007.dragnlivestock.entities.horse.headlesshorseman.HeadlessHorseman;
 import com.dragn0007.dragnlivestock.entities.llama.OLlama;
 import com.dragn0007.dragnlivestock.entities.mule.OMule;
 import com.dragn0007.dragnlivestock.entities.pig.OPig;
@@ -118,5 +119,11 @@ public class EntityTypes {
                             MobCategory.CREATURE)
                     .sized(1.5f,2f)
                     .build(new ResourceLocation(MODID,"end_unicorn").toString()));
+
+    public static final RegistryObject<EntityType<HeadlessHorseman>> HEADLESS_HORSEMAN_ENTITY = ENTITY_TYPES.register("headless_horseman",
+            () -> EntityType.Builder.of(HeadlessHorseman::new,
+                            MobCategory.MONSTER)
+                    .sized(1.5f,2f)
+                    .build(new ResourceLocation(MODID,"headless_horseman").toString()));
 }
 

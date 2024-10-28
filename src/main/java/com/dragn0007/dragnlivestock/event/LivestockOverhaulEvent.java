@@ -14,6 +14,9 @@ import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkeyRender;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.horse.OHorseRender;
+import com.dragn0007.dragnlivestock.entities.horse.headlesshorseman.HeadlessHorseman;
+import com.dragn0007.dragnlivestock.entities.horse.headlesshorseman.HeadlessHorsemanModel;
+import com.dragn0007.dragnlivestock.entities.horse.headlesshorseman.HeadlessHorsemanRender;
 import com.dragn0007.dragnlivestock.entities.llama.OLlama;
 import com.dragn0007.dragnlivestock.entities.llama.OLlamaRender;
 import com.dragn0007.dragnlivestock.entities.mule.OMule;
@@ -33,6 +36,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -57,6 +61,8 @@ public class LivestockOverhaulEvent {
         event.put(EntityTypes.O_PIG_ENTITY.get(), OPig.createAttributes().build());
         event.put(EntityTypes.O_DONKEY_ENTITY.get(), ODonkey.createBaseHorseAttributes().build());
         event.put(EntityTypes.O_MULE_ENTITY.get(), OMule.createBaseHorseAttributes().build());
+
+        event.put(EntityTypes.HEADLESS_HORSEMAN_ENTITY.get(), HeadlessHorseman.createBaseHorseAttributes().build());
 
         event.put(EntityTypes.OVERWORLD_UNICORN_ENTITY.get(), OverworldUnicorn.createBaseHorseAttributes().build());
         SpawnPlacements.register
@@ -95,6 +101,7 @@ public class LivestockOverhaulEvent {
         EntityRenderers.register(EntityTypes.OVERWORLD_UNICORN_ENTITY.get(), OverworldUnicornRender::new);
         EntityRenderers.register(EntityTypes.NETHER_UNICORN_ENTITY.get(), NetherUnicornRender::new);
         EntityRenderers.register(EntityTypes.END_UNICORN_ENTITY.get(), EndUnicornRender::new);
+        EntityRenderers.register(EntityTypes.HEADLESS_HORSEMAN_ENTITY.get(), HeadlessHorsemanRender::new);
 
         MenuScreens.register(LOMenuTypes.O_HORSE_MENU.get(), OHorseScreen::new);
     }

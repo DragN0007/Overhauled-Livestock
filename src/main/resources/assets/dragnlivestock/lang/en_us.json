@@ -47,6 +47,8 @@
   "item.dragnlivestock.end_unicorn_spawn_egg": "End Unicorn Spawn Egg",
   "entity.dragnlivestock.end_unicorn": "End Unicorn",
 
+  "entity.dragnlivestock.headless_horseman": "Headless Horseman",
+
 
   "item.dragnlivestock.brand_tag": "Brand Tag",
   "tooltip.dragnlivestock.brand_tag.tooltip": "This item isn't fully functional yet.",

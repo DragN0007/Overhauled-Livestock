@@ -4,6 +4,7 @@ import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.HorseFollowHerdLeaderGoal;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
+import com.dragn0007.dragnlivestock.entities.horse.headlesshorseman.HeadlessHorseman;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -130,7 +131,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 				event.getController().setAnimationSpeed(Math.max(0.1, 0.82 * event.getController().getAnimationSpeed() + animationSpeed));
 
 			} else if
-			(this.isAggressive() || (this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD))) {
+			((this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD))) {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
 				event.getController().setAnimationSpeed(Math.max(0.1, 0.8 * event.getController().getAnimationSpeed() + animationSpeed));
 
@@ -429,6 +430,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		if (data == null) {
 			data = new AgeableMob.AgeableMobGroupData(0.2F);
 		}
+
 		Random random = new Random();
 		this.setVariant(random.nextInt(OHorseModel.Variant.values().length));
 		this.setOverlayVariant(random.nextInt(OHorseMarkingLayer.Overlay.values().length));
