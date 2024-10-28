@@ -449,7 +449,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		this.entityData.define(OVERLAY_TEXTURE, OHorseMarkingLayer.Overlay.NONE.resourceLocation);
 	}
 
-
 	public boolean canMate(Animal animal) {
 		if (animal == this) {
 			return false;
