@@ -124,7 +124,7 @@ public class HeadlessHorseman extends OHorse implements IAnimatable {
 		this.goalSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.goalSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, false));
 		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.7D));
-		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 2, true));
+		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 2D, true));
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 0.0F));
 	}

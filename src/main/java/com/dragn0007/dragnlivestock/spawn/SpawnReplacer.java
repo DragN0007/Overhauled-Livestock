@@ -8,6 +8,7 @@ import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
+import com.dragn0007.dragnlivestock.entities.horse.headlesshorseman.HeadlessHorseman;
 import com.dragn0007.dragnlivestock.entities.llama.OLlama;
 import com.dragn0007.dragnlivestock.entities.mule.OMule;
 import com.dragn0007.dragnlivestock.entities.pig.OPig;
@@ -46,10 +47,29 @@ public class SpawnReplacer {
                 return;
             }
 
+            if (event.getWorld().isNight()) {
+                if (event.getWorld().getRandom().nextDouble() < 0.02) {
+                    HeadlessHorseman headlessHorseman = EntityTypes.HEADLESS_HORSEMAN_ENTITY.get().create(event.getWorld());
+
+                    if (headlessHorseman != null) {
+                        headlessHorseman.copyPosition(vanillaHorse);
+                        event.getWorld().addFreshEntity(headlessHorseman);
+
+                        headlessHorseman.setVariant(0);
+
+                        if (event.getWorld().isClientSide) {
+                            vanillaHorse.remove(Entity.RemovalReason.DISCARDED);
+                        }
+
+                        event.getWorld().addFreshEntity(headlessHorseman);
+                        vanillaHorse.remove(Entity.RemovalReason.DISCARDED);
+                    }
+                }
+            }
+
             OHorse oHorse = EntityTypes.O_HORSE_ENTITY.get().create(event.getWorld());
             if (oHorse != null) {
                 oHorse.copyPosition(vanillaHorse);
-                Entity entity = event.getEntity();
 
                 //try to take on as many identifiers from the vanilla horse possible
                 oHorse.setCustomName(vanillaHorse.getCustomName());
