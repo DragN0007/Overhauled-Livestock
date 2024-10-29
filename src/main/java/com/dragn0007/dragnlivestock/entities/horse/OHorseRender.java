@@ -4,6 +4,7 @@ import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3d;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -66,25 +67,25 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
                 model.getBone("head_armor").ifPresent(b -> b.setHidden(true));
             }
         }
-
-
         super.render(model, animatable, partialTick, type, poseStack, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        Optional<GeoBone> bone = model.getBone("saddle");
-        if(bone.isPresent()) {
+
+        Optional<GeoBone> optionalBone = model.getBone("saddle");
+        if(optionalBone.isPresent()) {
             Entity entity = animatable.getControllingPassenger();
             if(entity != null) {
-                Vector3d bonePos = bone.get().getWorldPosition();
-                Vector3d boneRot = bone.get().getRotation();
+                GeoBone bone = optionalBone.get();
+                Vector3d bonePos = bone.getWorldPosition();
+                double yRot = Math.toRadians(entity.getYRot());
 
-                entity.setPos(
-                        bonePos.x,
-                        bonePos.y + 0.1,
-                        bonePos.z - 0.2 //sets the player offset weird when the horse turns for some reason
-                );
+                double xOffset = 0;
+                double zOffset = 0.5;
+
+                double x = xOffset * Math.cos(yRot) - zOffset * Math.sin(yRot);
+                double z = zOffset * Math.cos(yRot) + xOffset * Math.sin(yRot);
+
+                entity.setPos(bonePos.x + x, bonePos.y + 0.2, bonePos.z + z);
             }
         }
-
-
     }
 
     @Override

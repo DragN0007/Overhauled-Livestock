@@ -45,6 +45,7 @@ public abstract class AbstractOHorse extends AbstractChestedHorse {
     public static final AttributeModifier WALK_SPEED_MOD = new AttributeModifier(WALK_SPEED_MOD_UUID, "Walk speed mod", -0.7D, AttributeModifier.Operation.MULTIPLY_TOTAL); // KEEP THIS NEGATIVE. It is calculated by adding 1. So -0.1 actually means 0.9
 
     public static final EntityDataAccessor<Integer> DATA_CARPET_ID = SynchedEntityData.defineId(AbstractOHorse.class, EntityDataSerializers.INT);
+    protected boolean shouldEmote;
 
 
     public AbstractOHorse(EntityType<? extends AbstractOHorse> entityType, Level level) {
@@ -55,7 +56,7 @@ public abstract class AbstractOHorse extends AbstractChestedHorse {
 
     @Override
     public void openInventory(Player player) {
-        if(player instanceof ServerPlayer serverPlayer) {
+        if(player instanceof ServerPlayer serverPlayer && this.isTamed()) {
             NetworkHooks.openGui(serverPlayer, new SimpleMenuProvider((containerId, inventory, p) -> {
                 return new OHorseMenu(containerId, inventory, this.inventory, this);
             }, this.getDisplayName()), (data) -> {
