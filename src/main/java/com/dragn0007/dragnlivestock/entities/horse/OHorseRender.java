@@ -78,12 +78,12 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
                 double yRot = Math.toRadians(entity.getYRot());
 
                 double xOffset = 0;
-                double zOffset = 0.5;
+                double zOffset = 0.2;
 
                 double x = xOffset * Math.cos(yRot) - zOffset * Math.sin(yRot);
                 double z = zOffset * Math.cos(yRot) + xOffset * Math.sin(yRot);
 
-                entity.setPos(bonePos.x + x, bonePos.y + 0.2, bonePos.z + z);
+                entity.setPos(bonePos.x + x, bonePos.y + 0.1, bonePos.z + z);
             }
         }
     }
