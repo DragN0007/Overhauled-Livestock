@@ -1714,6 +1714,9 @@
 						"0.375": {
 							"vector": [-5, 0, 0]
 						},
+						"0.4167": {
+							"vector": [40.83, 0, 0]
+						},
 						"0.5": {
 							"vector": [80, 0, 0]
 						},
@@ -2388,16 +2391,16 @@
 							"vector": [0, 4, 0]
 						},
 						"0.25": {
-							"vector": [0, 12, 0]
+							"vector": [0, 4, 0]
 						},
 						"0.5": {
-							"vector": [0, 12, 0]
+							"vector": [0, 4, 0]
 						},
 						"0.75": {
-							"vector": [0, 8, 0]
+							"vector": [0, 4, 0]
 						},
 						"1.0": {
-							"vector": [0, 6, 0]
+							"vector": [0, 4, 0]
 						}
 					}
 				},
@@ -6460,6 +6463,21 @@
 				"horse_head": {
 					"rotation": {
 						"vector": [7.5, 0, 0]
+					}
+				}
+			}
+		},
+		"animation.unknown.new": {
+			"loop": true,
+			"bones": {
+				"neck": {
+					"rotation": {
+						"vector": [-20, 0, 0]
+					}
+				},
+				"horse_head": {
+					"rotation": {
+						"vector": [12.00992, -11.53486, 4.8493]
 					}
 				}
 			}

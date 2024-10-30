@@ -34,7 +34,6 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
     @Override
     public void render(GeoModel model, OHorse animatable, float partialTick, RenderType type, PoseStack poseStack, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         if (!animatable.isBaby()) {
-
             if (animatable.hasChest() && LivestockOverhaulCommonConfig.HORSE_SADDLEBAG_RENDER.get()) {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(false));
             } else {
@@ -68,24 +67,6 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
             }
         }
         super.render(model, animatable, partialTick, type, poseStack, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-
-        Optional<GeoBone> optionalBone = model.getBone("saddle");
-        if(optionalBone.isPresent()) {
-            Entity entity = animatable.getControllingPassenger();
-            if(entity != null) {
-                GeoBone bone = optionalBone.get();
-                Vector3d bonePos = bone.getWorldPosition();
-                double yRot = Math.toRadians(entity.getYRot());
-
-                double xOffset = 0;
-                double zOffset = 0.2;
-
-                double x = xOffset * Math.cos(yRot) - zOffset * Math.sin(yRot);
-                double z = zOffset * Math.cos(yRot) + xOffset * Math.sin(yRot);
-
-                entity.setPos(bonePos.x + x, bonePos.y + 0.1, bonePos.z + z);
-            }
-        }
     }
 
     @Override

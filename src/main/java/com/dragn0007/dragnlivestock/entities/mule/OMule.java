@@ -149,8 +149,9 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 	}
 
 	public <T extends IAnimatable> PlayState emotePredicate(AnimationEvent<T> event) {
-		if(event.isMoving()) {
+		if(event.isMoving() || !this.shouldEmote) {
 			event.getController().setAnimation(new AnimationBuilder().clearAnimations());
+			this.shouldEmote = false;
 			return PlayState.STOP;
 		}
 
@@ -167,13 +168,8 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 	@Override
 	public void playEmote(String emoteName, ILoopType.EDefaultLoopTypes loopType) {
 		AnimationController<?> controller = GeckoLibUtil.getControllerForID(this.factory, this.getId(), "emoteController");
-		Animation animation = controller.getCurrentAnimation();
-		if(animation != null && !emoteName.equals(animation.animationName)) {
-			controller.setAnimation(new AnimationBuilder().clearAnimations());
-		}
-
-		controller.markNeedsReload();
-		controller.setAnimation(new AnimationBuilder().addAnimation(emoteName, loopType));
+		controller.setAnimation(new AnimationBuilder().clearAnimations().addAnimation(emoteName, loopType));
+		this.shouldEmote = true;
 	}
 
 	//ground tie

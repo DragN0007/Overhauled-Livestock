@@ -172,7 +172,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 	}
 
 	public <T extends IAnimatable> PlayState emotePredicate(AnimationEvent<T> event) {
-		if(event.isMoving() || this.shouldEmote) {
+		if(event.isMoving() || !this.shouldEmote) {
 			event.getController().setAnimation(new AnimationBuilder().clearAnimations());
 			this.shouldEmote = false;
 			return PlayState.STOP;
@@ -191,9 +191,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 	@Override
 	public void playEmote(String emoteName, ILoopType.EDefaultLoopTypes loopType) {
 		AnimationController<?> controller = GeckoLibUtil.getControllerForID(this.factory, this.getId(), "emoteController");
-		controller.setAnimation(new AnimationBuilder().clearAnimations());
-		controller.markNeedsReload();
-		controller.setAnimation(new AnimationBuilder().addAnimation(emoteName, loopType));
+		controller.setAnimation(new AnimationBuilder().clearAnimations().addAnimation(emoteName, loopType));
 		this.shouldEmote = true;
 	}
 
@@ -273,7 +271,45 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 
 	@Override
 	public void positionRider(Entity entity) {
-		super.positionRider(entity);
+		if (this.hasPassenger(entity)) {
+
+			double offsetX = 0;
+			double offsetY = 1.1;
+			double offsetZ = -0.2;
+
+			if (this.isSaddled() && getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
+				offsetY = 1.3;
+			}
+
+			if (this.isSaddled() && getModelLocation().equals(BreedModel.DRAFT.resourceLocation)) {
+				offsetY = 1.45;
+			}
+
+			if (this.isSaddled() && getModelLocation().equals(BreedModel.WARMBLOOD.resourceLocation)) {
+				offsetY = 1.35;
+			}
+
+			if (this.isSaddled() && getModelLocation().equals(BreedModel.PONY.resourceLocation)) {
+				offsetY = 1.1;
+			}
+
+			if (this.isJumping()) {
+				offsetY = 1.7;
+				offsetZ = -0.9;
+			}
+
+			double radYaw = Math.toRadians(this.getYRot());
+
+			double offsetXRotated = offsetX * Math.cos(radYaw) - offsetZ * Math.sin(radYaw);
+			double offsetYRotated = offsetY;
+			double offsetZRotated = offsetX * Math.sin(radYaw) + offsetZ * Math.cos(radYaw);
+
+			double x = this.getX() + offsetXRotated;
+			double y = this.getY() + offsetYRotated;
+			double z = this.getZ() + offsetZRotated;
+
+			entity.setPos(x, y, z);
+		}
 	}
 
 	@Override
