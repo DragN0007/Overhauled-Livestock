@@ -199,8 +199,8 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 			double offsetZ = -0.2;
 
 			if (this.isJumping()) {
-				offsetY = 1.7;
-				offsetZ = -0.9;
+//				offsetY = 1.7;
+				offsetZ = -0.6;
 			}
 
 			double radYaw = Math.toRadians(this.getYRot());
