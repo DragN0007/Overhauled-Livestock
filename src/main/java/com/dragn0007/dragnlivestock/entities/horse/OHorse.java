@@ -6,6 +6,7 @@ import com.dragn0007.dragnlivestock.entities.ai.HorseFollowHerdLeaderGoal;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.horse.headlesshorseman.HeadlessHorseman;
 import com.dragn0007.dragnlivestock.entities.mule.OMule;
+import com.dragn0007.dragnlivestock.entities.mule.OMuleModel;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import com.dragn0007.dragnlivestock.entities.util.LOAttributes;
 import com.mojang.math.Vector3d;
@@ -475,24 +476,22 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		AbstractOHorse abstracthorse;
 		if (ageableMob instanceof ODonkey) {
 			ODonkey donkey = (ODonkey) ageableMob;
-			OHorse horse = this;
 
 			abstracthorse = EntityTypes.O_MULE_ENTITY.get().create(serverLevel);
 
 			int overlayChance = this.random.nextInt(9);
 			int selectedOverlay;
 
-			if (overlayChance == 0) {
+			if (overlayChance < 4) {
 				selectedOverlay = this.getOverlayVariant();
-			} else if (overlayChance == 1) {
+			} else if (overlayChance < 8) {
 				selectedOverlay = donkey.getOverlayVariant();
-			} else if (overlayChance == 2) {
-				selectedOverlay = horse.getOverlayVariant();
 			} else {
 				selectedOverlay = this.random.nextInt(OHorseMarkingLayer.Overlay.values().length);
 			}
 
 			((OMule) abstracthorse).setOverlayVariant(selectedOverlay);
+			((OMule) abstracthorse).setVariant(random.nextInt(OMuleModel.Variant.values().length));
 
 		} else {
 			OHorse horse = (OHorse) ageableMob;

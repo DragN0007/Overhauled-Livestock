@@ -5,6 +5,8 @@ import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.horse.OHorseMarkingLayer;
 import com.dragn0007.dragnlivestock.entities.mule.OMule;
+import com.dragn0007.dragnlivestock.entities.mule.OMuleMarkingLayer;
+import com.dragn0007.dragnlivestock.entities.mule.OMuleModel;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -358,24 +360,22 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 		AbstractOHorse abstracthorse;
 		if (ageableMob instanceof OHorse) {
 			OHorse horse = (OHorse) ageableMob;
-			ODonkey donkey = this;
 
 			abstracthorse = EntityTypes.O_MULE_ENTITY.get().create(serverLevel);
 
 			int overlayChance = this.random.nextInt(9);
 			int selectedOverlay;
 
-			if (overlayChance == 0) {
+			if (overlayChance < 4) {
 				selectedOverlay = this.getOverlayVariant();
-			} else if (overlayChance == 1) {
+			} else if (overlayChance < 8) {
 				selectedOverlay = horse.getOverlayVariant();
-			} else if (overlayChance == 2) {
-				selectedOverlay = donkey.getOverlayVariant();
 			} else {
 				selectedOverlay = this.random.nextInt(OHorseMarkingLayer.Overlay.values().length);
 			}
 
 			((OMule) abstracthorse).setOverlayVariant(selectedOverlay);
+			((OMule) abstracthorse).setVariant(random.nextInt(OMuleModel.Variant.values().length));
 
 		} else {
 			ODonkey donkey = (ODonkey) ageableMob;
