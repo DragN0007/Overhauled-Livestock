@@ -55,15 +55,15 @@ Examples for the Template Texture Pack:
 
 **Custom Base Color**
 ```
-/summon dragnlivestock:o_horse_entity ~ ~ ~ {Variant_Texture:"base_colors:test_horsie.png"} 
+/summon dragnlivestock:o_horse ~ ~ ~ {Variant_Texture:"base_colors:test_horsie.png"} 
 ```
 **Custom Pattern Overlay**
 ```
-/summon dragnlivestock:o_horse_entity ~ ~ ~ {Overlay_Texture:"pattern_overlays:test_pattern.png"} 
+/summon dragnlivestock:o_horse ~ ~ ~ {Overlay_Texture:"pattern_overlays:test_pattern.png"} 
 ```
 **Both**
 ```
-/summon dragnlivestock:o_horse_entity ~ ~ ~ {Variant_Texture:"base_colors:my_custom_texture_name.png", Overlay_Texture:"pattern_overlays:my_custom_pattern_name.png"}
+/summon dragnlivestock:o_horse ~ ~ ~ {Variant_Texture:"base_colors:my_custom_texture_name.png", Overlay_Texture:"pattern_overlays:my_custom_pattern_name.png"}
 ```
 
 ### Animals That Currently Have Dynamic Resources
