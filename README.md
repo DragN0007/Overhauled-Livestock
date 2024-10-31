@@ -25,6 +25,7 @@ on your shaders. This is a Geckolib issue; we can't fix it on our end.
 You do not have permission to redistribute this mod. 
 
 **Code** licensing goes under **GNU**; which means you may use it under their standards (as seen in CODE_LICENSE.txt).
+Please credit the original (this) source code!
 
 **Asset** licensing goes under **All Rights Reserved**; 
 you may ***not*** use models, textures, animations, or any other assets in your standalone mod(s) or other projects.
