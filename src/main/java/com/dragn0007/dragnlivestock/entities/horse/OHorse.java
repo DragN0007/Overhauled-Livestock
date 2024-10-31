@@ -173,6 +173,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 
 	public <T extends IAnimatable> PlayState emotePredicate(AnimationEvent<T> event) {
 		if(event.isMoving() || !this.shouldEmote) {
+            event.getController().markNeedsReload();
 			event.getController().setAnimation(new AnimationBuilder().clearAnimations());
 			this.shouldEmote = false;
 			return PlayState.STOP;
@@ -191,6 +192,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 	@Override
 	public void playEmote(String emoteName, ILoopType.EDefaultLoopTypes loopType) {
 		AnimationController<?> controller = GeckoLibUtil.getControllerForID(this.factory, this.getId(), "emoteController");
+        controller.markNeedsReload();
 		controller.setAnimation(new AnimationBuilder().clearAnimations().addAnimation(emoteName, loopType));
 		this.shouldEmote = true;
 	}
@@ -295,7 +297,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 
 			if (this.isJumping()) {
 //				offsetY = 1.7;
-				offsetZ = -0.8;
+				offsetZ = -0.6;
 			}
 
 			double radYaw = Math.toRadians(this.getYRot());
