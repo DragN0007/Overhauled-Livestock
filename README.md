@@ -96,6 +96,9 @@ O-Mule
 O-Donkey
 /summon dragnlivestock:o_donkey ~ ~ ~ {Texture:".png"}
 
+O-Rabbit
+/summon dragnlivestock:o_rabbit ~ ~ ~ {Texture:".png"}
+
 Overworld Unicorn
 /summon dragnlivestock:overworld_unicorn ~ ~ ~ {Texture:".png"}
 

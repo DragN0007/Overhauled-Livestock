@@ -1,5 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.rabbit;
 
+import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.chicken.OChickenMarkingLayer;
 import com.dragn0007.dragnlivestock.entities.chicken.OChickenModel;
@@ -18,8 +19,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -304,12 +303,15 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 	}
 
 	// Generates the base texture
+	public static final EntityDataAccessor<ResourceLocation> VARIANT_TEXTURE = SynchedEntityData.defineId(ORabbit.class, LivestockOverhaul.RESOURCE_LOCATION);
+	public static final EntityDataAccessor<ResourceLocation> OVERLAY_TEXTURE = SynchedEntityData.defineId(ORabbit.class, LivestockOverhaul.RESOURCE_LOCATION);
+
 	public ResourceLocation getTextureLocation() {
-		return ORabbitModel.Variant.variantFromOrdinal(getVariant()).resourceLocation;
+		return this.entityData.get(VARIANT_TEXTURE);
 	}
 
 	public ResourceLocation getOverlayLocation() {
-		return ORabbitMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
+		return this.entityData.get(OVERLAY_TEXTURE);
 	}
 
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(ORabbit.class, EntityDataSerializers.INT);
@@ -324,9 +326,27 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 
 	public void setVariant(int variant) {
 		this.entityData.set(VARIANT, variant);
+		this.entityData.set(VARIANT_TEXTURE, ORabbitModel.Variant.variantFromOrdinal(variant).resourceLocation);
 	}
 	public void setOverlayVariant(int overlayVariant) {
 		this.entityData.set(OVERLAY, overlayVariant);
+		this.entityData.set(OVERLAY_TEXTURE, ORabbitMarkingLayer.Overlay.overlayFromOrdinal(overlayVariant).resourceLocation);
+	}
+
+	public void setVariantTexture(String variant) {
+		ResourceLocation resourceLocation = ResourceLocation.tryParse(variant);
+		if (resourceLocation == null) {
+			resourceLocation = ORabbitModel.Variant.BLACK.resourceLocation;
+		}
+		this.entityData.set(VARIANT_TEXTURE, resourceLocation);
+	}
+
+	public void setOverlayVariantTexture(String variant) {
+		ResourceLocation resourceLocation = ResourceLocation.tryParse(variant);
+		if (resourceLocation == null) {
+			resourceLocation = ORabbitMarkingLayer.Overlay.NONE.resourceLocation;
+		}
+		this.entityData.set(OVERLAY_TEXTURE, resourceLocation);
 	}
 
 	@Override
@@ -340,6 +360,14 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 		if (tag.contains("Overlay")) {
 			setOverlayVariant(tag.getInt("Overlay"));
 		}
+
+		if (tag.contains("Variant_Texture")) {
+			this.setVariantTexture(tag.getString("Variant_Texture"));
+		}
+
+		if (tag.contains("Overlay_Texture")) {
+			this.setOverlayVariantTexture(tag.getString("Overlay_Texture"));
+		}
 	}
 
 	@Override
@@ -348,6 +376,10 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 		tag.putInt("Variant", getVariant());
 
 		tag.putInt("Overlay", getOverlayVariant());
+
+		tag.putString("Variant_Texture", this.getTextureLocation().toString());
+
+		tag.putString("Overlay_Texture", this.getOverlayLocation().toString());
 	}
 
 	@Override
@@ -368,6 +400,8 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
+		this.entityData.define(VARIANT_TEXTURE, ORabbitModel.Variant.BLACK.resourceLocation);
+		this.entityData.define(OVERLAY_TEXTURE, ORabbitMarkingLayer.Overlay.NONE.resourceLocation);
 	}
 
 	public boolean canParent() {
@@ -382,7 +416,7 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 	public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
 		ORabbit oRabbit = (ORabbit) ageableMob;
 		if (ageableMob instanceof ORabbit) {
-			ORabbit oChicken1 = (ORabbit) ageableMob;
+			ORabbit oRabbit1 = (ORabbit) ageableMob;
 			oRabbit = EntityTypes.O_RABBIT_ENTITY.get().create(serverLevel);
 
 			int i = this.random.nextInt(9);
@@ -390,9 +424,9 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 			if (i < 4) {
 				variant = this.getVariant();
 			} else if (i < 8) {
-				variant = oChicken1.getVariant();
+				variant = oRabbit1.getVariant();
 			} else {
-				variant = this.random.nextInt(OChickenModel.Variant.values().length);
+				variant = this.random.nextInt(ORabbitModel.Variant.values().length);
 			}
 
 			int j = this.random.nextInt(5);
@@ -400,9 +434,9 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 			if (j < 2) {
 				overlay = this.getOverlayVariant();
 			} else if (j < 4) {
-				overlay = oChicken1.getOverlayVariant();
+				overlay = oRabbit1.getOverlayVariant();
 			} else {
-				overlay = this.random.nextInt(OChickenMarkingLayer.Overlay.values().length);
+				overlay = this.random.nextInt(ORabbitMarkingLayer.Overlay.values().length);
 			}
 
 			((ORabbit) oRabbit).setVariant(variant);
