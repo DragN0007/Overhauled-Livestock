@@ -28,6 +28,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -39,6 +40,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CarrotBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -112,32 +114,56 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 
 	private static final Set<Item> TAME_FOOD = Sets.newHashSet(Items.CARROT, Items.MELON_SLICE, Items.APPLE, Items.BEETROOT, Items.GOLDEN_CARROT);
 
-	public InteractionResult mobInteract(Player player, InteractionHand hand) {
-		ItemStack itemstack = player.getItemInHand(hand);
-		if (!this.isTame() && TAME_FOOD.contains(itemstack.getItem())) {
-			if (!player.getAbilities().instabuild) {
-				itemstack.shrink(1);
-			}
+	public InteractionResult mobInteract(Player p_30412_, InteractionHand p_30413_) {
+		ItemStack itemstack = p_30412_.getItemInHand(p_30413_);
+		Item item = itemstack.getItem();
+		if (this.level.isClientSide) {
+			boolean flag = this.isOwnedBy(p_30412_) || this.isTame() || TAME_FOOD.contains(itemstack.getItem()) && !this.isTame();
+			return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
+		} else {
+			if (this.isTame()) {
+				if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
+					this.heal((float)itemstack.getFoodProperties(this).getNutrition());
+					if (!p_30412_.getAbilities().instabuild) {
+						itemstack.shrink(1);
+					}
 
-			if (!this.level.isClientSide) {
-				if (this.random.nextInt(10) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
-					this.tame(player);
+					this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+					return InteractionResult.SUCCESS;
+				}
+
+				if (!(item instanceof DyeItem)) {
+					InteractionResult interactionresult = super.mobInteract(p_30412_, p_30413_);
+					if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(p_30412_)) {
+						this.setOrderedToSit(!this.isOrderedToSit());
+						this.jumping = false;
+						this.navigation.stop();
+						this.setTarget((LivingEntity)null);
+						return InteractionResult.SUCCESS;
+					}
+
+					return interactionresult;
+				}
+
+			} else if (TAME_FOOD.contains(itemstack.getItem())) {
+				if (!p_30412_.getAbilities().instabuild) {
+					itemstack.shrink(1);
+				}
+
+				if (this.random.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, p_30412_)) {
+					this.tame(p_30412_);
+					this.navigation.stop();
+					this.setTarget((LivingEntity)null);
+					this.setOrderedToSit(true);
 					this.level.broadcastEntityEvent(this, (byte)7);
 				} else {
 					this.level.broadcastEntityEvent(this, (byte)6);
 				}
+
+				return InteractionResult.SUCCESS;
 			}
 
-			return InteractionResult.sidedSuccess(this.level.isClientSide);
-
-		} else if (this.isTame() && this.isOwnedBy(player)) {
-			if (!this.level.isClientSide) {
-				this.setOrderedToSit(!this.isOrderedToSit());
-			}
-
-			return InteractionResult.sidedSuccess(this.level.isClientSide);
-		} else {
-			return super.mobInteract(player, hand);
+			return super.mobInteract(p_30412_, p_30413_);
 		}
 	}
 
