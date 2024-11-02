@@ -80,7 +80,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		return Mob.createMobAttributes()
 				.add(Attributes.JUMP_STRENGTH)
 				.add(Attributes.MAX_HEALTH, 53.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.235F)
+				.add(Attributes.MOVEMENT_SPEED, 0.255F)
 				.add(Attributes.ATTACK_DAMAGE, 1D);
 	}
 
