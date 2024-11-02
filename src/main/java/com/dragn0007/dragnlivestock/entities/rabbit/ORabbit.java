@@ -3,6 +3,7 @@ package com.dragn0007.dragnlivestock.entities.rabbit;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.chicken.OChickenMarkingLayer;
 import com.dragn0007.dragnlivestock.entities.chicken.OChickenModel;
+import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -14,7 +15,11 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -23,6 +28,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -46,8 +52,9 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.Set;
 
-public class ORabbit extends Animal implements IAnimatable {
+public class ORabbit extends TamableAnimal implements IAnimatable {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
 	public ORabbit(EntityType<? extends ORabbit> type, Level level) {
@@ -67,7 +74,7 @@ public class ORabbit extends Animal implements IAnimatable {
 				.add(Attributes.MOVEMENT_SPEED, 0.16F);
 	}
 
-	public static final Ingredient FOOD_ITEMS = Ingredient.of(Items.CARROT, Items.GOLDEN_CARROT, Blocks.DANDELION);
+	public static final Ingredient FOOD_ITEMS = Ingredient.of(Items.CARROT, Items.MELON_SLICE, Items.APPLE, Items.BEETROOT, Items.GOLDEN_CARROT, Blocks.DANDELION);
 
 	public void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
@@ -82,14 +89,55 @@ public class ORabbit extends Animal implements IAnimatable {
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+
+		this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
 	}
 
 	static class RabbitAvoidEntityGoal<T extends LivingEntity> extends AvoidEntityGoal<T> {
 		public final ORabbit rabbit;
 
-		public RabbitAvoidEntityGoal(ORabbit p_29743_, Class<T> p_29744_, float p_29745_, double p_29746_, double p_29747_) {
-			super(p_29743_, p_29744_, p_29745_, p_29746_, p_29747_);
-			this.rabbit = p_29743_;
+		public RabbitAvoidEntityGoal(ORabbit oRabbit, Class<T> tClass, float v, double v1, double v2) {
+			super(oRabbit, tClass, v, v1, v2);
+			this.rabbit = oRabbit;
+		}
+
+		@Override
+		public boolean canUse() {
+			if (rabbit.isTame()) {
+				return false;
+			}
+			return super.canUse();
+		}
+	}
+
+	private static final Set<Item> TAME_FOOD = Sets.newHashSet(Items.CARROT, Items.MELON_SLICE, Items.APPLE, Items.BEETROOT, Items.GOLDEN_CARROT);
+
+	public InteractionResult mobInteract(Player player, InteractionHand hand) {
+		ItemStack itemstack = player.getItemInHand(hand);
+		if (!this.isTame() && TAME_FOOD.contains(itemstack.getItem())) {
+			if (!player.getAbilities().instabuild) {
+				itemstack.shrink(1);
+			}
+
+			if (!this.level.isClientSide) {
+				if (this.random.nextInt(10) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
+					this.tame(player);
+					this.level.broadcastEntityEvent(this, (byte)7);
+				} else {
+					this.level.broadcastEntityEvent(this, (byte)6);
+				}
+			}
+
+			return InteractionResult.sidedSuccess(this.level.isClientSide);
+
+		} else if (this.isTame() && this.isOwnedBy(player)) {
+			if (!this.level.isClientSide) {
+				this.setOrderedToSit(!this.isOrderedToSit());
+			}
+
+			return InteractionResult.sidedSuccess(this.level.isClientSide);
+		} else {
+			return super.mobInteract(player, hand);
 		}
 	}
 
@@ -105,9 +153,10 @@ public class ORabbit extends Animal implements IAnimatable {
 		if (event.isMoving()) {
 			if (currentSpeed > speedThreshold) {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP));
-				event.getController().setAnimationSpeed(1.7);
+				event.getController().setAnimationSpeed(1.8);
 			} else {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP));
+				event.getController().setAnimationSpeed(1.5);
 			}
 		} else {
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
