@@ -45,7 +45,7 @@ public class HorseFollowHerdLeaderGoal extends Goal {
    }
 
    public boolean canContinueToUse() {
-      return this.mob.isFollower() && this.mob.inRangeOfLeader();
+      return this.mob.isFollower() && this.mob.inRangeOfLeader() && !mob.isSaddled() && !mob.isLeashed();
    }
 
    public void start() {
