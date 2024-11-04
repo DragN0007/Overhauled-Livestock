@@ -27,7 +27,7 @@ public class ODonkeyModel extends AnimatedGeoModel<ODonkey> {
     public static final ResourceLocation ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/horse_overhaul.animation.json");
 
     public static final ResourceLocation BABY_MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/baby_donkey.geo.json");
-    public static final ResourceLocation BABY_ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/baby_horse.animation.json");
+//    public static final ResourceLocation BABY_ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/baby_horse.animation.json");
     @Override
     public ResourceLocation getModelLocation(ODonkey object) {
         if(object.isBaby())
@@ -42,8 +42,6 @@ public class ODonkeyModel extends AnimatedGeoModel<ODonkey> {
 
     @Override
     public ResourceLocation getAnimationFileLocation(ODonkey animatable) {
-        if(animatable.isBaby())
-            return BABY_ANIMATION;
         return ANIMATION;
     }
 }

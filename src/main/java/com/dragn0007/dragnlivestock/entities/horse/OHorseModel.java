@@ -52,7 +52,7 @@ public class OHorseModel extends AnimatedGeoModel<OHorse> {
     public static final ResourceLocation ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/horse_overhaul.animation.json");
 
     public static final ResourceLocation BABY_MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/baby_horse_overhauled.geo.json");
-    public static final ResourceLocation BABY_ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/baby_horse.animation.json");
+//    public static final ResourceLocation BABY_ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/baby_horse.animation.json");
     @Override
     public ResourceLocation getModelLocation(OHorse object) {
         if(object.isBaby())
@@ -67,8 +67,6 @@ public class OHorseModel extends AnimatedGeoModel<OHorse> {
 
     @Override
     public ResourceLocation getAnimationFileLocation(OHorse animatable) {
-        if(animatable.isBaby())
-            return BABY_ANIMATION;
         return ANIMATION;
     }
 }
