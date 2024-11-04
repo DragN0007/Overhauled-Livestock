@@ -49,11 +49,11 @@ public class LOItems {
             () -> new ForgeSpawnEggItem(EntityTypes.O_MOOSHROOM_ENTITY, 0xbf2425, 0xcabcbc, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
 
     public static final RegistryObject<Item> OVERWORLD_UNICORN_SPAWN_EGG = ITEMS.register("overworld_unicorn_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.OVERWORLD_UNICORN_ENTITY, 0xfef4f4, 0xccbfbf, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new ForgeSpawnEggItem(EntityTypes.OVERWORLD_UNICORN_ENTITY, 0x00FFFFFF, 0x00FFFFFF, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
     public static final RegistryObject<Item> NETHER_UNICORN_SPAWN_EGG = ITEMS.register("nether_unicorn_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityTypes.NETHER_UNICORN_ENTITY, 0x222539, 0x090a12, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new ForgeSpawnEggItem(EntityTypes.NETHER_UNICORN_ENTITY, 0x00FFFFFF, 0x00FFFFFF, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
     public static final RegistryObject<Item> END_UNICORN_SPAWN_EGG = ITEMS.register("end_unicorn_spawn_egg",
-         () -> new ForgeSpawnEggItem(EntityTypes.END_UNICORN_ENTITY, 0xb4ac79, 0xdee6a4, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+         () -> new ForgeSpawnEggItem(EntityTypes.END_UNICORN_ENTITY, 0x00FFFFFF, 0x00FFFFFF, new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
 
     //Misc
     public static final RegistryObject<Item> BRAND_TAG = ITEMS.register("brand_tag",

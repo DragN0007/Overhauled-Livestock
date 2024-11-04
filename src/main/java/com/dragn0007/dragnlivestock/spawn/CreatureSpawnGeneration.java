@@ -15,20 +15,20 @@ import java.util.Random;
 public class CreatureSpawnGeneration {
     public static void onEntitySpawn(final BiomeLoadingEvent event) {
 
-        addEntityToSpecificBiomes(event, EntityTypes.OVERWORLD_UNICORN_ENTITY.get(),
-                1, 1, 1,
-                Biomes.MEADOW
-        );
-
-        addEntityToSpecificBiomes(event, EntityTypes.NETHER_UNICORN_ENTITY.get(),
-                1, 1, 1,
-                Biomes.BASALT_DELTAS
-        );
-
-        addEntityToSpecificBiomes(event, EntityTypes.END_UNICORN_ENTITY.get(),
-                1, 1, 1,
-                Biomes.END_HIGHLANDS
-        );
+//        addEntityToSpecificBiomes(event, EntityTypes.OVERWORLD_UNICORN_ENTITY.get(),
+//                1, 1, 1,
+//                Biomes.MEADOW
+//        );
+//
+//        addEntityToSpecificBiomes(event, EntityTypes.NETHER_UNICORN_ENTITY.get(),
+//                1, 1, 1,
+//                Biomes.BASALT_DELTAS
+//        );
+//
+//        addEntityToSpecificBiomes(event, EntityTypes.END_UNICORN_ENTITY.get(),
+//                1, 1, 1,
+//                Biomes.END_HIGHLANDS
+//        );
     }
 
     @SafeVarargs

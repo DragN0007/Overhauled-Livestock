@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ADA",
+    "BCB",
+    "ADA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:raw_horse"
+    },
+    "B": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "C": {
+      "item": "minecraft:nether_star"
+    },
+    "D": {
+      "item": "minecraft:diamond_block"
+    }
+  },
+  "result": {
+    "item": "dragnlivestock:nether_unicorn_spawn_egg"
+  }
+}

@@ -20,6 +20,43 @@ public class LORecipeMaker extends RecipeProvider implements IConditionBuilder {
     @Override
     public void buildCraftingRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
 
+        ShapedRecipeBuilder.shaped(LOItems.OVERWORLD_UNICORN_SPAWN_EGG.get())
+                .define('A', LOTags.Items.RAW_HORSE)
+                .define('B', Items.ENCHANTED_GOLDEN_APPLE)
+                .define('C', Items.HEART_OF_THE_SEA)
+                .define('D', Items.DIAMOND_BLOCK)
+                .pattern("ADA")
+                .pattern("BCB")
+                .pattern("ADA")
+                .unlockedBy("has_heart_of_sea", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Items.HEART_OF_THE_SEA).build()))
+                .save(pFinishedRecipeConsumer);
+
+        ShapedRecipeBuilder.shaped(LOItems.NETHER_UNICORN_SPAWN_EGG.get())
+                .define('A', LOTags.Items.RAW_HORSE)
+                .define('B', Items.NETHERITE_INGOT)
+                .define('C', Items.NETHER_STAR)
+                .define('D', Items.DIAMOND_BLOCK)
+                .pattern("ADA")
+                .pattern("BCB")
+                .pattern("ADA")
+                .unlockedBy("has_nether_star", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Items.NETHER_STAR).build()))
+                .save(pFinishedRecipeConsumer);
+
+        ShapedRecipeBuilder.shaped(LOItems.END_UNICORN_SPAWN_EGG.get())
+                .define('A', LOTags.Items.RAW_HORSE)
+                .define('B', Items.END_ROD)
+                .define('C', Items.DRAGON_BREATH)
+                .define('D', Items.DIAMOND_BLOCK)
+                .pattern("ADA")
+                .pattern("BCB")
+                .pattern("ADA")
+                .unlockedBy("has_dragon_breath", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Items.DRAGON_BREATH).build()))
+                .save(pFinishedRecipeConsumer);
+
+
         ShapedRecipeBuilder.shaped(Items.CAKE)
                 .define('A', LOTags.Items.MILK)
                 .define('C', Items.SUGAR)

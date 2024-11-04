@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ADA",
+    "BCB",
+    "ADA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:raw_horse"
+    },
+    "B": {
+      "item": "minecraft:end_rod"
+    },
+    "C": {
+      "item": "minecraft:dragon_breath"
+    },
+    "D": {
+      "item": "minecraft:diamond_block"
+    }
+  },
+  "result": {
+    "item": "dragnlivestock:end_unicorn_spawn_egg"
+  }
+}

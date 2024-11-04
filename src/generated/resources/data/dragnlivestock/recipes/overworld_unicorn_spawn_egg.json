@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ADA",
+    "BCB",
+    "ADA"
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:raw_horse"
+    },
+    "B": {
+      "item": "minecraft:enchanted_golden_apple"
+    },
+    "C": {
+      "item": "minecraft:heart_of_the_sea"
+    },
+    "D": {
+      "item": "minecraft:diamond_block"
+    }
+  },
+  "result": {
+    "item": "dragnlivestock:overworld_unicorn_spawn_egg"
+  }
+}
