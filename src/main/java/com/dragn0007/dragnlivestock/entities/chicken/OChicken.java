@@ -1,7 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.chicken;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
-import com.dragn0007.dragnlivestock.entities.horse.BreedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;

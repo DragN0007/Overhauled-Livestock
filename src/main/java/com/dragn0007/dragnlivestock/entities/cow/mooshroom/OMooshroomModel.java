@@ -1,7 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.cow.mooshroom;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
-import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

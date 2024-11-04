@@ -1,7 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.cow.mooshroom;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
-import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

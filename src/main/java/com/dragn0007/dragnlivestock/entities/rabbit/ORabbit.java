@@ -2,8 +2,6 @@ package com.dragn0007.dragnlivestock.entities.rabbit;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
-import com.dragn0007.dragnlivestock.entities.chicken.OChickenMarkingLayer;
-import com.dragn0007.dragnlivestock.entities.chicken.OChickenModel;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
