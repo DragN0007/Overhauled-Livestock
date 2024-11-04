@@ -100,17 +100,85 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 
 	@Override
 	public float generateRandomMaxHealth() {
-		return 15.0F + (float)this.random.nextInt(8) + (float)this.random.nextInt(9);
+		float baseHealth;
+		if (getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
+			baseHealth = 16.0F;
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(4);
+		}
+		if (getModelLocation().equals(BreedModel.DRAFT.resourceLocation)) {
+			baseHealth = 20.0F;
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(4);
+		}
+		if (getModelLocation().equals(BreedModel.WARMBLOOD.resourceLocation)) {
+			baseHealth = 16.0F;
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(4);
+		}
+		if (getModelLocation().equals(BreedModel.PONY.resourceLocation)) {
+			baseHealth = 14.0F;
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(4);
+		}
+		if (getModelLocation().equals(BreedModel.RACER.resourceLocation)) {
+			baseHealth = 13.0F;
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(4);
+		}
+		return 15.0F + (float) this.random.nextInt(4) + (float) this.random.nextInt(5);
 	}
 
 	@Override
 	public double generateRandomJumpStrength() {
-		return (double)0.4F + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D;
+		double baseStrength = 0.4F;
+		double multiplier = this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D;
+
+		if (getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
+			baseStrength = 0.5F;
+			return baseStrength + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.DRAFT.resourceLocation)) {
+			baseStrength = 0.3F;
+			return baseStrength + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.WARMBLOOD.resourceLocation)) {
+			baseStrength = 0.4F;
+			return baseStrength + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.PONY.resourceLocation)) {
+			baseStrength = 0.35F;
+			return baseStrength + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.RACER.resourceLocation)) {
+			baseStrength = 0.35F;
+			return baseStrength + multiplier;
+		}
+		return baseStrength + this.random.nextDouble() * 0.15D;
 	}
 
+	//fix speed, too fast
 	@Override
 	public double generateRandomSpeed() {
-		return ((double)0.45F + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D + this.random.nextDouble() * 0.3D) * 0.25D;
+		double baseSpeed = 0.0F;
+		double multiplier = (this.random.nextDouble() * 0.1D + this.random.nextDouble() * 0.1D + this.random.nextDouble() * 0.1D) * 0.25D;
+
+		if (getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
+			baseSpeed = 0.2F;
+			return baseSpeed + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.DRAFT.resourceLocation)) {
+			baseSpeed = 0.15F;
+			return baseSpeed + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.WARMBLOOD.resourceLocation)) {
+			baseSpeed = 0.2F;
+			return baseSpeed + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.PONY.resourceLocation)) {
+			baseSpeed = 0.15F;
+			return baseSpeed + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.RACER.resourceLocation)) {
+			baseSpeed = 0.25F;
+			return baseSpeed + multiplier;
+		}
+		return baseSpeed + multiplier;
 	}
 
 	public double generateRandomEndurance() {
@@ -288,6 +356,10 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 				offsetY = 1.1;
 			}
 
+			if (this.isSaddled() && getModelLocation().equals(BreedModel.RACER.resourceLocation)) {
+				offsetY = 1.3;
+			}
+
 			if (this.isJumping()) {
 //				offsetY = 1.7;
 				offsetZ = -0.6;
@@ -437,6 +509,10 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		Random random = new Random();
 		this.setVariant(random.nextInt(OHorseModel.Variant.values().length));
 		this.setOverlayVariant(random.nextInt(OHorseMarkingLayer.Overlay.values().length));
+
+		if (spawnType == MobSpawnType.SPAWN_EGG) {
+			this.setBreed(random.nextInt(BreedModel.values().length));
+		}
 
 		this.randomizeAttributes();
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
