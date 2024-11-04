@@ -7,7 +7,8 @@ public enum BreedModel {
     STOCK(new ResourceLocation(LivestockOverhaul.MODID, "geo/horse_overhauled.geo.json")),
     DRAFT(new ResourceLocation(LivestockOverhaul.MODID, "geo/horse_ardennes.geo.json")),
     WARMBLOOD(new ResourceLocation(LivestockOverhaul.MODID, "geo/horse_kladruber.geo.json")),
-    PONY(new ResourceLocation(LivestockOverhaul.MODID, "geo/horse_fjord.geo.json"));
+    PONY(new ResourceLocation(LivestockOverhaul.MODID, "geo/horse_fjord.geo.json")),
+    RACER(new ResourceLocation(LivestockOverhaul.MODID, "geo/horse_thoroughbred.geo.json"));
 
     public final ResourceLocation resourceLocation;
 
