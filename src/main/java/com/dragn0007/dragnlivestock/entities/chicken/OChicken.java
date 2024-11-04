@@ -1,6 +1,7 @@
 package com.dragn0007.dragnlivestock.entities.chicken;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.entities.horse.BreedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -121,7 +122,8 @@ public class OChicken extends Animal implements IAnimatable {
 			this.setDeltaMovement(vec3.multiply(1.0D, 0.6D, 1.0D));
 		}
 
-		if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && !this.isChickenJockey() && --this.eggTime <= 0) {
+		if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && !this.isChickenJockey() && --this.eggTime <= 0
+		&& !this.getOverlayLocation().equals(OChickenMarkingLayer.Overlay.BLACK_ROOSTER) && !this.getOverlayLocation().equals(OChickenMarkingLayer.Overlay.BLUE_ROOSTER))  {
 			this.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
 			this.spawnAtLocation(Items.EGG);
 			this.eggTime = this.random.nextInt(6000) + 6000;
