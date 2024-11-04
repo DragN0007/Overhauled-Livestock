@@ -63,7 +63,6 @@ public class OMuleRender extends ExtendedGeoEntityRenderer<OMule> {
         }
 
         if(animatable.isBaby()) {
-            poseStack.scale(0.7F, 0.8F, 0.7F);
             model.getBone("saddlebags").ifPresent(b -> b.setHidden(true));
             model.getBone("saddle").ifPresent(b -> b.setHidden(true));
             model.getBone("saddle2").ifPresent(b -> b.setHidden(true));
@@ -74,8 +73,6 @@ public class OMuleRender extends ExtendedGeoEntityRenderer<OMule> {
             model.getBone("body_armor").ifPresent(b -> b.setHidden(true));
             model.getBone("neck_armor").ifPresent(b -> b.setHidden(true));
             model.getBone("head_armor").ifPresent(b -> b.setHidden(true));
-        } else {
-            poseStack.scale(1F, 1F, 1F);
         }
 
         super.render(model, animatable, partialTick, type, poseStack, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
