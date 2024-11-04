@@ -10,9 +10,6 @@ will replace loaded animals.
 A list of any currently unfixed (or can't be fixed on our end) issues!
 
 ```
--A client-side crash that has a small chance of happening when a
-baby horse, mule, or donkey grows up within the same chunk of the player.
-
 -Animals t-posing randomly. You have to fix this on your
 end by turning off Entity Shadows on your options *and*
 on your shaders. This is a Geckolib issue; we can't fix it on our end.
