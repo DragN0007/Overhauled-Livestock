@@ -4,6 +4,7 @@ import com.dragn0007.dragnlivestock.entities.bee.OBee;
 import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
 import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
+import com.dragn0007.dragnlivestock.entities.cow.mooshroom.OMooshroom;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.horse.headlesshorseman.HeadlessHorseman;
@@ -100,6 +101,12 @@ public class EntityTypes {
                             MobCategory.CREATURE)
                     .sized(1f,1f)
                     .build(new ResourceLocation(MODID,"o_pig").toString()));
+
+    public static final RegistryObject<EntityType<OMooshroom>> O_MOOSHROOM_ENTITY = ENTITY_TYPES.register("o_mooshroom",
+            () -> EntityType.Builder.of(OMooshroom::new,
+                            MobCategory.CREATURE)
+                    .sized(1.5f,1.5f)
+                    .build(new ResourceLocation(MODID,"o_mooshroom").toString()));
 
 
     public static final RegistryObject<EntityType<OverworldUnicorn>> OVERWORLD_UNICORN_ENTITY = ENTITY_TYPES.register("overworld_unicorn",

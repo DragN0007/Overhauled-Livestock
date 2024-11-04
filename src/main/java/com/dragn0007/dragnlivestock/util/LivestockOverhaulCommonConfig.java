@@ -34,7 +34,7 @@ public class LivestockOverhaulCommonConfig {
                 .define("Replace Vanilla Donkeys", true);
 
         REPLACE_COWS = BUILDER.comment("Should vanilla cows be replaced by O-Cows?")
-                .define("Replace Vanilla Cows", true);
+                .define("Replace Vanilla Cows & Mooshrooms", true);
 
         REPLACE_CHICKENS = BUILDER.comment("Should vanilla chickens be replaced by O-Chickens?")
                 .define("Replace Vanilla Chickens", true);
