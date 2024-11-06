@@ -201,6 +201,9 @@ public class SpawnReplacer {
                 int randomHorns = event.getWorld().getRandom().nextInt(31);
                 oCow.setHornVariant(randomHorns);
 
+                int randomGender = event.getWorld().getRandom().nextInt(31);
+                oCow.setUdderVariant(randomGender);
+
                 if (event.getWorld().isClientSide) {
                     vanillacow.remove(Entity.RemovalReason.DISCARDED);
                 }
@@ -373,13 +376,15 @@ public class SpawnReplacer {
 
             if (oSheep != null) {
                 oSheep.copyPosition(vanillasheep);
-                Entity entity = event.getEntity();
 
                 oSheep.setCustomName(vanillasheep.getCustomName());
                 oSheep.setAge(vanillasheep.getAge());
 
                 int randomVariant = event.getWorld().getRandom().nextInt(23);
                 oSheep.setVariant(randomVariant);
+
+                int randomGender = event.getWorld().getRandom().nextInt(31);
+                oSheep.setHornVariant(randomGender);
 
                 if (event.getWorld().isClientSide) {
                     vanillasheep.remove(Entity.RemovalReason.DISCARDED);
@@ -470,7 +475,6 @@ public class SpawnReplacer {
             OMooshroom oMooshroom = EntityTypes.O_MOOSHROOM_ENTITY.get().create(event.getWorld());
             if (oMooshroom != null) {
                 oMooshroom.copyPosition(vanillamooshroom);
-                Entity entity = event.getEntity();
 
                 oMooshroom.setCustomName(vanillamooshroom.getCustomName());
                 oMooshroom.setAge(vanillamooshroom.getAge());
@@ -486,6 +490,9 @@ public class SpawnReplacer {
 
                 int randomMushrooms = event.getWorld().getRandom().nextInt(31);
                 oMooshroom.setMushroomVariant(randomMushrooms);
+
+                int randomGender = event.getWorld().getRandom().nextInt(31);
+                oMooshroom.setUdderVariant(randomGender);
 
                 if (event.getWorld().isClientSide) {
                     vanillamooshroom.remove(Entity.RemovalReason.DISCARDED);
