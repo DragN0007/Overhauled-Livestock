@@ -157,7 +157,6 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		return baseStrength + this.random.nextDouble() * 0.15D;
 	}
 
-	//fix speed, too fast
 	@Override
 	public double generateRandomSpeed() {
 		double baseSpeed = 0.0F;
