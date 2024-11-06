@@ -20,6 +20,7 @@ public class OPigRender extends ExtendedGeoEntityRenderer<OPig> {
     public OPigRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new OPigModel());
         this.addLayer(new OPigMarkingLayer(this));
+        this.addLayer(new OPigTuskLayer(this));
     }
 
     @Override
@@ -27,6 +28,7 @@ public class OPigRender extends ExtendedGeoEntityRenderer<OPig> {
 
         if(animatable.isBaby()) {
             poseStack.scale(0.5F, 0.5F, 0.5F);
+            model.getBone("tusks").ifPresent(b -> b.setHidden(true));
         } else {
             poseStack.scale(1F, 1F, 1F);
         }

@@ -352,6 +352,9 @@ public class SpawnReplacer {
                 int randomVariant = event.getWorld().getRandom().nextInt(23);
                 oRabbit.setVariant(randomVariant);
 
+                int randomOverlay = event.getWorld().getRandom().nextInt(23);
+                oRabbit.setOverlayVariant(randomOverlay);
+
                 if (event.getWorld().isClientSide) {
                     vanillarabbit.remove(Entity.RemovalReason.DISCARDED);
                 }
@@ -410,7 +413,6 @@ public class SpawnReplacer {
 
             if (oLlama != null) {
                 oLlama.copyPosition(vanillallama);
-                Entity entity = event.getEntity();
 
                 oLlama.setCustomName(vanillallama.getCustomName());
                 oLlama.setOwnerUUID(vanillallama.getOwnerUUID());
@@ -418,6 +420,9 @@ public class SpawnReplacer {
 
                 int randomVariant = event.getWorld().getRandom().nextInt(23);
                 oLlama.setVariant(randomVariant);
+
+                int randomOverlay = event.getWorld().getRandom().nextInt(23);
+                oLlama.setOverlayVariant(randomOverlay);
 
                 if (event.getWorld().isClientSide) {
                     vanillallama.remove(Entity.RemovalReason.DISCARDED);
@@ -450,6 +455,12 @@ public class SpawnReplacer {
 
                 int randomVariant = event.getWorld().getRandom().nextInt(23);
                 oPig.setVariant(randomVariant);
+
+                int randomOverlay = event.getWorld().getRandom().nextInt(23);
+                oPig.setOverlayVariant(randomOverlay);
+
+                int randomTusksVariant = event.getWorld().getRandom().nextInt(23);
+                oPig.setTusksVariant(randomTusksVariant);
 
                 if (event.getWorld().isClientSide) {
                     vanillapig.remove(Entity.RemovalReason.DISCARDED);
