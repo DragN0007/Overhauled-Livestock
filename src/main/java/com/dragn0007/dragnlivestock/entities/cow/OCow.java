@@ -3,7 +3,8 @@ package com.dragn0007.dragnlivestock.entities.cow;
 import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.CattleFollowHerdLeaderGoal;
-import com.dragn0007.dragnlivestock.entities.horse.OHorse;
+import com.dragn0007.dragnlivestock.util.LOTags;
+import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -87,13 +88,15 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-
 		this.goalSelector.addGoal(3, new CattleFollowHerdLeaderGoal(this));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, livingEntity
-				-> livingEntity instanceof OHorse
-//				|| livingEntity instanceof OMule
-				|| livingEntity instanceof Wolf
-		));
+
+		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, livingEntity -> {
+			boolean isHorse = livingEntity.getType().is(LOTags.Entity_Types.HORSES);
+			boolean isRHGHorse = livingEntity.getType().is(LOTags.Entity_Types.RHG_HORSES);
+			boolean isSWEMHorse = livingEntity.getType().is(LOTags.Entity_Types.SWEM_HORSES);
+			boolean isWolf = livingEntity instanceof Wolf;
+			return isHorse || isRHGHorse || isSWEMHorse || isWolf;
+		}));
 	}
 
 	@Override
@@ -255,15 +258,19 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		}
 	}
 
-	public InteractionResult mobInteract(Player p_28298_, InteractionHand p_28299_) {
-		ItemStack itemstack = p_28298_.getItemInHand(p_28299_);
-		if (itemstack.is(Items.BUCKET) && !this.isBaby()) {
-			p_28298_.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
-			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, p_28298_, Items.MILK_BUCKET.getDefaultInstance());
-			p_28298_.setItemInHand(p_28299_, itemstack1);
+	public InteractionResult mobInteract(Player player, InteractionHand hand) {
+		ItemStack itemstack = player.getItemInHand(hand);
+		if (itemstack.is(Items.BUCKET) && !this.isBaby() &&
+				(!LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() ||
+						(LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() &&
+								getUddersLocation().equals(OCowUdderLayer.Overlay.FEMALE.resourceLocation)))) {
+
+			player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
+			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, Items.MILK_BUCKET.getDefaultInstance());
+			player.setItemInHand(hand, itemstack1);
 			return InteractionResult.sidedSuccess(this.level.isClientSide);
 		} else {
-			return super.mobInteract(p_28298_, p_28299_);
+			return super.mobInteract(player, hand);
 		}
 	}
 
@@ -299,9 +306,14 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		return OCowHornLayer.HornOverlay.hornOverlayFromOrdinal(getHornVariant()).resourceLocation;
 	}
 
+	public ResourceLocation getUddersLocation() {
+		return OCowUdderLayer.Overlay.overlayFromOrdinal(getUdderVariant()).resourceLocation;
+	}
+
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> HORNS = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> UDDERS = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -312,6 +324,9 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 	public int getHornVariant() {
 		return this.entityData.get(HORNS);
 	}
+	public int getUdderVariant() {
+		return this.entityData.get(UDDERS);
+	}
 
 	public void setVariant(int variant) {
 		this.entityData.set(VARIANT, variant);
@@ -321,6 +336,9 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 	}
 	public void setHornVariant(int hornVariant) {
 		this.entityData.set(HORNS, hornVariant);
+	}
+	public void setUdderVariant(int udderVariant) {
+		this.entityData.set(UDDERS, udderVariant);
 	}
 
 	@Override
@@ -339,6 +357,10 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 			setHornVariant(tag.getInt("Horns"));
 		}
 
+		if (tag.contains("Udders")) {
+			setUdderVariant(tag.getInt("Udders"));
+		}
+
 		if (tag.contains("Chested")) {
 			this.setChested(tag.getBoolean("Chested"));
 		}
@@ -355,6 +377,8 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 
 		tag.putInt("Horns", getHornVariant());
 
+		tag.putInt("Udders", getUdderVariant());
+
 		tag.putBoolean("Chested", this.isChested());
 	}
 
@@ -368,6 +392,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		setVariant(random.nextInt(OCowModel.Variant.values().length));
 		setOverlayVariant(random.nextInt(OCowMarkingLayer.Overlay.values().length));
 		setHornVariant(random.nextInt(OCowHornLayer.HornOverlay.values().length));
+		setUdderVariant(random.nextInt(OCowUdderLayer.Overlay.values().length));
 
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
 	}
@@ -378,6 +403,7 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
 		this.entityData.define(HORNS, 0);
+		this.entityData.define(UDDERS, 0);
 		this.entityData.define(CHESTED, false);
 	}
 
@@ -426,9 +452,14 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 				horns = this.random.nextInt(OCowHornLayer.HornOverlay.values().length);
 			}
 
-			((OCow) oCow).setVariant(variant);
-			((OCow) oCow).setOverlayVariant(overlay);
-			((OCow) oCow).setHornVariant(horns);
+			int udders;
+			udders = this.random.nextInt(OCowUdderLayer.Overlay.values().length);
+
+
+			oCow.setVariant(variant);
+			oCow.setOverlayVariant(overlay);
+			oCow.setHornVariant(horns);
+			oCow.setUdderVariant(udders);
 		}
 
 		return oCow;

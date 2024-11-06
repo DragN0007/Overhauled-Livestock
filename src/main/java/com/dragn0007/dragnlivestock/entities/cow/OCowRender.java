@@ -21,6 +21,7 @@ public class OCowRender extends ExtendedGeoEntityRenderer<OCow> {
         super(renderManager, new OCowModel());
         this.addLayer(new OCowMarkingLayer(this));
         this.addLayer(new OCowHornLayer(this));
+        this.addLayer(new OCowUdderLayer(this));
     }
 
     @Override
@@ -37,7 +38,7 @@ public class OCowRender extends ExtendedGeoEntityRenderer<OCow> {
         if(animatable.isBaby()) {
             model.getBone("saddlebags").ifPresent(b -> b.setHidden(true));
             model.getBone("halter").ifPresent(b -> b.setHidden(true));
-            model.getBone("utters").ifPresent(b -> b.setHidden(true));
+            model.getBone("utters").ifPresent(b -> b.setHidden(true)); //yeah, ive been spelling Udder wrong the whole time. what r u gonna do about it
             model.getBone("Horns1").ifPresent(b -> b.setHidden(true));
             model.getBone("Horns2").ifPresent(b -> b.setHidden(true));
             model.getBone("Horns3").ifPresent(b -> b.setHidden(true));
@@ -90,5 +91,3 @@ public class OCowRender extends ExtendedGeoEntityRenderer<OCow> {
     public void postRenderBlock(PoseStack poseStack, BlockState state, String boneName, OCow animatable) {
     }
 }
-
-

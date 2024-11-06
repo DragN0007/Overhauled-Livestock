@@ -47,4 +47,3 @@ public class OCowModel extends AnimatedGeoModel<OCow> {
         return ANIMATION;
     }
 }
-
