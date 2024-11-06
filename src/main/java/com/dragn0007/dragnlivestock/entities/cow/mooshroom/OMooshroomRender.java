@@ -22,6 +22,7 @@ public class OMooshroomRender extends ExtendedGeoEntityRenderer<OMooshroom> {
         this.addLayer(new OMooshroomHornLayer(this));
         this.addLayer(new OMooshroomMarkingLayer(this));
         this.addLayer(new OMooshroomMushroomLayer(this));
+        this.addLayer(new OMooshroomUdderLayer(this));
     }
 
     @Override
@@ -91,5 +92,3 @@ public class OMooshroomRender extends ExtendedGeoEntityRenderer<OMooshroom> {
     public void postRenderBlock(PoseStack poseStack, BlockState state, String boneName, OMooshroom animatable) {
     }
 }
-
-

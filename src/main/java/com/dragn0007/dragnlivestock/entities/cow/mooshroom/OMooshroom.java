@@ -2,6 +2,8 @@ package com.dragn0007.dragnlivestock.entities.cow.mooshroom;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
+import com.dragn0007.dragnlivestock.entities.cow.OCowUdderLayer;
+import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -40,15 +42,19 @@ public class OMooshroom extends OCow implements IAnimatable {
         return p_28934_.getBlockState(p_28933_.below()).is(Blocks.MYCELIUM) ? 10.0F : p_28934_.getBrightness(p_28933_) - 0.5F;
     }
 
-    public InteractionResult mobInteract(Player p_28298_, InteractionHand p_28299_) {
-        ItemStack itemstack = p_28298_.getItemInHand(p_28299_);
-        if (itemstack.is(Items.BOWL) && !this.isBaby()) {
-            p_28298_.playSound(SoundEvents.MOOSHROOM_MILK, 1.0F, 1.0F);
-            ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, p_28298_, Items.MUSHROOM_STEW.getDefaultInstance());
-            p_28298_.setItemInHand(p_28299_, itemstack1);
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (itemstack.is(Items.BOWL) && !this.isBaby() &&
+                (!LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() ||
+                        (LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() &&
+                                getUddersLocation().equals(OMooshroomUdderLayer.Overlay.FEMALE.resourceLocation)))) {
+
+            player.playSound(SoundEvents.MOOSHROOM_MILK, 1.0F, 1.0F);
+            ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, Items.MUSHROOM_STEW.getDefaultInstance());
+            player.setItemInHand(hand, itemstack1);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         } else {
-            return super.mobInteract(p_28298_, p_28299_);
+            return super.mobInteract(player, hand);
         }
     }
 
@@ -69,10 +75,15 @@ public class OMooshroom extends OCow implements IAnimatable {
         return OMooshroomMushroomLayer.Overlay.overlayFromOrdinal(getMushroomVariant()).resourceLocation;
     }
 
+    public ResourceLocation getUddersLocation() {
+        return OMooshroomUdderLayer.Overlay.overlayFromOrdinal(getUdderVariant()).resourceLocation;
+    }
+
     public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OMooshroom.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OMooshroom.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> HORNS = SynchedEntityData.defineId(OMooshroom.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> MUSHROOMS = SynchedEntityData.defineId(OMooshroom.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> UDDERS = SynchedEntityData.defineId(OMooshroom.class, EntityDataSerializers.INT);
 
     public int getVariant() {
         return this.entityData.get(VARIANT);
@@ -86,6 +97,9 @@ public class OMooshroom extends OCow implements IAnimatable {
     public int getMushroomVariant() {
         return this.entityData.get(MUSHROOMS);
     }
+    public int getUdderVariant() {
+        return this.entityData.get(UDDERS);
+    }
 
     public void setVariant(int variant) {
         this.entityData.set(VARIANT, variant);
@@ -98,6 +112,9 @@ public class OMooshroom extends OCow implements IAnimatable {
     }
     public void setMushroomVariant(int mushroomVariant) {
         this.entityData.set(MUSHROOMS, mushroomVariant);
+    }
+    public void setUdderVariant(int udderVariant) {
+        this.entityData.set(UDDERS, udderVariant);
     }
 
     @Override
@@ -120,6 +137,10 @@ public class OMooshroom extends OCow implements IAnimatable {
             setMushroomVariant(tag.getInt("Mushrooms"));
         }
 
+        if (tag.contains("Udders")) {
+            setUdderVariant(tag.getInt("Udders"));
+        }
+
         this.updateInventory();
     }
 
@@ -133,6 +154,8 @@ public class OMooshroom extends OCow implements IAnimatable {
         tag.putInt("Horns", getHornVariant());
 
         tag.putInt("Mushrooms", getMushroomVariant());
+
+        tag.putInt("Udders", getUdderVariant());
     }
 
     @Override
@@ -146,6 +169,7 @@ public class OMooshroom extends OCow implements IAnimatable {
         setOverlayVariant(random.nextInt(OMooshroomMarkingLayer.Overlay.values().length));
         setHornVariant(random.nextInt(OMooshroomHornLayer.HornOverlay.values().length));
         setMushroomVariant(random.nextInt(OMooshroomMushroomLayer.Overlay.values().length));
+        setUdderVariant(random.nextInt(OMooshroomUdderLayer.Overlay.values().length));
 
         return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
     }
@@ -157,6 +181,7 @@ public class OMooshroom extends OCow implements IAnimatable {
         this.entityData.define(OVERLAY, 0);
         this.entityData.define(HORNS, 0);
         this.entityData.define(MUSHROOMS, 0);
+        this.entityData.define(UDDERS, 0);
     }
 
     public boolean canParent() {
@@ -214,10 +239,14 @@ public class OMooshroom extends OCow implements IAnimatable {
                 mushrooms = this.random.nextInt(OMooshroomMushroomLayer.Overlay.values().length);
             }
 
-            ((OMooshroom) oMooshroom).setVariant(variant);
-            ((OMooshroom) oMooshroom).setOverlayVariant(overlay);
-            ((OMooshroom) oMooshroom).setHornVariant(horns);
-            ((OMooshroom) oMooshroom).setMushroomVariant(mushrooms);
+            int udders;
+            udders = this.random.nextInt(OMooshroomUdderLayer.Overlay.values().length);
+
+            oMooshroom.setVariant(variant);
+            oMooshroom.setOverlayVariant(overlay);
+            oMooshroom.setHornVariant(horns);
+            oMooshroom.setMushroomVariant(mushrooms);
+            oMooshroom.setUdderVariant(udders);
         }
 
         return oMooshroom;
