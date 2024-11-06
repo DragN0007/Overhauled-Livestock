@@ -1,7 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.sheep;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
-import com.dragn0007.dragnlivestock.entities.cow.*;
 import com.dragn0007.dragnlivestock.items.LOItems;
 import com.dragn0007.dragnlivestock.util.LOTags;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
@@ -54,7 +53,6 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class OSheep extends Animal implements Shearable, net.minecraftforge.common.IForgeShearable, IAnimatable {
@@ -71,15 +69,6 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 	public Vec3 getLeashOffset() {
 		return new Vec3(0D, (double)this.getEyeHeight() * 1F, (double)(this.getBbWidth() * 1F));
 		//              ^ Side offset                      ^ Height offset                   ^ Length offset
-	}
-
-	public static float[] createSheepColor(DyeColor p_29866_) {
-		if (p_29866_ == DyeColor.WHITE) {
-			return new float[]{0.9019608F, 0.9019608F, 0.9019608F};
-		} else {
-			float[] afloat = p_29866_.getTextureDiffuseColors();
-			return new float[]{afloat[0] * 0.75F, afloat[1] * 0.75F, afloat[2] * 0.75F};
-		}
 	}
 
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
@@ -484,11 +473,6 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 		} else {
 			this.entityData.set(DATA_WOOL_ID, (byte)(b0 & -17));
 		}
-	}
-
-	public static DyeColor getRandomSheepColor(Random random) {
-		int i = random.nextInt(100);
-		return DyeColor.WHITE;
 	}
 
 	public void ate() {

@@ -1,10 +1,8 @@
 package com.dragn0007.dragnlivestock.spawn;
 
-import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 

@@ -2,7 +2,6 @@ package com.dragn0007.dragnlivestock.entities.cow.mooshroom;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
-import com.dragn0007.dragnlivestock.entities.cow.OCowUdderLayer;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
