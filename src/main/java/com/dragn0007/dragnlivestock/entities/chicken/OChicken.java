@@ -1,6 +1,8 @@
 package com.dragn0007.dragnlivestock.entities.chicken;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.entities.cow.mooshroom.OMooshroomUdderLayer;
+import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -122,7 +124,9 @@ public class OChicken extends Animal implements IAnimatable {
 		}
 
 		if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && !this.isChickenJockey() && --this.eggTime <= 0
-		&& !this.getOverlayLocation().equals(OChickenMarkingLayer.Overlay.BLACK_ROOSTER) && !this.getOverlayLocation().equals(OChickenMarkingLayer.Overlay.BLUE_ROOSTER))  {
+				&& (!LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() ||
+			       (LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() && !getTextureLocation().equals(OChickenMarkingLayer.Overlay.BLUE_ROOSTER.resourceLocation) || !getTextureLocation().equals(OChickenMarkingLayer.Overlay.BLACK_ROOSTER.resourceLocation) || !getTextureLocation().equals(OChickenModel.Variant.ROOSTER.resourceLocation))))
+		{
 			this.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
 			this.spawnAtLocation(Items.EGG);
 			this.eggTime = this.random.nextInt(6000) + 6000;
