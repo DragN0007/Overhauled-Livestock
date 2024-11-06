@@ -19,25 +19,28 @@ public class OSheepRender extends ExtendedGeoEntityRenderer<OSheep> {
 
     public OSheepRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new OSheepModel());
-        this.addLayer(new OSheepWoolLayer(this));
+        this.addLayer(new OSheepHornLayer(this));
     }
 
     @Override
     public void render(GeoModel model, OSheep animatable, float partialTick, RenderType type, PoseStack poseStack, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 
+        if (!animatable.isBaby() && animatable.isSheared()) {
+            model.getBone("Wool1").ifPresent(b -> b.setHidden(true));
+            model.getBone("Wool2").ifPresent(b -> b.setHidden(true));
+        } else {
+            model.getBone("Wool1").ifPresent(b -> b.setHidden(false));
+            model.getBone("Wool2").ifPresent(b -> b.setHidden(false));
+        }
+
         if(animatable.isBaby()) {
             poseStack.scale(0.5F, 0.5F, 0.5F);
+            model.getBone("Horns1").ifPresent(b -> b.setHidden(true));
+            model.getBone("Horns2").ifPresent(b -> b.setHidden(true));
+            model.getBone("Horns3").ifPresent(b -> b.setHidden(true));
         } else {
             poseStack.scale(1F, 1F, 1F);
         }
-
-        if (!animatable.isBaby() && animatable.isSheared()) {
-                model.getBone("Wool1").ifPresent(b -> b.setHidden(true));
-                model.getBone("Wool2").ifPresent(b -> b.setHidden(true));
-            } else {
-                model.getBone("Wool1").ifPresent(b -> b.setHidden(false));
-                model.getBone("Wool2").ifPresent(b -> b.setHidden(false));
-            }
 
         super.render(model, animatable, partialTick, type, poseStack, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }

@@ -1,7 +1,10 @@
 package com.dragn0007.dragnlivestock.entities.sheep;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.entities.cow.*;
 import com.dragn0007.dragnlivestock.items.LOItems;
+import com.dragn0007.dragnlivestock.util.LOTags;
+import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -23,6 +26,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -59,13 +63,6 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 
 	public static final EntityDataAccessor<Byte> DATA_WOOL_ID = SynchedEntityData.defineId(OSheep.class, EntityDataSerializers.BYTE);
 
-	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OSheep.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OSheep.class, EntityDataSerializers.INT);
-
-	public static final Map<DyeColor, OSheepWoolLayer.Overlay> OVERLAY_MAP = new HashMap<>() {{
-		put(DyeColor.WHITE, OSheepWoolLayer.Overlay.WHITE);
-	}};
-
 	public static final Map<DyeColor, ItemLike> ITEM_BY_DYE = Util.make(Maps.newEnumMap(DyeColor.class), (p_29841_) -> {
 		p_29841_.put(DyeColor.WHITE, Blocks.WHITE_WOOL);
 	});
@@ -74,12 +71,6 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 	public Vec3 getLeashOffset() {
 		return new Vec3(0D, (double)this.getEyeHeight() * 1F, (double)(this.getBbWidth() * 1F));
 		//              ^ Side offset                      ^ Height offset                   ^ Length offset
-	}
-
-	public static final Map<DyeColor, float[]> COLORARRAY_BY_COLOR = Maps.<DyeColor, float[]>newEnumMap(Arrays.stream(DyeColor.values()).collect(Collectors.toMap((p_29868_) -> p_29868_, OSheep::createSheepColor)));
-
-	public static float[] getColorArray(DyeColor p_29830_) {
-		return COLORARRAY_BY_COLOR.get(p_29830_);
 	}
 
 	public static float[] createSheepColor(DyeColor p_29866_) {
@@ -116,6 +107,14 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 		this.goalSelector.addGoal(8, new EatGrassGoal(this));
+
+		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, livingEntity -> {
+			boolean isHorse = livingEntity.getType().is(LOTags.Entity_Types.HORSES);
+			boolean isRHGHorse = livingEntity.getType().is(LOTags.Entity_Types.RHG_HORSES);
+			boolean isSWEMHorse = livingEntity.getType().is(LOTags.Entity_Types.SWEM_HORSES);
+			boolean isWolf = livingEntity instanceof Wolf;
+			return isHorse || isRHGHorse || isSWEMHorse || isWolf;
+		}));
 	}
 
 	public OSheep leader;
@@ -267,8 +266,9 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 				return InteractionResult.CONSUME;
 			}
 		}
-
-		if (itemstack.is(Items.BUCKET) && !this.isBaby()) {
+			if (itemstack.is(Items.BUCKET) && !this.isBaby() &&
+					(!LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() ||
+					(LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() && getHornsLocation().equals(OSheepHornLayer.HornOverlay.NONE.resourceLocation) || getHornsLocation().equals(OSheepHornLayer.HornOverlay.SHORT.resourceLocation)))) {
 			player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
 			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, LOItems.SHEEP_MILK_BUCKET.get().getDefaultInstance());
 			player.setItemInHand(hand, itemstack1);
@@ -348,28 +348,32 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 		return FOOD_ITEMS.test(p_28271_);
 	}
 
+
+
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OSheep.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> HORNS = SynchedEntityData.defineId(OSheep.class, EntityDataSerializers.INT);
+
 	public ResourceLocation getTextureLocation() {
 		return OSheepModel.Variant.variantFromOrdinal(getVariant()).resourceLocation;
 	}
 
-	public ResourceLocation getOverlayLocation() {
-		return OSheepWoolLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;
+	public ResourceLocation getHornsLocation() {
+		return OSheepHornLayer.HornOverlay.hornOverlayFromOrdinal(getHornVariant()).resourceLocation;
 	}
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
 	}
-
-	public int getOverlayVariant() {
-		return this.entityData.get(OVERLAY);
+	public int getHornVariant() {
+		return this.entityData.get(HORNS);
 	}
 
 	public void setVariant(int variant) {
 		this.entityData.set(VARIANT, variant);
 	}
 
-	public void setOverlayVariant(int overlayVariant) {
-		this.entityData.set(OVERLAY, overlayVariant);
+	public void setHornVariant(int overlayVariant) {
+		this.entityData.set(HORNS, overlayVariant);
 	}
 
 	@Override
@@ -378,10 +382,13 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 		if (tag.contains("Variant")) {
 			setVariant(tag.getInt("Variant"));
 		}
-		if (tag.contains("Overlay")) {
-			setOverlayVariant(tag.getInt("Overlay"));
+
+		if (tag.contains("Horns")) {
+			setHornVariant(tag.getInt("Horns"));
 		}
+
 		this.setSheared(tag.getBoolean("Sheared"));
+
 		this.setColor(DyeColor.byId(tag.getByte("Color")));
 	}
 
@@ -389,7 +396,7 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putInt("Variant", getVariant());
-		tag.putInt("Overlay", getOverlayVariant());
+		tag.putInt("Horns", getHornVariant());
 		tag.putBoolean("Sheared", this.isSheared());
 		tag.putByte("Color", (byte)this.getColor().getId());
 	}
@@ -398,8 +405,21 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 	public void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
-		this.entityData.define(OVERLAY, 0);
+		this.entityData.define(HORNS, 0);
 		this.entityData.define(DATA_WOOL_ID, (byte)0);
+	}
+
+	@Override
+	@Nullable
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+		if (data == null) {
+			data = new AgeableMobGroupData(0.2F);
+		}
+		Random random = new Random();
+		setVariant(random.nextInt(OSheepModel.Variant.values().length));
+		setHornVariant(random.nextInt(OSheepHornLayer.HornOverlay.values().length));
+
+		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
 	}
 
 	public boolean canParent() {
@@ -410,8 +430,38 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 		return this.canParent() && ((OSheep) animal).canParent();
 	}
 
-	public OSheep getBreedOffspring(ServerLevel p_149044_, AgeableMob p_149045_) {
-		return EntityTypes.O_SHEEP_ENTITY.get().create(p_149044_);
+	@Override
+	public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
+		OSheep oSheep1 = (OSheep) ageableMob;
+		if (ageableMob instanceof OSheep) {
+			OSheep oSheep = (OSheep) ageableMob;
+			oSheep1 = EntityTypes.O_SHEEP_ENTITY.get().create(serverLevel);
+
+			int i = this.random.nextInt(9);
+			int variant;
+			if (i < 4) {
+				variant = this.getVariant();
+			} else if (i < 8) {
+				variant = oSheep.getVariant();
+			} else {
+				variant = this.random.nextInt(OSheepModel.Variant.values().length);
+			}
+
+			int k = this.random.nextInt(5);
+			int horns;
+			if (k < 2) {
+				horns = this.getHornVariant();
+			} else if (k < 4) {
+				horns = oSheep.getHornVariant();
+			} else {
+				horns = this.random.nextInt(OSheepHornLayer.HornOverlay.values().length);
+			}
+
+			oSheep1.setVariant(variant);
+			oSheep1.setHornVariant(horns);
+		}
+
+		return oSheep1;
 	}
 
 	public DyeColor getColor() {
@@ -446,15 +496,5 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 		if (this.isBaby()) {
 			this.ageUp(60);
 		}
-	}
-
-	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance p_29836_, MobSpawnType p_29837_, @Nullable SpawnGroupData p_29838_, @Nullable CompoundTag p_29839_) {
-		Random random = new Random();
-		DyeColor randomColor = getRandomSheepColor(random);
-		this.setColor(randomColor);
-		setVariant(random.nextInt(OSheepModel.Variant.values().length));
-//		setOverlayVariant(random.nextInt(OSheepWoolLayer.Overlay.values().length));
-		return super.finalizeSpawn(serverLevelAccessor, p_29836_, p_29837_, p_29838_, p_29839_);
 	}
 }
