@@ -26,8 +26,9 @@ Please credit the original (this) source code!
 
 **Asset** licensing goes under **All Rights Reserved**; 
 you may ***not*** use models, textures, animations, or any other assets in your standalone mod(s) or other projects.
+Altering and re-distribution/ sale of my assets are not permitted, under any circumstance.
 
-Texture Packs and Livestock Overhaul-Dependent Addons are okay, and encouraged!
+Texture Packs and Livestock Overhaul-Dependent Addons are okay, and encouraged, provided they're free and for the public to use!
 
 
 ## Livestock Overhaul: Credits
