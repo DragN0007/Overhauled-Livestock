@@ -13,6 +13,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class LOMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, LivestockOverhaul.MODID);
     public static final RegistryObject<MenuType<OHorseMenu>> O_HORSE_MENU = registerMenuType("ohorse_menu", OHorseMenu::new);
+    public static final RegistryObject<MenuType<OxMenu>> OX_MENU = registerMenuType("ox_menu", OxMenu::new);
 
     public static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENU_TYPES.register(name, () -> IForgeMenuType.create(factory));

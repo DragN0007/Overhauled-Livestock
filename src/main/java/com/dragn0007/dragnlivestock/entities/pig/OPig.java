@@ -1,9 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.pig;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
-import com.dragn0007.dragnlivestock.entities.chicken.OChickenMarkingLayer;
-import com.dragn0007.dragnlivestock.entities.chicken.OChickenModel;
-import com.dragn0007.dragnlivestock.entities.cow.OCowUdderLayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;

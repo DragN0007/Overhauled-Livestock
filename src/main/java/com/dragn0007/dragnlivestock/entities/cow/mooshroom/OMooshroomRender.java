@@ -28,14 +28,6 @@ public class OMooshroomRender extends ExtendedGeoEntityRenderer<OMooshroom> {
     @Override
     public void render(GeoModel model, OMooshroom animatable, float partialTick, RenderType type, PoseStack poseStack, MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 
-        if (animatable.isChested()) {
-            model.getBone("saddlebags").ifPresent(b -> b.setHidden(false));
-            model.getBone("halter").ifPresent(b -> b.setHidden(false));
-        } else {
-            model.getBone("saddlebags").ifPresent(b -> b.setHidden(true));
-            model.getBone("halter").ifPresent(b -> b.setHidden(true));
-        }
-
         if(animatable.isBaby()) {
             model.getBone("saddlebags").ifPresent(b -> b.setHidden(true));
             model.getBone("halter").ifPresent(b -> b.setHidden(true));

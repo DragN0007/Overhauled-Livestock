@@ -3,6 +3,8 @@ package com.dragn0007.dragnlivestock.entities.cow;
 import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.CattleFollowHerdLeaderGoal;
+import com.dragn0007.dragnlivestock.entities.cow.ox.Ox;
+import com.dragn0007.dragnlivestock.entities.cow.ox.OxModel;
 import com.dragn0007.dragnlivestock.util.LOTags;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.core.BlockPos;
@@ -53,7 +55,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
-public class OCow extends Animal implements IAnimatable, Chestable, ContainerListener {
+public class OCow extends Animal implements IAnimatable {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
 	public static final EntityDataAccessor<Boolean> CHESTED = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.BOOLEAN);
@@ -63,8 +65,6 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 
 	public OCow(EntityType<? extends OCow> type, Level level) {
 		super(type, level);
-		this.noCulling = true;
-		this.updateInventory();
 	}
 
 	@Override
@@ -103,9 +103,6 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 	public float getStepHeight() {
 		return 1F;
 	}
-
-	public SimpleContainer inventory;
-	public LazyOptional<?> itemHandler = null;
 
 	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		double currentSpeed = this.getDeltaMovement().lengthSqr(); //grabbing the speed of the cow to see if it should run the "run" animation. particularly for avoiding the OHorse.
@@ -210,54 +207,6 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		});
 	}
 
-	public void updateInventory() {
-		SimpleContainer tempInventory = this.inventory;
-		this.inventory = new SimpleContainer(this.getInventorySize());
-
-		if (tempInventory != null) {
-			tempInventory.removeListener(this);
-			int maxSize = Math.min(tempInventory.getContainerSize(), this.inventory.getContainerSize());
-
-			for (int i = 0; i < maxSize; i++) {
-				ItemStack itemStack = tempInventory.getItem(i);
-				if (!itemStack.isEmpty()) {
-					this.inventory.setItem(i, itemStack.copy());
-				}
-			}
-		}
-		this.inventory.addListener(this);
-		this.itemHandler = LazyOptional.of(() -> new InvWrapper(this.inventory));
-	}
-
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-		if (this.isAlive() && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.itemHandler != null) {
-			return itemHandler.cast();
-		}
-		return super.getCapability(capability, facing);
-	}
-
-	@Override
-	public void invalidateCaps() {
-		super.invalidateCaps();
-		if (this.itemHandler != null) {
-			LazyOptional<?> oldHandler = this.itemHandler;
-			this.itemHandler = null;
-			oldHandler.invalidate();
-		}
-	}
-
-	@Override
-	public void dropEquipment() {
-		if (!this.level.isClientSide) {
-			super.dropEquipment();
-			if (this.isChested()) {
-				this.spawnAtLocation(Items.CHEST);
-			}
-			Containers.dropContents(this.level, this, this.inventory);
-		}
-	}
-
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (itemstack.is(Items.BUCKET) && !this.isBaby() &&
@@ -360,12 +309,6 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		if (tag.contains("Udders")) {
 			setUdderVariant(tag.getInt("Udders"));
 		}
-
-		if (tag.contains("Chested")) {
-			this.setChested(tag.getBoolean("Chested"));
-		}
-
-		this.updateInventory();
 	}
 
 	@Override
@@ -378,8 +321,6 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 		tag.putInt("Horns", getHornVariant());
 
 		tag.putInt("Udders", getUdderVariant());
-
-		tag.putBoolean("Chested", this.isChested());
 	}
 
 	@Override
@@ -418,87 +359,61 @@ public class OCow extends Animal implements IAnimatable, Chestable, ContainerLis
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
 		OCow oCow = (OCow) ageableMob;
+
 		if (ageableMob instanceof OCow) {
 			OCow oCow1 = (OCow) ageableMob;
-			oCow = EntityTypes.O_COW_ENTITY.get().create(serverLevel);
 
-			int i = this.random.nextInt(9);
-			int variant;
-			if (i < 4) {
-				variant = this.getVariant();
-			} else if (i < 8) {
-				variant = oCow1.getVariant();
+			if (this.random.nextInt(5) == 0) {
+				Ox oX = EntityTypes.OX_ENTITY.get().create(serverLevel);
+				if (oX != null) {
+					oX.setVariant(this.random.nextInt(OxModel.Variant.values().length));
+					return oX;
+				}
+
 			} else {
-				variant = this.random.nextInt(OCowModel.Variant.values().length);
+				oCow = EntityTypes.O_COW_ENTITY.get().create(serverLevel);
+
+				int i = this.random.nextInt(9);
+				int variant;
+				if (i < 4) {
+					variant = this.getVariant();
+				} else if (i < 8) {
+					variant = oCow1.getVariant();
+				} else {
+					variant = this.random.nextInt(OCowModel.Variant.values().length);
+				}
+
+				int j = this.random.nextInt(5);
+				int overlay;
+				if (j < 2) {
+					overlay = this.getOverlayVariant();
+				} else if (j < 4) {
+					overlay = oCow1.getOverlayVariant();
+				} else {
+					overlay = this.random.nextInt(OCowMarkingLayer.Overlay.values().length);
+				}
+
+				int k = this.random.nextInt(5);
+				int horns;
+				if (k < 2) {
+					horns = this.getHornVariant();
+				} else if (k < 4) {
+					horns = oCow1.getHornVariant();
+				} else {
+					horns = this.random.nextInt(OCowHornLayer.HornOverlay.values().length);
+				}
+
+				int udders;
+				udders = this.random.nextInt(OCowUdderLayer.Overlay.values().length);
+
+				oCow.setVariant(variant);
+				oCow.setOverlayVariant(overlay);
+				oCow.setHornVariant(horns);
+				oCow.setUdderVariant(udders);
 			}
-
-			int j = this.random.nextInt(5);
-			int overlay;
-			if (j < 2) {
-				overlay = this.getOverlayVariant();
-			} else if (j < 4) {
-				overlay = oCow1.getOverlayVariant();
-			} else {
-				overlay = this.random.nextInt(OCowMarkingLayer.Overlay.values().length);
-			}
-
-			int k = this.random.nextInt(5);
-			int horns;
-			if (k < 2) {
-				horns = this.getHornVariant();
-			} else if (k < 4) {
-				horns = oCow1.getHornVariant();
-			} else {
-				horns = this.random.nextInt(OCowHornLayer.HornOverlay.values().length);
-			}
-
-			int udders;
-			udders = this.random.nextInt(OCowUdderLayer.Overlay.values().length);
-
-
-			oCow.setVariant(variant);
-			oCow.setOverlayVariant(overlay);
-			oCow.setHornVariant(horns);
-			oCow.setUdderVariant(udders);
 		}
 
 		return oCow;
-	}
-
-	public int getInventorySize() {
-		return this.isChested() ? 51 : 1;
-	}
-
-	@Override
-	public boolean isChestable() {
-		return this.isAlive() && !this.isBaby();
-	}
-
-	@Override
-	public void equipChest(@Nullable SoundSource soundSource) {
-		if (soundSource != null) {
-			this.level.playSound(null, this, SoundEvents.MULE_CHEST, soundSource, 0.5f, 1f);
-		}
-	}
-
-	@Override
-	public boolean isChested() {
-		return this.entityData.get(CHESTED);
-	}
-
-	public void setChested(boolean chested) {
-		this.entityData.set(CHESTED, chested);
-	}
-
-	@Override
-	public void containerChanged(Container container) {
-		boolean flag = this.isChested();
-		if(!this.level.isClientSide) {
-			this.setChested(!this.inventory.getItem(0).isEmpty());
-		}
-		if(this.tickCount > 20 && !flag && this.isChestable()) {
-			this.playSound(SoundEvents.MULE_CHEST, 0.5f, 1f);
-		}
 	}
 
 }

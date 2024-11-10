@@ -54,7 +54,6 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 
 	public ODonkey(EntityType<? extends ODonkey> type, Level level) {
 		super(type, level);
-		this.noCulling = true;
 	}
 
 	@Override

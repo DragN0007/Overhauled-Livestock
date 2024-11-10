@@ -1,5 +1,6 @@
 package com.dragn0007.dragnlivestock.gui;
 
+import com.dragn0007.dragnlivestock.entities.cow.ox.Ox;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.ItemTags;
@@ -53,7 +54,7 @@ public class OHorseMenu extends AbstractContainerMenu {
 
             @Override
             public boolean isActive() {
-                return OHorseMenu.this.oHorse.canWearArmor();
+                return OHorseMenu.this.oHorse.canWearArmor() && !(OHorseMenu.this.oHorse instanceof Ox);
             }
         });
 

@@ -139,8 +139,6 @@ public class OMooshroom extends OCow implements IAnimatable {
         if (tag.contains("Udders")) {
             setUdderVariant(tag.getInt("Udders"));
         }
-
-        this.updateInventory();
     }
 
     @Override
