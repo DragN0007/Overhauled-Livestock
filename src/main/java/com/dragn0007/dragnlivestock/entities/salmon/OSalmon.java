@@ -67,6 +67,10 @@ public class OSalmon extends AbstractSchoolingFish implements IAnimatable {
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
 		double speedThreshold = 0.04;
 
+		if (!this.isInWater()) {
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("flop", ILoopType.EDefaultLoopTypes.LOOP));
+		}
+
 		if (event.isMoving()) {
 			if (currentSpeed > speedThreshold) {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("swim", ILoopType.EDefaultLoopTypes.LOOP));
