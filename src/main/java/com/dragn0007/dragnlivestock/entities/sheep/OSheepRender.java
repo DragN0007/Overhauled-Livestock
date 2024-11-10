@@ -40,6 +40,9 @@ public class OSheepRender extends ExtendedGeoEntityRenderer<OSheep> {
             model.getBone("Horns3").ifPresent(b -> b.setHidden(true));
         } else {
             poseStack.scale(1F, 1F, 1F);
+            model.getBone("Horns1").ifPresent(b -> b.setHidden(false));
+            model.getBone("Horns2").ifPresent(b -> b.setHidden(false));
+            model.getBone("Horns3").ifPresent(b -> b.setHidden(false));
         }
 
         super.render(model, animatable, partialTick, type, poseStack, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);

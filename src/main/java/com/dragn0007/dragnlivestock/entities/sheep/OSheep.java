@@ -421,34 +421,32 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-		OSheep oSheep1 = (OSheep) ageableMob;
-		if (ageableMob instanceof OSheep) {
-			OSheep oSheep = (OSheep) ageableMob;
-			oSheep1 = EntityTypes.O_SHEEP_ENTITY.get().create(serverLevel);
+		OSheep oSheep1;
+		OSheep oSheep = (OSheep) ageableMob;
+		oSheep1 = EntityTypes.O_SHEEP_ENTITY.get().create(serverLevel);
 
-			int i = this.random.nextInt(9);
-			int variant;
-			if (i < 4) {
-				variant = this.getVariant();
-			} else if (i < 8) {
-				variant = oSheep.getVariant();
-			} else {
-				variant = this.random.nextInt(OSheepModel.Variant.values().length);
-			}
-
-			int k = this.random.nextInt(5);
-			int horns;
-			if (k < 2) {
-				horns = this.getHornVariant();
-			} else if (k < 4) {
-				horns = oSheep.getHornVariant();
-			} else {
-				horns = this.random.nextInt(OSheepHornLayer.HornOverlay.values().length);
-			}
-
-			oSheep1.setVariant(variant);
-			oSheep1.setHornVariant(horns);
+		int i = this.random.nextInt(9);
+		int variant;
+		if (i < 4) {
+			variant = this.getVariant();
+		} else if (i < 8) {
+			variant = oSheep.getVariant();
+		} else {
+			variant = this.random.nextInt(OSheepModel.Variant.values().length);
 		}
+
+		int k = this.random.nextInt(5);
+		int horns;
+		if (k < 2) {
+			horns = this.getHornVariant();
+		} else if (k < 4) {
+			horns = oSheep.getHornVariant();
+		} else {
+			horns = this.random.nextInt(OSheepHornLayer.HornOverlay.values().length);
+		}
+
+		oSheep1.setVariant(variant);
+		oSheep1.setHornVariant(horns);
 
 		return oSheep1;
 	}

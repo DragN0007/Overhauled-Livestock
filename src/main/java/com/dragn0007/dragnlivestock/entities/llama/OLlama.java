@@ -441,7 +441,8 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 			} else if (i < 8) {
 				variant = oLlama1.getVariant();
 			} else {
-				variant = this.random.nextInt(OLlamaModel.Variant.values().length);
+				int variantCount = OLlamaModel.Variant.values().length;
+				variant = variantCount > 0 ? this.random.nextInt(variantCount) : 0;
 			}
 
 			int j = this.random.nextInt(5);
@@ -451,21 +452,23 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 			} else if (j < 4) {
 				overlay = oLlama1.getOverlayVariant();
 			} else {
-				overlay = this.random.nextInt(OLlamaMarkingLayer.Overlay.values().length);
+				int overlayCount = OLlamaMarkingLayer.Overlay.values().length;
+				overlay = overlayCount > 0 ? this.random.nextInt(overlayCount) : 0;
 			}
 
-			int k = this.random.nextInt(Math.max(this.getStrength(), oLlama1.getStrength())) + 1;
+			int k = this.random.nextInt(Math.max(this.getStrength(), oLlama1.getStrength()) + 1);
 			if (this.random.nextFloat() < 0.03F) {
 				++k;
 			}
 
-			((OLlama) oLlama).setStrength(k);
-			((OLlama) oLlama).setVariant(variant);
-			((OLlama) oLlama).setOverlayVariant(overlay);
+			oLlama.setStrength(k);
+			oLlama.setVariant(variant);
+			oLlama.setOverlayVariant(overlay);
 		}
 
 		return oLlama;
 	}
+
 
 	@Override
 	public boolean isChestable() {
@@ -792,4 +795,6 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 			this.variant = p_30849_;
 		}
 	}
+
+
 }
