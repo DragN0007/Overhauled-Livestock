@@ -42,7 +42,7 @@ public class OxMenu extends AbstractContainerMenu {
         if (this.ox.hasChest()) {
             for (int y = 0; y < 3; y++) {
                 for (int x = 0; x < 8; x++) {
-                    this.addSlot(new Slot(this.container, oxSlots++, 25 + x * 18, 18 + y * 18));
+                    this.addSlot(new Slot(this.container, oxSlots++, 26 + x * 18, 18 + y * 18));
                 }
             }
         }
