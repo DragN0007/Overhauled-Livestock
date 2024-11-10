@@ -79,7 +79,6 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 
 	public OLlama(EntityType<? extends OLlama> type, Level level) {
 		super(type, level);
-		this.noCulling = true;
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {

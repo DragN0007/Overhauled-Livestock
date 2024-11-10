@@ -75,7 +75,6 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 
 	public OSheep(EntityType<? extends OSheep> type, Level level) {
 		super(type, level);
-		this.noCulling = true;
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {

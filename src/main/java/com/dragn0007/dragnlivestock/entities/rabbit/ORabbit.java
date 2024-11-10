@@ -58,7 +58,6 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 
 	public ORabbit(EntityType<? extends ORabbit> type, Level level) {
 		super(type, level);
-		this.noCulling = true;
 	}
 
 	@Override

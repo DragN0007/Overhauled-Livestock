@@ -41,7 +41,6 @@ public class EndUnicorn extends OHorse implements IAnimatable {
 
 	public EndUnicorn(EntityType<? extends EndUnicorn> type, Level level) {
 		super(type, level);
-		this.noCulling = true;
 		this.xpReward = 50;
 	}
 

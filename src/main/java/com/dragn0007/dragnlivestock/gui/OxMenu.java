@@ -1,7 +1,6 @@
 package com.dragn0007.dragnlivestock.gui;
 
 import com.dragn0007.dragnlivestock.entities.cow.ox.Ox;
-import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;

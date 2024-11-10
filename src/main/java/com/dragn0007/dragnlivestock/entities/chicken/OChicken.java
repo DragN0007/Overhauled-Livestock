@@ -54,7 +54,6 @@ public class OChicken extends Animal implements IAnimatable {
 
 	public OChicken(EntityType<? extends OChicken> type, Level level) {
 		super(type, level);
-		this.noCulling = true;
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {

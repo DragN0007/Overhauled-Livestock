@@ -30,7 +30,6 @@ public class OverworldUnicorn extends OHorse implements IAnimatable {
 
 	public OverworldUnicorn(EntityType<? extends OverworldUnicorn> type, Level level) {
 		super(type, level);
-		this.noCulling = true;
 		this.xpReward = 50;
 	}
 
