@@ -30,7 +30,7 @@ public class OxScreen extends AbstractContainerScreen<OxMenu> {
         this.blit(poseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
 
         if (this.ox.hasChest()) {
-            this.blit(poseStack, x + 25, y + 17, 0, this.imageHeight, 145, 54);
+            this.blit(poseStack, x + 26, y + 17, 0, this.imageHeight, 145, 54);
         }
 
         if (this.ox.isSaddleable()) {
