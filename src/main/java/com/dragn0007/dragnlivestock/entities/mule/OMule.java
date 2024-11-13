@@ -302,6 +302,10 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 		if (tag.contains("Overlay_Texture")) {
 			this.setOverlayVariantTexture(tag.getString("Overlay_Texture"));
 		}
+
+		if (tag.contains("Gender")) {
+			this.setGender(tag.getInt("Gender"));
+		}
 	}
 
 	@Override
@@ -311,6 +315,7 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 		tag.putInt("Overlay", this.getOverlayVariant());
 		tag.putString("Variant_Texture", this.getTextureLocation().toString());
 		tag.putString("Overlay_Texture", this.getOverlayLocation().toString());
+		tag.putInt("Gender", this.getGender());
 	}
 
 	@Override
@@ -322,6 +327,7 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 		Random random = new Random();
 		this.setVariant(random.nextInt(OMuleModel.Variant.values().length));
 		this.setOverlayVariant(random.nextInt(OMuleMarkingLayer.Overlay.values().length));
+		this.setGender(random.nextInt(Gender.values().length));
 
 		this.randomizeAttributes();
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
@@ -332,6 +338,7 @@ public class OMule extends AbstractOHorse implements IAnimatable {
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
+		this.entityData.define(GENDER, 0);
 		this.entityData.define(VARIANT_TEXTURE, OMuleModel.Variant.DEFAULT.resourceLocation);
 		this.entityData.define(OVERLAY_TEXTURE, OMuleMarkingLayer.Overlay.NONE.resourceLocation);
 	}

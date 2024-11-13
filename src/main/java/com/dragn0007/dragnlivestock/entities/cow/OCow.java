@@ -204,14 +204,15 @@ public class OCow extends Animal implements IAnimatable {
 
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
+
 		if (itemstack.is(Items.BUCKET) && !this.isBaby() &&
-				(!LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() ||
-						(LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() &&
-								getUddersLocation().equals(OCowUdderLayer.Overlay.FEMALE.resourceLocation)))) {
+				(!LivestockOverhaulCommonConfig.GENDERS_AFFECT_BIPRODUCTS.get() ||
+						(LivestockOverhaulCommonConfig.GENDERS_AFFECT_BIPRODUCTS.get() && this.isFemale))) {
 
 			player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
 			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, Items.MILK_BUCKET.getDefaultInstance());
 			player.setItemInHand(hand, itemstack1);
+
 			return InteractionResult.sidedSuccess(this.level.isClientSide);
 		} else {
 			return super.mobInteract(player, hand);
@@ -340,15 +341,39 @@ public class OCow extends Animal implements IAnimatable {
 		this.entityData.define(OVERLAY, 0);
 		this.entityData.define(HORNS, 0);
 		this.entityData.define(UDDERS, 0);
-		this.entityData.define(CHESTED, false);
 	}
+
+	boolean isFemale = this.getUddersLocation().equals(OCowUdderLayer.Overlay.FEMALE.resourceLocation);
+	boolean isMale = this.getUddersLocation().equals(OCowUdderLayer.Overlay.MALE.resourceLocation);
 
 	public boolean canParent() {
 		return !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
 	}
 
 	public boolean canMate(Animal animal) {
-			return this.canParent() && ((OCow) animal).canParent();
+		if (animal == this) {
+			return false;
+		} else if (!(animal instanceof OCow)) {
+			return false;
+		} else {
+			OCow partner = (OCow) animal;
+
+			if (!this.canParent() || !partner.canParent()) {
+				return false;
+			}
+
+			if (LivestockOverhaulCommonConfig.GENDERS_AFFECT_BREEDING.get()) {
+				boolean partnerIsFemale = partner.getUddersLocation().equals(OCowUdderLayer.Overlay.FEMALE.resourceLocation);
+				boolean partnerIsMale = partner.getUddersLocation().equals(OCowUdderLayer.Overlay.MALE.resourceLocation);
+
+				boolean isFemale = this.getUddersLocation().equals(OCowUdderLayer.Overlay.FEMALE.resourceLocation);
+				boolean isMale = this.getUddersLocation().equals(OCowUdderLayer.Overlay.MALE.resourceLocation);
+
+				return (isFemale && partnerIsMale) || (isMale && partnerIsFemale);
+			} else {
+				return true;
+			}
+		}
 	}
 
 	@Override

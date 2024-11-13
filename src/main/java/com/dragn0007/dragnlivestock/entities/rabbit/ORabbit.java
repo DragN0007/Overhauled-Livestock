@@ -2,6 +2,8 @@ package com.dragn0007.dragnlivestock.entities.rabbit;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.items.LOItems;
+import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -25,10 +27,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -110,17 +109,32 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 
 	private static final Set<Item> TAME_FOOD = Sets.newHashSet(Items.CARROT, Items.MELON_SLICE, Items.APPLE, Items.BEETROOT, Items.GOLDEN_CARROT);
 
-	public InteractionResult mobInteract(Player p_30412_, InteractionHand p_30413_) {
-		ItemStack itemstack = p_30412_.getItemInHand(p_30413_);
+	public InteractionResult mobInteract(Player player, InteractionHand hand) {
+		ItemStack itemstack = player.getItemInHand(hand);
 		Item item = itemstack.getItem();
+
+		if (itemstack.is(LOItems.GENDER_TEST_STRIP.get()) && this.isFemale()) {
+			player.playSound(SoundEvents.BEEHIVE_EXIT, 1.0F, 1.0F);
+			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, LOItems.FEMALE_GENDER_TEST_STRIP.get().getDefaultInstance());
+			player.setItemInHand(hand, itemstack1);
+			return InteractionResult.SUCCESS;
+		}
+
+		if (itemstack.is(LOItems.GENDER_TEST_STRIP.get()) && this.isMale()) {
+			player.playSound(SoundEvents.BEEHIVE_EXIT, 1.0F, 1.0F);
+			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, LOItems.MALE_GENDER_TEST_STRIP.get().getDefaultInstance());
+			player.setItemInHand(hand, itemstack1);
+			return InteractionResult.SUCCESS;
+		}
+
 		if (this.level.isClientSide) {
-			boolean flag = this.isOwnedBy(p_30412_) || this.isTame() || TAME_FOOD.contains(itemstack.getItem()) && !this.isTame();
+			boolean flag = this.isOwnedBy(player) || this.isTame() || TAME_FOOD.contains(itemstack.getItem()) && !this.isTame();
 			return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
 		} else {
 			if (this.isTame()) {
 				if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
 					this.heal((float)itemstack.getFoodProperties(this).getNutrition());
-					if (!p_30412_.getAbilities().instabuild) {
+					if (!player.getAbilities().instabuild) {
 						itemstack.shrink(1);
 					}
 
@@ -129,8 +143,8 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 				}
 
 				if (!(item instanceof DyeItem)) {
-					InteractionResult interactionresult = super.mobInteract(p_30412_, p_30413_);
-					if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(p_30412_)) {
+					InteractionResult interactionresult = super.mobInteract(player, hand);
+					if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
 						this.setOrderedToSit(!this.isOrderedToSit());
 						this.jumping = false;
 						this.navigation.stop();
@@ -142,12 +156,12 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 				}
 
 			} else if (TAME_FOOD.contains(itemstack.getItem())) {
-				if (!p_30412_.getAbilities().instabuild) {
+				if (!player.getAbilities().instabuild) {
 					itemstack.shrink(1);
 				}
 
-				if (this.random.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, p_30412_)) {
-					this.tame(p_30412_);
+				if (this.random.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
+					this.tame(player);
 					this.navigation.stop();
 					this.setTarget((LivingEntity)null);
 					this.setOrderedToSit(true);
@@ -159,7 +173,7 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 				return InteractionResult.SUCCESS;
 			}
 
-			return super.mobInteract(p_30412_, p_30413_);
+			return super.mobInteract(player, hand);
 		}
 	}
 
@@ -365,6 +379,10 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 		if (tag.contains("Overlay_Texture")) {
 			this.setOverlayVariantTexture(tag.getString("Overlay_Texture"));
 		}
+
+		if (tag.contains("Gender")) {
+			this.setGender(tag.getInt("Gender"));
+		}
 	}
 
 	@Override
@@ -377,6 +395,8 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 		tag.putString("Variant_Texture", this.getTextureLocation().toString());
 
 		tag.putString("Overlay_Texture", this.getOverlayLocation().toString());
+
+		tag.putInt("Gender", this.getGender());
 	}
 
 	@Override
@@ -388,6 +408,7 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 		Random random = new Random();
 		setVariant(random.nextInt(ORabbitModel.Variant.values().length));
 		setOverlayVariant(random.nextInt(ORabbitMarkingLayer.Overlay.values().length));
+		this.setGender(random.nextInt(ORabbit.Gender.values().length));
 
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
 	}
@@ -399,6 +420,30 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 		this.entityData.define(OVERLAY, 0);
 		this.entityData.define(VARIANT_TEXTURE, ORabbitModel.Variant.BLACK.resourceLocation);
 		this.entityData.define(OVERLAY_TEXTURE, ORabbitMarkingLayer.Overlay.NONE.resourceLocation);
+		this.entityData.define(GENDER, 0);
+	}
+
+	public enum Gender {
+		FEMALE,
+		MALE
+	}
+
+	public boolean isFemale() {
+		return this.getGender() == 0;
+	}
+
+	public boolean isMale() {
+		return this.getGender() == 1;
+	}
+
+	public static final EntityDataAccessor<Integer> GENDER = SynchedEntityData.defineId(ORabbit.class, EntityDataSerializers.INT);
+
+	public int getGender() {
+		return this.entityData.get(GENDER);
+	}
+
+	public void setGender(int gender) {
+		this.entityData.set(GENDER, gender);
 	}
 
 	public boolean canParent() {
@@ -406,7 +451,28 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 	}
 
 	public boolean canMate(Animal animal) {
-			return this.canParent() && ((ORabbit) animal).canParent();
+		if (animal == this) {
+			return false;
+		} else if (!(animal instanceof ORabbit)) {
+			return false;
+		} else {
+			if (!LivestockOverhaulCommonConfig.GENDERS_AFFECT_BREEDING.get()) {
+				return this.canParent() && ((ORabbit) animal).canParent();
+			} else {
+				ORabbit partner = (ORabbit) animal;
+				if (this.canParent() && partner.canParent() && this.getGender() != partner.getGender()) {
+					return true;
+				}
+
+				boolean partnerIsFemale = partner.isFemale();
+				boolean partnerIsMale = partner.isMale();
+				if (LivestockOverhaulCommonConfig.GENDERS_AFFECT_BREEDING.get() && this.canParent() && partner.canParent()
+						&& ((isFemale() && partnerIsMale) || (isMale() && partnerIsFemale))) {
+					return isFemale();
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override

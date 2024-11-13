@@ -16,7 +16,7 @@ public class OMooshroomUdderLayer extends GeoLayerRenderer<OMooshroom> {
 
     @Override
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, OMooshroom entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        RenderType renderType = RenderType.entityCutout(((OMooshroom)entityLivingBaseIn).getOverlayLocation());
+        RenderType renderType = RenderType.entityCutout(entityLivingBaseIn.getUddersLocation());
         matrixStackIn.pushPose();
         matrixStackIn.scale(1.0f, 1.0f, 1.0f);
         matrixStackIn.translate(0.0d, 0.0d, 0.0d);

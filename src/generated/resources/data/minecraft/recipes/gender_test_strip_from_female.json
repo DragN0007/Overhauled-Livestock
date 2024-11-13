@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "dragnlivestock:female_gender_test_strip"
+    }
+  ],
+  "result": {
+    "item": "dragnlivestock:gender_test_strip"
+  }
+}

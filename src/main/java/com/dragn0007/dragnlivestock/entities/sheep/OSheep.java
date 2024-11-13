@@ -254,12 +254,13 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 				return InteractionResult.CONSUME;
 			}
 		}
-			if (itemstack.is(Items.BUCKET) && !this.isBaby() &&
-					(!LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() ||
-					(LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() && getHornsLocation().equals(OSheepHornLayer.HornOverlay.NONE.resourceLocation) || getHornsLocation().equals(OSheepHornLayer.HornOverlay.SHORT.resourceLocation)))) {
-			player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
-			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, LOItems.SHEEP_MILK_BUCKET.get().getDefaultInstance());
-			player.setItemInHand(hand, itemstack1);
+
+		if (itemstack.is(Items.BUCKET) && !this.isBaby() &&
+				(!LivestockOverhaulCommonConfig.GENDERS_AFFECT_BIPRODUCTS.get() ||
+				(LivestockOverhaulCommonConfig.GENDERS_AFFECT_BIPRODUCTS.get() && this.isFemale))) {
+		player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
+		ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, LOItems.SHEEP_MILK_BUCKET.get().getDefaultInstance());
+		player.setItemInHand(hand, itemstack1);
 			return InteractionResult.sidedSuccess(this.level.isClientSide);
 		} else {
 			return super.mobInteract(player, hand);
@@ -410,12 +411,36 @@ public class OSheep extends Animal implements Shearable, net.minecraftforge.comm
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
 	}
 
+	boolean isFemale = this.getHornsLocation().equals(OSheepHornLayer.HornOverlay.NONE.resourceLocation) || this.getHornsLocation().equals(OSheepHornLayer.HornOverlay.SHORT.resourceLocation);
+	boolean isMale = this.getHornsLocation().equals(OSheepHornLayer.HornOverlay.LONG.resourceLocation) || this.getHornsLocation().equals(OSheepHornLayer.HornOverlay.CURLY.resourceLocation);
 	public boolean canParent() {
 		return !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
 	}
 
 	public boolean canMate(Animal animal) {
-		return this.canParent() && ((OSheep) animal).canParent();
+		if (animal == this) {
+			return false;
+		} else if (!(animal instanceof OSheep)) {
+			return false;
+		} else {
+			OSheep partner = (OSheep) animal;
+
+			if (!this.canParent() || !partner.canParent()) {
+				return false;
+			}
+
+			if (LivestockOverhaulCommonConfig.GENDERS_AFFECT_BREEDING.get()) {
+				boolean partnerIsFemale = partner.getHornsLocation().equals(OSheepHornLayer.HornOverlay.NONE.resourceLocation) || partner.getHornsLocation().equals(OSheepHornLayer.HornOverlay.SHORT.resourceLocation);
+				boolean partnerIsMale = partner.getHornsLocation().equals(OSheepHornLayer.HornOverlay.LONG.resourceLocation) || partner.getHornsLocation().equals(OSheepHornLayer.HornOverlay.CURLY.resourceLocation);
+
+				boolean isFemale = this.getHornsLocation().equals(OSheepHornLayer.HornOverlay.NONE.resourceLocation) || this.getHornsLocation().equals(OSheepHornLayer.HornOverlay.SHORT.resourceLocation);
+				boolean isMale = this.getHornsLocation().equals(OSheepHornLayer.HornOverlay.LONG.resourceLocation) || this.getHornsLocation().equals(OSheepHornLayer.HornOverlay.CURLY.resourceLocation);
+
+				return (isFemale && partnerIsMale) || (isMale && partnerIsFemale);
+			} else {
+				return true;
+			}
+		}
 	}
 
 	@Override

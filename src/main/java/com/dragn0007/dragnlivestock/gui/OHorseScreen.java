@@ -41,6 +41,15 @@ public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
             this.blit(poseStack, x + 7, y + 35, 0, this.imageHeight + 54, 18, 18);
         }
 
+
+        if (this.oHorse.isFemale()) {
+            this.blit(poseStack, x + 161, y + 9, 90, this.imageHeight + 54, 8, 8);
+        }
+
+        if (this.oHorse.isMale()) {
+            this.blit(poseStack, x + 161, y + 9, 98, this.imageHeight + 54, 8, 8);
+        }
+
         InventoryScreen.renderEntityInInventory(x + 51, y + 60, 17, x + 51 - mouseX, y + 25 - mouseY, this.oHorse);
     }
 

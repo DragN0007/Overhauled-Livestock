@@ -19,7 +19,8 @@ public class LivestockOverhaulCommonConfig {
     public static final ForgeConfigSpec.BooleanValue REPLACE_COD;
     public static final ForgeConfigSpec.BooleanValue REPLACE_BEES;
     public static final ForgeConfigSpec.BooleanValue HORSE_SADDLEBAG_RENDER;
-    public static final ForgeConfigSpec.BooleanValue GENDERS_ENABLED;
+    public static final ForgeConfigSpec.BooleanValue GENDERS_AFFECT_BIPRODUCTS;
+    public static final ForgeConfigSpec.BooleanValue GENDERS_AFFECT_BREEDING;
     public static final ForgeConfigSpec.BooleanValue FAILSAFE_REPLACER;
 
     static {
@@ -66,8 +67,11 @@ public class LivestockOverhaulCommonConfig {
         HORSE_SADDLEBAG_RENDER = BUILDER.comment("Should you be able to see saddlebags on equines? This doesn't remove the functionality.")
                 .define("Render Saddlebags", true);
 
-        GENDERS_ENABLED = BUILDER.comment("Should animals be able to give bi-products regardless of 'gender'?")
-                .define("Genders Enabled", true);
+        GENDERS_AFFECT_BIPRODUCTS = BUILDER.comment("Should animals be able to give bi-products regardless of gender?")
+                .define("Genders Affect Bi-Products", true);
+
+        GENDERS_AFFECT_BREEDING = BUILDER.comment("Should an animal's gender affect how it breeds?")
+                .define("Genders Affect Breeding", true);
         BUILDER.pop();
 
         BUILDER.push("Uninstalling");

@@ -28,11 +28,15 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
 public class OMooshroom extends OCow implements IAnimatable {
+
+    public AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public OMooshroom(EntityType<? extends OCow> type, Level level) {
         super(type, level);
     }
@@ -41,12 +45,16 @@ public class OMooshroom extends OCow implements IAnimatable {
         return p_28934_.getBlockState(p_28933_.below()).is(Blocks.MYCELIUM) ? 10.0F : p_28934_.getBrightness(p_28933_) - 0.5F;
     }
 
+    @Override
+    public AnimationFactory getFactory() {
+        return factory;
+    }
+
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (itemstack.is(Items.BOWL) && !this.isBaby() &&
-                (!LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() ||
-                        (LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() &&
-                                getUddersLocation().equals(OMooshroomUdderLayer.Overlay.FEMALE.resourceLocation)))) {
+                (!LivestockOverhaulCommonConfig.GENDERS_AFFECT_BIPRODUCTS.get() ||
+                        (LivestockOverhaulCommonConfig.GENDERS_AFFECT_BIPRODUCTS.get() && this.isFemale))) {
 
             player.playSound(SoundEvents.MOOSHROOM_MILK, 1.0F, 1.0F);
             ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, Items.MUSHROOM_STEW.getDefaultInstance());
@@ -181,12 +189,37 @@ public class OMooshroom extends OCow implements IAnimatable {
         this.entityData.define(UDDERS, 0);
     }
 
+    boolean isFemale = this.getUddersLocation().equals(OMooshroomUdderLayer.Overlay.FEMALE.resourceLocation);
+    boolean isMale = this.getUddersLocation().equals(OMooshroomUdderLayer.Overlay.MALE.resourceLocation);
+
     public boolean canParent() {
         return !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
     }
 
     public boolean canMate(Animal animal) {
-        return this.canParent() && ((OMooshroom) animal).canParent();
+        if (animal == this) {
+            return false;
+        } else if (!(animal instanceof OMooshroom)) {
+            return false;
+        } else {
+            OMooshroom partner = (OMooshroom) animal;
+
+            if (!this.canParent() || !partner.canParent()) {
+                return false;
+            }
+
+            if (LivestockOverhaulCommonConfig.GENDERS_AFFECT_BREEDING.get()) {
+                boolean partnerIsFemale = partner.getUddersLocation().equals(OMooshroomUdderLayer.Overlay.FEMALE.resourceLocation);
+                boolean partnerIsMale = partner.getUddersLocation().equals(OMooshroomUdderLayer.Overlay.MALE.resourceLocation);
+
+                boolean isFemale = this.getUddersLocation().equals(OMooshroomUdderLayer.Overlay.FEMALE.resourceLocation);
+                boolean isMale = this.getUddersLocation().equals(OMooshroomUdderLayer.Overlay.MALE.resourceLocation);
+
+                return (isFemale && partnerIsMale) || (isMale && partnerIsFemale);
+            } else {
+                return true;
+            }
+        }
     }
 
     @Override

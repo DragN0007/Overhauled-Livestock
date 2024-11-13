@@ -1,6 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.chicken;
 
-import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.items.LOItems;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -121,15 +123,11 @@ public class OChicken extends Animal implements IAnimatable {
 			this.setDeltaMovement(vec3.multiply(1.0D, 0.6D, 1.0D));
 		}
 
-		if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && !this.isChickenJockey() && --this.eggTime <= 0
-				&& (!LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() ||
-			       (LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() && !getTextureLocation().equals(OChickenMarkingLayer.Overlay.BLUE_ROOSTER.resourceLocation) || !getTextureLocation().equals(OChickenMarkingLayer.Overlay.BLACK_ROOSTER.resourceLocation) || !getTextureLocation().equals(OChickenModel.Variant.ROOSTER.resourceLocation))))
-		{
+		if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && !this.isChickenJockey() && --this.eggTime <= 0 && (!LivestockOverhaulCommonConfig.GENDERS_AFFECT_BIPRODUCTS.get() || (LivestockOverhaulCommonConfig.GENDERS_AFFECT_BIPRODUCTS.get() && !this.getTextureLocation().equals(OChickenModel.Variant.ROOSTER.resourceLocation)))) {
 			this.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-			this.spawnAtLocation(Items.EGG);
+			this.spawnAtLocation(LOItems.EGG.get());
 			this.eggTime = this.random.nextInt(6000) + 6000;
 		}
-
 	}
 
 	public SoundEvent getAmbientSound() {
@@ -243,42 +241,81 @@ public class OChicken extends Animal implements IAnimatable {
 		return !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
 	}
 
+	boolean isFemale = !this.getTextureLocation().equals(OChickenModel.Variant.ROOSTER.resourceLocation);
+	boolean isMale = this.getTextureLocation().equals(OChickenModel.Variant.ROOSTER.resourceLocation);
+
+	private static final int COOLDOWN_TIME = 100;
+	private int cooldownTicks = 0;
+	private boolean eggDropped = false;
+	private boolean hasBred = false;
+
+	@Override
 	public boolean canMate(Animal animal) {
-			return this.canParent() && ((OChicken) animal).canParent();
+		if (animal == this || !(animal instanceof OChicken)) {
+			return false;
+		}
+
+		OChicken partner = (OChicken) animal;
+
+		if (!this.canParent() || !partner.canParent()) {
+			return false;
+		}
+
+		if (hasBred) {
+			return false;
+		}
+
+		boolean partnerIsFemale = !partner.getTextureLocation().equals(OChickenModel.Variant.ROOSTER.resourceLocation);
+		boolean partnerIsMale = partner.getTextureLocation().equals(OChickenModel.Variant.ROOSTER.resourceLocation);
+
+		boolean isFemale = !this.getTextureLocation().equals(OChickenModel.Variant.ROOSTER.resourceLocation);
+		boolean isMale = this.getTextureLocation().equals(OChickenModel.Variant.ROOSTER.resourceLocation);
+
+		if (LivestockOverhaulCommonConfig.GENDERS_AFFECT_BREEDING.get()) {
+			return (isFemale && partnerIsMale) || (isMale && partnerIsFemale);
+		} else {
+			return true;
+		}
 	}
 
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-		OChicken oChicken = (OChicken) ageableMob;
-		if (ageableMob instanceof OChicken) {
-			OChicken oChicken1 = (OChicken) ageableMob;
-			oChicken = EntityTypes.O_CHICKEN_ENTITY.get().create(serverLevel);
-
-			int i = this.random.nextInt(9);
-			int variant;
-			if (i < 4) {
-				variant = this.getVariant();
-			} else if (i < 8) {
-				variant = oChicken1.getVariant();
-			} else {
-				variant = this.random.nextInt(OChickenModel.Variant.values().length);
-			}
-
-			int j = this.random.nextInt(5);
-			int overlay;
-			if (j < 2) {
-				overlay = this.getOverlayVariant();
-			} else if (j < 4) {
-				overlay = oChicken1.getOverlayVariant();
-			} else {
-				overlay = this.random.nextInt(OChickenMarkingLayer.Overlay.values().length);
-			}
-
-			((OChicken) oChicken).setVariant(variant);
-			((OChicken) oChicken).setOverlayVariant(overlay);
+		if (eggDropped || cooldownTicks > 0) {
+			return null;
 		}
 
-		return oChicken;
+		dropFertilizedEgg(serverLevel);
+		eggDropped = true;
+		cooldownTicks = COOLDOWN_TIME;
+		hasBred = true;
+
+		return null;
+	}
+
+	@Override
+	public void tick() {
+		if (cooldownTicks > 0) {
+			cooldownTicks--;
+
+			if (cooldownTicks == 0) {
+				eggDropped = false;
+				hasBred = false;
+			}
+		}
+
+		super.tick();
+	}
+
+	private void dropFertilizedEgg(ServerLevel serverLevel) {
+		if (!isFemale) {
+			return;
+		}
+
+		ItemStack fertilizedEgg = new ItemStack(LOItems.FERTILIZED_EGG.get());
+		ItemEntity eggEntity = new ItemEntity(serverLevel, this.getX(), this.getY(), this.getZ(), fertilizedEgg);
+		serverLevel.addFreshEntity(eggEntity);
+
+		serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.CHICKEN_EGG, SoundSource.NEUTRAL, 1.0F, 1.0F);
 	}
 
 	public boolean removeWhenFarAway(double p_28266_) {

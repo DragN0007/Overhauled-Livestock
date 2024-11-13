@@ -4,6 +4,7 @@ import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.LlamaFollowHerdLeaderGoal;
 import com.dragn0007.dragnlivestock.items.LOItems;
+import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -287,6 +288,21 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
+
+		if (itemstack.is(LOItems.GENDER_TEST_STRIP.get()) && this.isFemale()) {
+			player.playSound(SoundEvents.BEEHIVE_EXIT, 1.0F, 1.0F);
+			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, LOItems.FEMALE_GENDER_TEST_STRIP.get().getDefaultInstance());
+			player.setItemInHand(hand, itemstack1);
+			return InteractionResult.SUCCESS;
+		}
+
+		if (itemstack.is(LOItems.GENDER_TEST_STRIP.get()) && this.isMale()) {
+			player.playSound(SoundEvents.BEEHIVE_EXIT, 1.0F, 1.0F);
+			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, LOItems.MALE_GENDER_TEST_STRIP.get().getDefaultInstance());
+			player.setItemInHand(hand, itemstack1);
+			return InteractionResult.SUCCESS;
+		}
+
 		if (itemstack.is(Items.BUCKET) && !this.isBaby()) {
 			player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
 			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, LOItems.LLAMA_MILK_BUCKET.get().getDefaultInstance());
@@ -358,6 +374,10 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 			this.inventory.setItem(1, ItemStack.of(tag.getCompound("DecorItem")));
 		}
 
+		if (tag.contains("Gender")) {
+			this.setGender(tag.getInt("Gender"));
+		}
+
 		this.updateContainerEquipment();
 		this.updateInventory();
 		super.readAdditionalSaveData(tag);
@@ -377,6 +397,8 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		if (!this.inventory.getItem(1).isEmpty()) {
 			tag.put("DecorItem", this.inventory.getItem(1).save(new CompoundTag()));
 		}
+
+		tag.putInt("Gender", this.getGender());
 	}
 
 	@Override
@@ -399,6 +421,7 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		Random random = new Random();
 		setVariant(random.nextInt(OLlamaModel.Variant.values().length));
 		setOverlayVariant(random.nextInt(OLlamaMarkingLayer.Overlay.values().length));
+		this.setGender(random.nextInt(OLlama.Gender.values().length));
 
 		this.randomizeAttributes();
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
@@ -412,6 +435,30 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 		this.entityData.define(CHESTED, false);
 		this.entityData.define(DATA_STRENGTH_ID, 0);
 		this.entityData.define(DATA_SWAG_ID, -1);
+		this.entityData.define(GENDER, 0);
+	}
+
+	public enum Gender {
+		FEMALE,
+		MALE
+	}
+
+	public boolean isFemale() {
+		return this.getGender() == 0;
+	}
+
+	public boolean isMale() {
+		return this.getGender() == 1;
+	}
+
+	public static final EntityDataAccessor<Integer> GENDER = SynchedEntityData.defineId(OLlama.class, EntityDataSerializers.INT);
+
+	public int getGender() {
+		return this.entityData.get(GENDER);
+	}
+
+	public void setGender(int gender) {
+		this.entityData.set(GENDER, gender);
 	}
 
 	public boolean canParent() {
@@ -421,9 +468,26 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 	public boolean canMate(Animal animal) {
 		if (animal == this) {
 			return false;
+		} else if (!(animal instanceof OLlama)) {
+			return false;
 		} else {
-			return this.canParent() && ((OLlama) animal).canParent();
+			if (!LivestockOverhaulCommonConfig.GENDERS_AFFECT_BREEDING.get()) {
+				return this.canParent() && ((OLlama) animal).canParent();
+			} else {
+				OLlama partner = (OLlama) animal;
+				if (this.canParent() && partner.canParent() && this.getGender() != partner.getGender()) {
+					return true;
+				}
+
+				boolean partnerIsFemale = partner.isFemale();
+				boolean partnerIsMale = partner.isMale();
+				if (LivestockOverhaulCommonConfig.GENDERS_AFFECT_BREEDING.get() && this.canParent() && partner.canParent()
+						&& ((isFemale() && partnerIsMale) || (isMale() && partnerIsFemale))) {
+					return isFemale();
+				}
+			}
 		}
+		return false;
 	}
 
 	@Override

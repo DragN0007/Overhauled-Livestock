@@ -1,6 +1,7 @@
 package com.dragn0007.dragnlivestock.entities.pig;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -218,7 +219,29 @@ public class OPig extends Animal implements IAnimatable {
 	}
 
 	public boolean canMate(Animal animal) {
-			return this.canParent() && ((OPig) animal).canParent();
+		if (animal == this) {
+			return false;
+		} else if (!(animal instanceof OPig)) {
+			return false;
+		} else {
+			OPig partner = (OPig) animal;
+
+			if (!this.canParent() || !partner.canParent()) {
+				return false;
+			}
+
+			if (LivestockOverhaulCommonConfig.GENDERS_AFFECT_BREEDING.get()) {
+				boolean partnerIsFemale = partner.getTusksLocation().equals(OPigTuskLayer.Overlay.FEMALE.resourceLocation);
+				boolean partnerIsMale = partner.getTusksLocation().equals(OPigTuskLayer.Overlay.MALE.resourceLocation);
+
+				boolean isFemale = this.getTusksLocation().equals(OPigTuskLayer.Overlay.FEMALE.resourceLocation);
+				boolean isMale = this.getTusksLocation().equals(OPigTuskLayer.Overlay.MALE.resourceLocation);
+
+				return (isFemale && partnerIsMale) || (isMale && partnerIsFemale);
+			} else {
+				return true;
+			}
+		}
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import com.dragn0007.dragnlivestock.entities.horse.OHorseMarkingLayer;
 import com.dragn0007.dragnlivestock.entities.mule.OMule;
 import com.dragn0007.dragnlivestock.entities.mule.OMuleModel;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
+import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -308,6 +309,10 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 		if (tag.contains("Overlay_Texture")) {
 			this.setOverlayVariantTexture(tag.getString("Overlay_Texture"));
 		}
+
+		if (tag.contains("Gender")) {
+			this.setGender(tag.getInt("Gender"));
+		}
 	}
 
 	@Override
@@ -317,6 +322,7 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 		tag.putInt("Overlay", this.getOverlayVariant());
 		tag.putString("Variant_Texture", this.getTextureLocation().toString());
 		tag.putString("Overlay_Texture", this.getOverlayLocation().toString());
+		tag.putInt("Gender", this.getGender());
 	}
 
 	@Override
@@ -328,6 +334,7 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 		Random random = new Random();
 		this.setVariant(random.nextInt(ODonkeyModel.Variant.values().length));
 		this.setOverlayVariant(random.nextInt(ODonkeyMarkingLayer.Overlay.values().length));
+		this.setGender(random.nextInt(Gender.values().length));
 
 		this.randomizeAttributes();
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
@@ -338,6 +345,7 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
+		this.entityData.define(GENDER, 0);
 		this.entityData.define(VARIANT_TEXTURE, ODonkeyModel.Variant.DEFAULT.resourceLocation);
 		this.entityData.define(OVERLAY_TEXTURE, ODonkeyMarkingLayer.Overlay.NONE.resourceLocation);
 	}
@@ -348,8 +356,23 @@ public class ODonkey extends AbstractOHorse implements IAnimatable {
 		} else if (!(animal instanceof ODonkey) && !(animal instanceof OHorse)) {
 			return false;
 		} else {
-			return this.canParent() && ((AbstractOHorse)animal).canParent();
+			if (!LivestockOverhaulCommonConfig.GENDERS_AFFECT_BREEDING.get()) {
+				return this.canParent() && ((AbstractOHorse) animal).canParent();
+			} else {
+				AbstractOHorse partner = (AbstractOHorse) animal;
+				if (this.canParent() && partner.canParent() && this.getGender() != partner.getGender()) {
+					return true;
+				}
+
+				boolean partnerIsFemale = partner.isFemale();
+				boolean partnerIsMale = partner.isMale();
+				if (LivestockOverhaulCommonConfig.GENDERS_AFFECT_BREEDING.get() && this.canParent() && partner.canParent()
+						&& ((isFemale() && partnerIsMale) || (isMale() && partnerIsFemale))) {
+					return isFemale();
+				}
+			}
 		}
+		return false;
 	}
 
 	@Override

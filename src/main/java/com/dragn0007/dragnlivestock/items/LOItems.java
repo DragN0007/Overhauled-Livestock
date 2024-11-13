@@ -2,9 +2,7 @@ package com.dragn0007.dragnlivestock.items;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
-import com.dragn0007.dragnlivestock.items.custom.BrandTagItem;
-import com.dragn0007.dragnlivestock.items.custom.FishOilItem;
-import com.dragn0007.dragnlivestock.items.custom.UnicornHornItem;
+import com.dragn0007.dragnlivestock.items.custom.*;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -60,10 +58,20 @@ public class LOItems {
     //Misc
     public static final RegistryObject<Item> BRAND_TAG = ITEMS.register("brand_tag",
             () -> new BrandTagItem(new Item.Properties()));
+    public static final RegistryObject<Item> GENDER_TEST_STRIP = ITEMS.register("gender_test_strip",
+            () -> new GenderTestKit(new Item.Properties().stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+    public static final RegistryObject<Item> MALE_GENDER_TEST_STRIP = ITEMS.register("male_gender_test_strip",
+            () -> new MaleGenderTestKit(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> FEMALE_GENDER_TEST_STRIP = ITEMS.register("female_gender_test_strip",
+            () -> new FemaleGenderTestKit(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> NETHERITE_HORSE_ARMOR = ITEMS.register("netherite_horse_armor",
             () -> new HorseArmorItem(15, "netherite", (new Item.Properties()).stacksTo(1).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
     public static final RegistryObject<Item> GRIFFITH_INSPIRED_HORSE_ARMOR = ITEMS.register("griffith_inspired_horse_armor",
             () -> new HorseArmorItem(15, "griffth", (new Item.Properties()).stacksTo(1)));
+    public static final RegistryObject<Item> FERTILIZED_EGG = ITEMS.register("fertilized_egg",
+            () -> new FertilizedEggItem((new Item.Properties()).stacksTo(1).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+    public static final RegistryObject<Item> EGG = ITEMS.register("egg",
+            () -> new Item((new Item.Properties()).stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
 
 
     //Food/ Items

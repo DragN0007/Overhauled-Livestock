@@ -62,6 +62,16 @@
   "item.dragnlivestock.netherite_horse_armor": "Netherite Horse Armor",
   "item.dragnlivestock.griffith_inspired_horse_armor": "Griffith-Inspired Horse Armor",
 
+  "item.dragnlivestock.gender_test_strip": "Gender Test Strip",
+  "item.dragnlivestock.male_gender_test_strip": "Male Test Strip",
+  "item.dragnlivestock.female_gender_test_strip": "Female Test Strip",
+  "tooltip.dragnlivestock.male_test.tooltip": "This animal is male!",
+  "tooltip.dragnlivestock.female_test.tooltip": "This animal is female!",
+  "tooltip.dragnlivestock.test_strip.tooltip": "Can be used on O-Equines, Rabbits, Llamas, and Oxen.",
+
+  "item.dragnlivestock.egg": "Egg",
+  "item.dragnlivestock.fertilized_egg": "Fertilized Egg",
+
   "item.dragnlivestock.sheep_milk_bucket": "Sheep Milk Bucket",
   "item.dragnlivestock.llama_milk_bucket": "Llama Milk Bucket",
 

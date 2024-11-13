@@ -1,9 +1,7 @@
 package com.dragn0007.dragnlivestock.entities.cow.ox;
 
-import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import com.dragn0007.dragnlivestock.gui.OxMenu;
-import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -15,8 +13,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -28,9 +24,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -141,22 +134,6 @@ public class Ox extends AbstractOHorse implements IAnimatable {
 		data.addAnimationController(new AnimationController<>(this, "attackController", 1, this::attackPredicate));
 	}
 
-	public InteractionResult mobInteract(Player player, InteractionHand hand) {
-		ItemStack itemstack = player.getItemInHand(hand);
-		if (itemstack.is(Items.BUCKET) && !this.isBaby() &&
-				(!LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() ||
-						(LivestockOverhaulCommonConfig.GENDERS_ENABLED.get() &&
-								getUddersLocation().equals(OxUdderLayer.Overlay.FEMALE.resourceLocation)))) {
-
-			player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
-			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, Items.MILK_BUCKET.getDefaultInstance());
-			player.setItemInHand(hand, itemstack1);
-			return InteractionResult.sidedSuccess(this.level.isClientSide);
-		} else {
-			return super.mobInteract(player, hand);
-		}
-	}
-
 	@Override
 	public AnimationFactory getFactory() {
 		return factory;
@@ -216,13 +193,8 @@ public class Ox extends AbstractOHorse implements IAnimatable {
 		return OxHornLayer.HornOverlay.hornOverlayFromOrdinal(getHornVariant()).resourceLocation;
 	}
 
-	public ResourceLocation getUddersLocation() {
-		return OxUdderLayer.Overlay.overlayFromOrdinal(getUdderVariant()).resourceLocation;
-	}
-
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(Ox.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> HORNS = SynchedEntityData.defineId(Ox.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> UDDERS = SynchedEntityData.defineId(Ox.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -230,18 +202,12 @@ public class Ox extends AbstractOHorse implements IAnimatable {
 	public int getHornVariant() {
 		return this.entityData.get(HORNS);
 	}
-	public int getUdderVariant() {
-		return this.entityData.get(UDDERS);
-	}
 
 	public void setVariant(int variant) {
 		this.entityData.set(VARIANT, variant);
 	}
 	public void setHornVariant(int hornVariant) {
 		this.entityData.set(HORNS, hornVariant);
-	}
-	public void setUdderVariant(int udderVariant) {
-		this.entityData.set(UDDERS, udderVariant);
 	}
 
 	@Override
@@ -255,10 +221,6 @@ public class Ox extends AbstractOHorse implements IAnimatable {
 		if (tag.contains("Horns")) {
 			setHornVariant(tag.getInt("Horns"));
 		}
-
-		if (tag.contains("Udders")) {
-			setUdderVariant(tag.getInt("Udders"));
-		}
 	}
 
 	@Override
@@ -267,8 +229,6 @@ public class Ox extends AbstractOHorse implements IAnimatable {
 		tag.putInt("Variant", getVariant());
 
 		tag.putInt("Horns", getHornVariant());
-
-		tag.putInt("Udders", getUdderVariant());
 	}
 
 	@Override
@@ -280,7 +240,7 @@ public class Ox extends AbstractOHorse implements IAnimatable {
 		Random random = new Random();
 		setVariant(random.nextInt(OxModel.Variant.values().length));
 		setHornVariant(random.nextInt(OxHornLayer.HornOverlay.values().length));
-		setUdderVariant(random.nextInt(OxUdderLayer.Overlay.values().length));
+		setGender(1);
 
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
 	}
@@ -290,7 +250,7 @@ public class Ox extends AbstractOHorse implements IAnimatable {
 		super.defineSynchedData();
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(HORNS, 0);
-		this.entityData.define(UDDERS, 0);
+		this.entityData.define(GENDER, 1);
 	}
 
 	@Override
@@ -302,42 +262,11 @@ public class Ox extends AbstractOHorse implements IAnimatable {
 	}
 
 	public boolean canMate(Animal animal) {
-		return this.canParent() && ((Ox) animal).canParent();
+		return false;
 	}
 
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-		Ox ox1;
-		Ox ox = (Ox) ageableMob;
-		ox1 = EntityTypes.OX_ENTITY.get().create(serverLevel);
-
-		int i = this.random.nextInt(9);
-		int variant;
-		if (i < 4) {
-			variant = this.getVariant();
-		} else if (i < 8) {
-			variant = ox.getVariant();
-		} else {
-			variant = this.random.nextInt(OxModel.Variant.values().length);
-		}
-
-		int k = this.random.nextInt(5);
-		int horns;
-		if (k < 2) {
-			horns = this.getHornVariant();
-		} else if (k < 4) {
-			horns = ox.getHornVariant();
-		} else {
-			horns = this.random.nextInt(OxHornLayer.HornOverlay.values().length);
-		}
-
-		int udders;
-		udders = this.random.nextInt(OxUdderLayer.Overlay.values().length);
-
-		ox1.setVariant(variant);
-		ox1.setHornVariant(horns);
-		ox1.setUdderVariant(udders);
-
-		return ox1;
+		return null;
 	}
 }

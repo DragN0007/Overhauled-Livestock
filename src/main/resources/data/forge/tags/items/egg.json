@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "minecraft:egg"
+    "minecraft:egg",
+    "dragnlivestock:egg",
+    "dragnlivestock:fertilized_egg"
   ]
 }

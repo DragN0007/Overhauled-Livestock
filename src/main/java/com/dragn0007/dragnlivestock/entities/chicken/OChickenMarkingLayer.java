@@ -33,8 +33,8 @@ public class OChickenMarkingLayer extends GeoLayerRenderer<OChicken> {
 
     public enum Overlay {
         NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/chicken/overlay/overlay_none.png")),
-        BLACK_ROOSTER(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/chicken/overlay/overlay_black_rooster.png")),
-        BLUE_ROOSTER(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/chicken/overlay/overlay_blue_rooster.png")),
+        BLACK_TAIL(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/chicken/overlay/overlay_black_rooster.png")),
+        BLUE_TAIL(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/chicken/overlay/overlay_blue_rooster.png")),
         HEAD_BLACK(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/chicken/overlay/overlay_head_black.png")),
         HEAD_WHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/chicken/overlay/overlay_head_white.png")),
         SPECKLED_BLACK(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/chicken/overlay/overlay_speckled_black.png")),

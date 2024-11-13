@@ -6,7 +6,7 @@ import com.dragn0007.dragnlivestock.entities.bee.OBee;
 import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
 import com.dragn0007.dragnlivestock.entities.cod.OCod;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
-import com.dragn0007.dragnlivestock.entities.cow.mooshroom.OMooshroom;
+import com.dragn0007.dragnlivestock.entities.cow.mooshroom.*;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.horse.headlesshorseman.HeadlessHorseman;
@@ -490,19 +490,19 @@ public class SpawnReplacer {
                 oMooshroom.setCustomName(vanillamooshroom.getCustomName());
                 oMooshroom.setAge(vanillamooshroom.getAge());
 
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                int randomVariant = event.getWorld().getRandom().nextInt(OMooshroomModel.Variant.values().length);
                 oMooshroom.setVariant(randomVariant);
 
-                int randomOverlayVariant = event.getWorld().getRandom().nextInt(31);
+                int randomOverlayVariant = event.getWorld().getRandom().nextInt(OMooshroomMarkingLayer.Overlay.values().length);
                 oMooshroom.setOverlayVariant(randomOverlayVariant);
 
-                int randomHorns = event.getWorld().getRandom().nextInt(31);
+                int randomHorns = event.getWorld().getRandom().nextInt(OMooshroomHornLayer.HornOverlay.values().length);
                 oMooshroom.setHornVariant(randomHorns);
 
-                int randomMushrooms = event.getWorld().getRandom().nextInt(31);
+                int randomMushrooms = event.getWorld().getRandom().nextInt(OMooshroomMushroomLayer.Overlay.values().length);
                 oMooshroom.setMushroomVariant(randomMushrooms);
 
-                int randomGender = event.getWorld().getRandom().nextInt(31);
+                int randomGender = event.getWorld().getRandom().nextInt(OMooshroomUdderLayer.Overlay.values().length);
                 oMooshroom.setUdderVariant(randomGender);
 
                 if (event.getWorld().isClientSide) {

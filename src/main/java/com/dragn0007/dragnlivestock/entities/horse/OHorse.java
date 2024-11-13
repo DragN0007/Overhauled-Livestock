@@ -7,6 +7,7 @@ import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.mule.OMule;
 import com.dragn0007.dragnlivestock.entities.mule.OMuleModel;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
+import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -45,13 +46,6 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 public class OHorse extends AbstractOHorse implements IAnimatable {
-
-	public static final EntityDataAccessor<ResourceLocation> VARIANT_TEXTURE = SynchedEntityData.defineId(OHorse.class, LivestockOverhaul.RESOURCE_LOCATION);
-	public static final EntityDataAccessor<ResourceLocation> OVERLAY_TEXTURE = SynchedEntityData.defineId(OHorse.class, LivestockOverhaul.RESOURCE_LOCATION);
-	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> BREED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
-
 
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 	public OHorse leader;
@@ -407,6 +401,12 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		return SoundEvents.HORSE_ANGRY;
 	}
 
+	public static final EntityDataAccessor<ResourceLocation> VARIANT_TEXTURE = SynchedEntityData.defineId(OHorse.class, LivestockOverhaul.RESOURCE_LOCATION);
+	public static final EntityDataAccessor<ResourceLocation> OVERLAY_TEXTURE = SynchedEntityData.defineId(OHorse.class, LivestockOverhaul.RESOURCE_LOCATION);
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> BREED = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+
 	public ResourceLocation getTextureLocation() {
 		return this.entityData.get(VARIANT_TEXTURE);
 //		return OHorseModel.Variant.variantFromOrdinal(getVariant()).resourceLocation;
@@ -486,6 +486,10 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		if (tag.contains("Breed")) {
 			this.setBreed(tag.getInt("Breed"));
 		}
+
+		if (tag.contains("Gender")) {
+			this.setGender(tag.getInt("Gender"));
+		}
 	}
 
 	@Override
@@ -496,6 +500,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		tag.putString("Variant_Texture", this.getTextureLocation().toString());
 		tag.putString("Overlay_Texture", this.getOverlayLocation().toString());
 		tag.putInt("Breed", this.getBreed());
+		tag.putInt("Gender", this.getGender());
 	}
 
 	@Override
@@ -508,6 +513,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		Random random = new Random();
 		this.setVariant(random.nextInt(OHorseModel.Variant.values().length));
 		this.setOverlayVariant(random.nextInt(OHorseMarkingLayer.Overlay.values().length));
+		this.setGender(random.nextInt(Gender.values().length));
 
 		if (spawnType == MobSpawnType.SPAWN_EGG) {
 			this.setBreed(random.nextInt(BreedModel.values().length));
@@ -523,6 +529,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		this.entityData.define(VARIANT, 0);
 		this.entityData.define(OVERLAY, 0);
 		this.entityData.define(BREED, 0);
+		this.entityData.define(GENDER, 0);
 		this.entityData.define(VARIANT_TEXTURE, OHorseModel.Variant.BAY.resourceLocation);
 		this.entityData.define(OVERLAY_TEXTURE, OHorseMarkingLayer.Overlay.NONE.resourceLocation);
 	}
@@ -533,8 +540,23 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		} else if (!(animal instanceof ODonkey) && !(animal instanceof OHorse)) {
 			return false;
 		} else {
-			return this.canParent() && ((AbstractOHorse)animal).canParent();
+			if (!LivestockOverhaulCommonConfig.GENDERS_AFFECT_BREEDING.get()) {
+				return this.canParent() && ((AbstractOHorse) animal).canParent();
+			} else {
+				AbstractOHorse partner = (AbstractOHorse) animal;
+				if (this.canParent() && partner.canParent() && this.getGender() != partner.getGender()) {
+					return true;
+				}
+
+				boolean partnerIsFemale = partner.isFemale();
+				boolean partnerIsMale = partner.isMale();
+				if (LivestockOverhaulCommonConfig.GENDERS_AFFECT_BREEDING.get() && this.canParent() && partner.canParent()
+						&& ((isFemale() && partnerIsMale) || (isMale() && partnerIsFemale))) {
+					return isFemale();
+				}
+			}
 		}
+		return false;
 	}
 
 	@Override

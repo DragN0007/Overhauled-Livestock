@@ -2,16 +2,18 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "dragnlivestock:egg_salad"
+      "minecraft:gender_test_strip_from_male"
     ]
   },
   "criteria": {
-    "has_egg": {
+    "has_paper": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:egg"
+            "items": [
+              "minecraft:paper"
+            ]
           }
         ]
       }
@@ -19,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "dragnlivestock:egg_salad"
+        "recipe": "minecraft:gender_test_strip_from_male"
       }
     }
   },
   "requirements": [
     [
-      "has_egg",
+      "has_paper",
       "has_the_recipe"
     ]
   ]

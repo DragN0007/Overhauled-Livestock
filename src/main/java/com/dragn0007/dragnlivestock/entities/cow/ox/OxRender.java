@@ -20,7 +20,6 @@ public class OxRender extends ExtendedGeoEntityRenderer<Ox> {
     public OxRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new OxModel());
         this.addLayer(new OxHornLayer(this));
-        this.addLayer(new OxUdderLayer(this));
     }
 
     @Override

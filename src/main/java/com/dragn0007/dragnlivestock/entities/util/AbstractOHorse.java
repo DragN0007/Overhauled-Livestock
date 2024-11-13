@@ -2,6 +2,7 @@ package com.dragn0007.dragnlivestock.entities.util;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.gui.OHorseMenu;
+import com.dragn0007.dragnlivestock.items.LOItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -22,10 +23,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.HorseArmorItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -49,6 +47,28 @@ public abstract class AbstractOHorse extends AbstractChestedHorse {
     public static final EntityDataAccessor<Integer> DATA_CARPET_ID = SynchedEntityData.defineId(AbstractOHorse.class, EntityDataSerializers.INT);
     protected boolean shouldEmote;
 
+    public enum Gender {
+        FEMALE,
+        MALE
+    }
+
+    public boolean isFemale() {
+        return this.getGender() == 0;
+    }
+
+    public boolean isMale() {
+        return this.getGender() == 1;
+    }
+
+    public static final EntityDataAccessor<Integer> GENDER = SynchedEntityData.defineId(AbstractOHorse.class, EntityDataSerializers.INT);
+
+    public int getGender() {
+        return this.entityData.get(GENDER);
+    }
+
+    public void setGender(int gender) {
+        this.entityData.set(GENDER, gender);
+    }
 
     public AbstractOHorse(EntityType<? extends AbstractOHorse> entityType, Level level) {
         super(entityType, level);
@@ -85,36 +105,63 @@ public abstract class AbstractOHorse extends AbstractChestedHorse {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
-        if(!this.isBaby()) {
-            if(this.isTamed() && player.isSecondaryUseActive()) {
+
+        if (itemStack.is(Items.SHEARS) && player.isShiftKeyDown()) {
+            if (this.hasChest()) {
+                this.dropEquipment();
+                this.inventory.removeAllItems();
+
+                this.setChest(false);
+                this.playChestEquipsSound();
+
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
+        }
+
+        if (itemStack.is(LOItems.GENDER_TEST_STRIP.get()) && this.isFemale()) {
+            player.playSound(SoundEvents.BEEHIVE_EXIT, 1.0F, 1.0F);
+            ItemStack itemstack1 = ItemUtils.createFilledResult(itemStack, player, LOItems.FEMALE_GENDER_TEST_STRIP.get().getDefaultInstance());
+            player.setItemInHand(hand, itemstack1);
+            return InteractionResult.SUCCESS;
+        }
+
+        if (itemStack.is(LOItems.GENDER_TEST_STRIP.get()) && this.isMale()) {
+            player.playSound(SoundEvents.BEEHIVE_EXIT, 1.0F, 1.0F);
+            ItemStack itemstack1 = ItemUtils.createFilledResult(itemStack, player, LOItems.MALE_GENDER_TEST_STRIP.get().getDefaultInstance());
+            player.setItemInHand(hand, itemstack1);
+            return InteractionResult.SUCCESS;
+        }
+
+        if (!this.isBaby()) {
+            if (this.isTamed() && player.isSecondaryUseActive()) {
                 this.openInventory(player);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
 
-            if(this.isVehicle()) {
+            if (this.isVehicle()) {
                 return super.mobInteract(player, hand);
             }
         }
 
-        if(!itemStack.isEmpty()) {
-            if(this.isFood(itemStack)) {
+        if (!itemStack.isEmpty()) {
+            if (this.isFood(itemStack)) {
                 return this.fedFood(player, itemStack);
             }
 
             InteractionResult interactionResult = itemStack.interactLivingEntity(player, this, hand);
-            if(interactionResult.consumesAction()) {
+            if (interactionResult.consumesAction()) {
                 return interactionResult;
             }
 
-            if(!this.isTamed()) {
+            if (!this.isTamed()) {
                 this.makeMad();
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
 
-            if(!this.hasChest() && itemStack.is(Blocks.CHEST.asItem())) {
+            if (!this.hasChest() && itemStack.is(Blocks.CHEST.asItem())) {
                 this.setChest(true);
                 this.playChestEquipsSound();
-                if(!player.getAbilities().instabuild) {
+                if (!player.getAbilities().instabuild) {
                     itemStack.shrink(1);
                 }
 
@@ -123,13 +170,13 @@ public abstract class AbstractOHorse extends AbstractChestedHorse {
             }
 
             boolean canSaddle = !this.isBaby() && !this.isSaddled() && itemStack.is(Items.SADDLE);
-            if(this.isArmor(itemStack) || canSaddle) {
+            if (this.isArmor(itemStack) || canSaddle) {
                 this.openInventory(player);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
         }
 
-        if(this.isBaby()) {
+        if (this.isBaby()) {
             return super.mobInteract(player, hand);
         } else {
             this.doPlayerRide(player);
