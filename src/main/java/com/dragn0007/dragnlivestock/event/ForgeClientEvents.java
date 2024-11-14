@@ -2,6 +2,7 @@ package com.dragn0007.dragnlivestock.event;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.util.LONetwork;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -36,6 +37,14 @@ public class ForgeClientEvents {
 
         if(LivestockOverhaulClientEvent.HORSE_PIAFFE.getKey().getValue() == event.getKey()) {
             LONetwork.INSTANCE.sendToServer(new LONetwork.PlayEmoteRequest("piaffe", ILoopType.EDefaultLoopTypes.LOOP));
+        }
+
+        if (event.getAction() == InputConstants.RELEASE && event.getKey() == LivestockOverhaulClientEvent.HORSE_WAVE.getKey().getValue()) {
+            LONetwork.INSTANCE.sendToServer(new LONetwork.PlayEmoteRequest("wave", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+        }
+
+        if (event.getAction() == InputConstants.RELEASE && event.getKey() == LivestockOverhaulClientEvent.HORSE_LEVADE.getKey().getValue()) {
+            LONetwork.INSTANCE.sendToServer(new LONetwork.PlayEmoteRequest("levade", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
         }
     }
 }

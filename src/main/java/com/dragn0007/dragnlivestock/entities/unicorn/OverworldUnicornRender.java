@@ -30,7 +30,7 @@ public class OverworldUnicornRender extends ExtendedGeoEntityRenderer<OverworldU
 
         if (!animatable.isBaby()) {
 
-            if (animatable.hasChest() && LivestockOverhaulCommonConfig.HORSE_SADDLEBAG_RENDER.get()) {
+            if (animatable.hasChest()) {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(false));
             } else {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(true));

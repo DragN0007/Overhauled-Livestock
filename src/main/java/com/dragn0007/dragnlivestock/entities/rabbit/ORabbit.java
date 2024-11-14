@@ -198,6 +198,10 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP));
 		}
 
+		if (this.isOrderedToSit() && !event.isMoving()) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("idle2", ILoopType.EDefaultLoopTypes.LOOP));
+		}
+
 		return PlayState.CONTINUE;
 	}
 

@@ -85,7 +85,7 @@ public class Ox extends AbstractOHorse implements IAnimatable {
 
 	@Override
 	protected int getInventorySize() {
-		return this.hasChest() ? 25 : super.getInventorySize();
+		return this.hasChest() ? 37 : super.getInventorySize();
 	}
 
 	@Override
