@@ -1,3 +1,6 @@
+Find the 1.20.1 repo here: 
+https://github.com/DragN0007/Overhauled-Livestock-1.20.1
+
 ## Servers Who Do Not Want O-Animal Conversions
 For servers who don't want automatic o-animal conversions,
 download the 'livestock-overhaul-common.toml' config file
