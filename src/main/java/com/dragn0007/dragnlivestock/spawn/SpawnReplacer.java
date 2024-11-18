@@ -4,18 +4,34 @@ import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.bee.OBee;
 import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
+import com.dragn0007.dragnlivestock.entities.chicken.OChickenMarkingLayer;
+import com.dragn0007.dragnlivestock.entities.chicken.OChickenModel;
 import com.dragn0007.dragnlivestock.entities.cod.OCod;
-import com.dragn0007.dragnlivestock.entities.cow.OCow;
+import com.dragn0007.dragnlivestock.entities.cow.*;
 import com.dragn0007.dragnlivestock.entities.cow.mooshroom.*;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
+import com.dragn0007.dragnlivestock.entities.donkey.ODonkeyModel;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
+import com.dragn0007.dragnlivestock.entities.horse.OHorseMarkingLayer;
+import com.dragn0007.dragnlivestock.entities.horse.OHorseModel;
 import com.dragn0007.dragnlivestock.entities.horse.headlesshorseman.HeadlessHorseman;
 import com.dragn0007.dragnlivestock.entities.llama.OLlama;
+import com.dragn0007.dragnlivestock.entities.llama.OLlamaModel;
 import com.dragn0007.dragnlivestock.entities.mule.OMule;
+import com.dragn0007.dragnlivestock.entities.mule.OMuleModel;
 import com.dragn0007.dragnlivestock.entities.pig.OPig;
+import com.dragn0007.dragnlivestock.entities.pig.OPigMarkingLayer;
+import com.dragn0007.dragnlivestock.entities.pig.OPigModel;
+import com.dragn0007.dragnlivestock.entities.pig.OPigTuskLayer;
 import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
+import com.dragn0007.dragnlivestock.entities.rabbit.ORabbitMarkingLayer;
+import com.dragn0007.dragnlivestock.entities.rabbit.ORabbitModel;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
+import com.dragn0007.dragnlivestock.entities.salmon.OSalmonModel;
 import com.dragn0007.dragnlivestock.entities.sheep.OSheep;
+import com.dragn0007.dragnlivestock.entities.sheep.OSheepHornLayer;
+import com.dragn0007.dragnlivestock.entities.sheep.OSheepModel;
+import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -81,11 +97,14 @@ public class SpawnReplacer {
                 oHorse.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(oHorse.generateRandomJumpStrength());
 
                 //set random variants on-spawn
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                int randomVariant = event.getWorld().getRandom().nextInt(OHorseModel.Variant.values().length);
                 oHorse.setVariant(randomVariant);
 
-                int randomOverlayVariant = event.getWorld().getRandom().nextInt(31);
+                int randomOverlayVariant = event.getWorld().getRandom().nextInt(OHorseMarkingLayer.Overlay.values().length);
                 oHorse.setOverlayVariant(randomOverlayVariant);
+
+                int randomGender = event.getWorld().getRandom().nextInt(AbstractOHorse.Gender.values().length);
+                oHorse.setGender(randomGender);
 
                 //discard vanilla horse once it's been successfully replaced on client and server
                 if (event.getWorld().isClientSide) {
@@ -113,7 +132,6 @@ public class SpawnReplacer {
             ODonkey oDonkey = EntityTypes.O_DONKEY_ENTITY.get().create(event.getWorld());
             if (oDonkey != null) {
                 oDonkey.copyPosition(vanillaDonkey);
-                Entity entity = event.getEntity();
 
                 oDonkey.setCustomName(vanillaDonkey.getCustomName());
                 oDonkey.setOwnerUUID(vanillaDonkey.getOwnerUUID());
@@ -122,8 +140,11 @@ public class SpawnReplacer {
                 oDonkey.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(oDonkey.generateRandomSpeed());
                 oDonkey.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(oDonkey.generateRandomJumpStrength());
 
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                int randomVariant = event.getWorld().getRandom().nextInt(ODonkeyModel.Variant.values().length);
                 oDonkey.setVariant(randomVariant);
+
+                int randomGender = event.getWorld().getRandom().nextInt(AbstractOHorse.Gender.values().length);
+                oDonkey.setGender(randomGender);
 
                 if (event.getWorld().isClientSide) {
                     vanillaDonkey.remove(Entity.RemovalReason.DISCARDED);
@@ -150,7 +171,6 @@ public class SpawnReplacer {
             OMule oMule = EntityTypes.O_MULE_ENTITY.get().create(event.getWorld());
             if (oMule != null) {
                 oMule.copyPosition(vanillaMule);
-                Entity entity = event.getEntity();
 
                 oMule.setCustomName(vanillaMule.getCustomName());
                 oMule.setOwnerUUID(vanillaMule.getOwnerUUID());
@@ -159,8 +179,11 @@ public class SpawnReplacer {
                 oMule.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(oMule.generateRandomSpeed());
                 oMule.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(oMule.generateRandomJumpStrength());
 
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                int randomVariant = event.getWorld().getRandom().nextInt(OMuleModel.Variant.values().length);
                 oMule.setVariant(randomVariant);
+
+                int randomGender = event.getWorld().getRandom().nextInt(AbstractOHorse.Gender.values().length);
+                oMule.setGender(randomGender);
 
                 if (event.getWorld().isClientSide) {
                     vanillaMule.remove(Entity.RemovalReason.DISCARDED);
@@ -187,21 +210,20 @@ public class SpawnReplacer {
             OCow oCow = EntityTypes.O_COW_ENTITY.get().create(event.getWorld());
             if (oCow != null) {
                 oCow.copyPosition(vanillacow);
-                Entity entity = event.getEntity();
 
                 oCow.setCustomName(vanillacow.getCustomName());
                 oCow.setAge(vanillacow.getAge());
 
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                int randomVariant = event.getWorld().getRandom().nextInt(OCowModel.Variant.values().length);
                 oCow.setVariant(randomVariant);
 
-                int randomOverlayVariant = event.getWorld().getRandom().nextInt(31);
+                int randomOverlayVariant = event.getWorld().getRandom().nextInt(OCowMarkingLayer.Overlay.values().length);
                 oCow.setOverlayVariant(randomOverlayVariant);
 
-                int randomHorns = event.getWorld().getRandom().nextInt(31);
+                int randomHorns = event.getWorld().getRandom().nextInt(OCowHornLayer.HornOverlay.values().length);
                 oCow.setHornVariant(randomHorns);
 
-                int randomGender = event.getWorld().getRandom().nextInt(31);
+                int randomGender = event.getWorld().getRandom().nextInt(OCowUdderLayer.Overlay.values().length);
                 oCow.setUdderVariant(randomGender);
 
                 if (event.getWorld().isClientSide) {
@@ -228,15 +250,14 @@ public class SpawnReplacer {
             OChicken oChicken = EntityTypes.O_CHICKEN_ENTITY.get().create(event.getWorld());
             if (oChicken != null) {
                 oChicken.copyPosition(vanillachicken);
-                Entity entity = event.getEntity();
 
                 oChicken.setCustomName(vanillachicken.getCustomName());
                 oChicken.setAge(vanillachicken.getAge());
 
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                int randomVariant = event.getWorld().getRandom().nextInt(OChickenModel.Variant.values().length);
                 oChicken.setVariant(randomVariant);
 
-                int randomOverlayVariant = event.getWorld().getRandom().nextInt(31);
+                int randomOverlayVariant = event.getWorld().getRandom().nextInt(OChickenMarkingLayer.Overlay.values().length);
                 oChicken.setOverlayVariant(randomOverlayVariant);
 
                 if (event.getWorld().isClientSide) {
@@ -263,11 +284,10 @@ public class SpawnReplacer {
 
             if (oSalmon != null) {
                 oSalmon.copyPosition(vanillasalmon);
-                Entity entity = event.getEntity();
 
                 oSalmon.setCustomName(vanillasalmon.getCustomName());
 
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                int randomVariant = event.getWorld().getRandom().nextInt(OSalmonModel.Variant.values().length);
                 oSalmon.setVariant(randomVariant);
 
                 if (event.getWorld().isClientSide) {
@@ -294,12 +314,8 @@ public class SpawnReplacer {
 
             if (oCod != null) {
                 oCod.copyPosition(vanillacod);
-                Entity entity = event.getEntity();
 
                 oCod.setCustomName(vanillacod.getCustomName());
-
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
-                oCod.setVariant(randomVariant);
 
                 if (event.getWorld().isClientSide) {
                     vanillacod.remove(Entity.RemovalReason.DISCARDED);
@@ -325,9 +341,6 @@ public class SpawnReplacer {
             oBee.copyPosition(bee);
             oBee.setCustomName(bee.getCustomName());
 
-            int randomVariant = event.getWorld().getRandom().nextInt(23);
-            oBee.setVariant(randomVariant);
-
 //                    System.out.println("[Livestock Overhaul]: Replaced a vanilla bee with an O-Bee!");
 
             event.setCanceled(true);
@@ -344,16 +357,18 @@ public class SpawnReplacer {
 
             if (oRabbit != null) {
                 oRabbit.copyPosition(vanillarabbit);
-                Entity entity = event.getEntity();
 
                 oRabbit.setCustomName(vanillarabbit.getCustomName());
                 oRabbit.setAge(vanillarabbit.getAge());
 
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                int randomVariant = event.getWorld().getRandom().nextInt(ORabbitModel.Variant.values().length);
                 oRabbit.setVariant(randomVariant);
 
-                int randomOverlay = event.getWorld().getRandom().nextInt(23);
+                int randomOverlay = event.getWorld().getRandom().nextInt(ORabbitMarkingLayer.Overlay.values().length);
                 oRabbit.setOverlayVariant(randomOverlay);
+
+                int randomGender = event.getWorld().getRandom().nextInt(ORabbit.Gender.values().length);
+                oRabbit.setGender(randomGender);
 
                 if (event.getWorld().isClientSide) {
                     vanillarabbit.remove(Entity.RemovalReason.DISCARDED);
@@ -383,10 +398,10 @@ public class SpawnReplacer {
                 oSheep.setCustomName(vanillasheep.getCustomName());
                 oSheep.setAge(vanillasheep.getAge());
 
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                int randomVariant = event.getWorld().getRandom().nextInt(OSheepModel.Variant.values().length);
                 oSheep.setVariant(randomVariant);
 
-                int randomGender = event.getWorld().getRandom().nextInt(31);
+                int randomGender = event.getWorld().getRandom().nextInt(OSheepHornLayer.HornOverlay.values().length);
                 oSheep.setHornVariant(randomGender);
 
                 if (event.getWorld().isClientSide) {
@@ -418,11 +433,14 @@ public class SpawnReplacer {
                 oLlama.setOwnerUUID(vanillallama.getOwnerUUID());
                 oLlama.setAge(vanillallama.getAge());
 
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                int randomVariant = event.getWorld().getRandom().nextInt(OLlamaModel.Variant.values().length);
                 oLlama.setVariant(randomVariant);
 
-                int randomOverlay = event.getWorld().getRandom().nextInt(23);
+                int randomOverlay = event.getWorld().getRandom().nextInt(OPigMarkingLayer.Overlay.values().length);
                 oLlama.setOverlayVariant(randomOverlay);
+
+                int randomGender = event.getWorld().getRandom().nextInt(OLlama.Gender.values().length);
+                oLlama.setGender(randomGender);
 
                 if (event.getWorld().isClientSide) {
                     vanillallama.remove(Entity.RemovalReason.DISCARDED);
@@ -448,19 +466,18 @@ public class SpawnReplacer {
 
             if (oPig != null) {
                 oPig.copyPosition(vanillapig);
-                Entity entity = event.getEntity();
 
                 oPig.setCustomName(vanillapig.getCustomName());
                 oPig.setAge(vanillapig.getAge());
 
-                int randomVariant = event.getWorld().getRandom().nextInt(23);
+                int randomVariant = event.getWorld().getRandom().nextInt(OPigModel.Variant.values().length);
                 oPig.setVariant(randomVariant);
 
-                int randomOverlay = event.getWorld().getRandom().nextInt(23);
-                oPig.setOverlayVariant(randomOverlay);
+                int randomOverlayVariant = event.getWorld().getRandom().nextInt(OPigMarkingLayer.Overlay.values().length);
+                oPig.setOverlayVariant(randomOverlayVariant);
 
-                int randomTusksVariant = event.getWorld().getRandom().nextInt(23);
-                oPig.setTusksVariant(randomTusksVariant);
+                int randomTusks = event.getWorld().getRandom().nextInt(OPigTuskLayer.Overlay.values().length);
+                oPig.setTusksVariant(randomTusks);
 
                 if (event.getWorld().isClientSide) {
                     vanillapig.remove(Entity.RemovalReason.DISCARDED);
@@ -517,9 +534,6 @@ public class SpawnReplacer {
                 event.setCanceled(true);
             }
         }
-
-
-
 
 
 
