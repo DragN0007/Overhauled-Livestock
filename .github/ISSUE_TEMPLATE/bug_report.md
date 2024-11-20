@@ -16,3 +16,5 @@ assignees: ''
 **Minecraft Version:**
 
 **Screenshot (Optional):**
+
+**Have you tried removing other mods? Did the issue persist after removing them?:**
