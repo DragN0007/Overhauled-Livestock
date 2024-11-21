@@ -18,3 +18,5 @@ assignees: ''
 **Screenshot (Optional):**
 
 **Have you tried removing other mods? Did the issue persist after removing them?:**
+
+**Are you on Singleplayer or a Server?:**
