@@ -33,7 +33,7 @@ Altering and re-distribution/ sale of my assets are not permitted, under any cir
 
 You also may ***not*** sell my assets or anything pertaining to, or within my mod(s), in your own shop for real
 currency. This includes the selling and buying of creatures, items, blocks, and anything in-between in 'server
-shops' for real money.
+shops' or websites for real money.
 
 Texture Packs and Livestock Overhaul-Dependent Addons are okay, and encouraged, provided they're free and for the public to use!
 
