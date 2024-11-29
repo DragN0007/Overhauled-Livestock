@@ -14,7 +14,7 @@ plugins {
 }
 apply plugin: 'net.minecraftforge.gradle'
 
-version = '1.18.2-1.4'
+version = '1.18.2-1.5'
 group = 'com.dragn0007.dragnlivestock'
 archivesBaseName = 'DragNs_Livestock_Overhaul'
 
