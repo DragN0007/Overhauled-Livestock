@@ -3,6 +3,7 @@ package com.dragn0007.dragnlivestock.entities.llama;
 import com.dragn0007.dragnlivestock.entities.Chestable;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.LlamaFollowHerdLeaderGoal;
+import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
 import com.dragn0007.dragnlivestock.items.LOItems;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.core.BlockPos;
@@ -524,9 +525,13 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 				++k;
 			}
 
+			int gender;
+			gender = this.random.nextInt(OLlama.Gender.values().length);
+
 			oLlama.setStrength(k);
 			oLlama.setVariant(variant);
 			oLlama.setOverlayVariant(overlay);
+			oLlama.setGender(gender);
 		}
 
 		return oLlama;

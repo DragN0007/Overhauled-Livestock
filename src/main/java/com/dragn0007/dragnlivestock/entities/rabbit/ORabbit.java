@@ -506,8 +506,12 @@ public class ORabbit extends TamableAnimal implements IAnimatable {
 				overlay = this.random.nextInt(ORabbitMarkingLayer.Overlay.values().length);
 			}
 
+			int gender;
+			gender = this.random.nextInt(ORabbit.Gender.values().length);
+
 			((ORabbit) oRabbit).setVariant(variant);
 			((ORabbit) oRabbit).setOverlayVariant(overlay);
+			((ORabbit) oRabbit).setGender(gender);
 		}
 
 		return oRabbit;
