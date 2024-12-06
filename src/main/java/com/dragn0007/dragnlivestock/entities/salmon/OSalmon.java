@@ -7,15 +7,16 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -25,6 +26,9 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
+
+import javax.annotation.Nullable;
+import java.util.Random;
 
 public class OSalmon extends AbstractSchoolingFish implements IAnimatable {
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
@@ -106,6 +110,18 @@ public class OSalmon extends AbstractSchoolingFish implements IAnimatable {
 
 	public void setVariant(int variant) {
 		this.entityData.set(VARIANT, variant);
+	}
+
+	@Override
+	@Nullable
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+		if (data == null) {
+			data = new AgeableMob.AgeableMobGroupData(0.2F);
+		}
+		Random random = new Random();
+		setVariant(random.nextInt(OSalmonModel.Variant.values().length));
+
+		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
 	}
 
 	@Override
