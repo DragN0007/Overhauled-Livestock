@@ -19,7 +19,8 @@ on your shaders. This is a Geckolib issue; we can't fix it on our end.
 
 -Player is not positioned correctly on horse 'Bow' emote. 
 
--Hundreds of O-Bees spawning from hives (if you come across this one, do /kill on them and destroy the hive)
+-Hundreds of O-Bees spawning from hives 
+(if you come across this one, do /kill on them and destroy the hive)
 ```
 
 ## Licensing & Copyrights
