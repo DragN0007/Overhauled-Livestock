@@ -22,7 +22,7 @@ on your shaders. This is a Geckolib issue; we can't fix it on our end.
 -Hundreds of O-Bees spawning from hives 
 (if you come across this one, do /kill on them and destroy the hive)
 
--O-Horses replaceing Mystic Mounts creatures and spawning in huge amounts. 
+-O-Horses replacing Mystic Mounts creatures and spawning in huge amounts. 
 Can't/ won't fix this on our end.
 ```
 
