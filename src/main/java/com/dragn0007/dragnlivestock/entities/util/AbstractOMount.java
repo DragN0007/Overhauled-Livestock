@@ -1,7 +1,8 @@
 package com.dragn0007.dragnlivestock.entities.util;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
-import com.dragn0007.dragnlivestock.gui.OHorseMenu;
+import com.dragn0007.dragnlivestock.entities.horse.OHorse;
+import com.dragn0007.dragnlivestock.gui.OMountMenu;
 import com.dragn0007.dragnlivestock.items.LOItems;
 import com.dragn0007.dragnlivestock.util.LOTags;
 import net.minecraft.nbt.CompoundTag;
@@ -38,7 +39,7 @@ import software.bernie.geckolib3.core.builder.ILoopType;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public abstract class AbstractOHorse extends AbstractChestedHorse {
+public abstract class AbstractOMount extends AbstractChestedHorse {
     public static final UUID ARMOR_MODIFIER_UUID = UUID.fromString("3c50e848-b2e3-404a-9879-7550b12dd09b");
     public static final UUID SPRINT_SPEED_MOD_UUID = UUID.fromString("c9379664-01b5-4e19-a7e9-11264453bdce");
     public static final UUID WALK_SPEED_MOD_UUID = UUID.fromString("59b55c98-e39b-45e2-846c-f91f3e9ea861");
@@ -46,7 +47,7 @@ public abstract class AbstractOHorse extends AbstractChestedHorse {
     public static final AttributeModifier SPRINT_SPEED_MOD = new AttributeModifier(SPRINT_SPEED_MOD_UUID, "Sprint speed mod", 0.3D, AttributeModifier.Operation.MULTIPLY_TOTAL);
     public static final AttributeModifier WALK_SPEED_MOD = new AttributeModifier(WALK_SPEED_MOD_UUID, "Walk speed mod", -0.7D, AttributeModifier.Operation.MULTIPLY_TOTAL); // KEEP THIS NEGATIVE. It is calculated by adding 1. So -0.1 actually means 0.9
 
-    public static final EntityDataAccessor<Integer> DATA_CARPET_ID = SynchedEntityData.defineId(AbstractOHorse.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> DATA_CARPET_ID = SynchedEntityData.defineId(AbstractOMount.class, EntityDataSerializers.INT);
     protected boolean shouldEmote;
 
     public enum Gender {
@@ -62,7 +63,7 @@ public abstract class AbstractOHorse extends AbstractChestedHorse {
         return this.getGender() == 1;
     }
 
-    public static final EntityDataAccessor<Integer> GENDER = SynchedEntityData.defineId(AbstractOHorse.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> GENDER = SynchedEntityData.defineId(AbstractOMount.class, EntityDataSerializers.INT);
 
     public int getGender() {
         return this.entityData.get(GENDER);
@@ -72,7 +73,7 @@ public abstract class AbstractOHorse extends AbstractChestedHorse {
         this.entityData.set(GENDER, gender);
     }
 
-    public AbstractOHorse(EntityType<? extends AbstractOHorse> entityType, Level level) {
+    public AbstractOMount(EntityType<? extends AbstractOMount> entityType, Level level) {
         super(entityType, level);
     }
 
@@ -82,7 +83,7 @@ public abstract class AbstractOHorse extends AbstractChestedHorse {
     public void openInventory(Player player) {
         if(player instanceof ServerPlayer serverPlayer && this.isTamed()) {
             NetworkHooks.openGui(serverPlayer, new SimpleMenuProvider((containerId, inventory, p) -> {
-                return new OHorseMenu(containerId, inventory, this.inventory, this);
+                return new OMountMenu(containerId, inventory, this.inventory, this);
             }, this.getDisplayName()), (data) -> {
                 data.writeInt(this.getInventorySize());
                 data.writeInt(this.getId());
@@ -118,6 +119,26 @@ public abstract class AbstractOHorse extends AbstractChestedHorse {
 
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
+        }
+
+        if (itemStack.is(LOItems.MANE_SCISSORS.get()) && this.isHorse(this)) {
+            OHorse oHorse = (OHorse) this;
+            OHorse.Mane currentMane = OHorse.Mane.values()[oHorse.getManeType()];
+            OHorse.Mane nextMane = currentMane.next();
+
+            oHorse.setManeType(nextMane.ordinal());
+            this.playSound(SoundEvents.SHEEP_SHEAR, 0.5f, 1f);
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
+        }
+
+        if (itemStack.is(LOItems.TAIL_SCISSORS.get()) && this.isHorse(this)) {
+            OHorse oHorse = (OHorse) this;
+            OHorse.Tail currentTail = OHorse.Tail.values()[oHorse.getTailType()];
+            OHorse.Tail nextTail = currentTail.next();
+
+            oHorse.setTailType(nextTail.ordinal());
+            this.playSound(SoundEvents.SHEEP_SHEAR, 0.5f, 1f);
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
 
         if (itemStack.is(LOItems.GENDER_TEST_STRIP.get()) && this.isFemale()) {

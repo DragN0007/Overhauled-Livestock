@@ -1,7 +1,7 @@
 package com.dragn0007.dragnlivestock.gui;
 
 import com.dragn0007.dragnlivestock.entities.cow.ox.Ox;
-import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
+import com.dragn0007.dragnlivestock.entities.util.AbstractOMount;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
@@ -14,16 +14,16 @@ import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-public class OHorseMenu extends AbstractContainerMenu {
+public class OMountMenu extends AbstractContainerMenu {
 
     public Container container;
-    public AbstractOHorse oHorse;
+    public AbstractOMount oHorse;
 
-    public OHorseMenu(int containerId, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerId, inventory, new SimpleContainer(extraData.readInt()), (AbstractOHorse) inventory.player.level.getEntity(extraData.readInt()));
+    public OMountMenu(int containerId, Inventory inventory, FriendlyByteBuf extraData) {
+        this(containerId, inventory, new SimpleContainer(extraData.readInt()), (AbstractOMount) inventory.player.level.getEntity(extraData.readInt()));
     }
 
-    public OHorseMenu(int containerId, Inventory inventory, Container container, AbstractOHorse abstractOHorse) {
+    public OMountMenu(int containerId, Inventory inventory, Container container, AbstractOMount abstractOHorse) {
         super(LOMenuTypes.O_HORSE_MENU.get(), containerId);
         this.container = container;
         this.oHorse = abstractOHorse;
@@ -32,12 +32,12 @@ public class OHorseMenu extends AbstractContainerMenu {
         this.addSlot(new Slot(this.container, oHorseSlots++, 8, 18) {
             @Override
             public boolean mayPlace(ItemStack itemStack) {
-                return itemStack.is(Items.SADDLE) && !this.hasItem() && OHorseMenu.this.oHorse.isSaddleable();
+                return itemStack.is(Items.SADDLE) && !this.hasItem() && OMountMenu.this.oHorse.isSaddleable();
             }
 
             @Override
             public boolean isActive() {
-                return OHorseMenu.this.oHorse.isSaddleable();
+                return OMountMenu.this.oHorse.isSaddleable();
             }
         });
 
@@ -45,16 +45,16 @@ public class OHorseMenu extends AbstractContainerMenu {
             @Override
             public boolean mayPlace(ItemStack itemStack) {
                 if (itemStack.getItem() instanceof HorseArmorItem) {
-                    return !this.hasItem() && OHorseMenu.this.oHorse.canWearArmor();
+                    return !this.hasItem() && OMountMenu.this.oHorse.canWearArmor();
                 } else if (itemStack.is(ItemTags.CARPETS)) {
-                    return !this.hasItem() && OHorseMenu.this.oHorse.canWearArmor();
+                    return !this.hasItem() && OMountMenu.this.oHorse.canWearArmor();
                 }
                 return false;
             }
 
             @Override
             public boolean isActive() {
-                return OHorseMenu.this.oHorse.canWearArmor() && !(OHorseMenu.this.oHorse instanceof Ox);
+                return OMountMenu.this.oHorse.canWearArmor() && !(OMountMenu.this.oHorse instanceof Ox);
             }
         });
 

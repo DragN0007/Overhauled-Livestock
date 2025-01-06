@@ -1,6 +1,7 @@
 package com.dragn0007.dragnlivestock.entities.ai;
 
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
+import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import com.mojang.datafixers.DataFixUtils;
 import net.minecraft.world.entity.ai.goal.Goal;
 
@@ -23,7 +24,7 @@ public class HorseFollowHerdLeaderGoal extends Goal {
    }
 
    public boolean canUse() {
-      if (this.mob.hasFollowers() && !mob.isSaddled() && !mob.isLeashed()) {
+      if (this.mob.hasFollowers() && !mob.isSaddled() && !mob.isLeashed() || !LivestockOverhaulCommonConfig.ANIMALS_HERDING_ENABLED.get()) {
          return false;
       } else if (this.mob.isFollower()) {
          return true;
@@ -45,7 +46,7 @@ public class HorseFollowHerdLeaderGoal extends Goal {
    }
 
    public boolean canContinueToUse() {
-      return this.mob.isFollower() && this.mob.inRangeOfLeader() && !mob.isSaddled() && !mob.isLeashed();
+      return this.mob.isFollower() && this.mob.inRangeOfLeader() && !mob.isSaddled() && !mob.isLeashed() || !LivestockOverhaulCommonConfig.ANIMALS_HERDING_ENABLED.get();
    }
 
    public void start() {

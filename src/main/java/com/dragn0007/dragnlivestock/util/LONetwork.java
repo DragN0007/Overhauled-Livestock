@@ -1,7 +1,7 @@
 package com.dragn0007.dragnlivestock.util;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
-import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
+import com.dragn0007.dragnlivestock.entities.util.AbstractOMount;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
@@ -41,7 +41,7 @@ public class LONetwork {
             ctx.enqueueWork(() -> {
                 ServerPlayer player = ctx.getSender();
                 if(player != null) {
-                    if(player.getVehicle() instanceof AbstractOHorse oHorse) {
+                    if(player.getVehicle() instanceof AbstractOMount oHorse) {
                         oHorse.handleSpeedRequest(msg.speedMod);
                     }
                 }
@@ -76,7 +76,7 @@ public class LONetwork {
             ctx.enqueueWork(() -> {
                 ServerPlayer player = ctx.getSender();
                 if(player != null) {
-                    if(player.getVehicle() instanceof AbstractOHorse oHorse) {
+                    if(player.getVehicle() instanceof AbstractOMount oHorse) {
                         int id = oHorse.getId();
                         INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> oHorse), new PlayEmoteResponse(id, msg.emoteName, msg.loopType));
                     }
@@ -117,7 +117,7 @@ public class LONetwork {
                 ClientLevel level = Minecraft.getInstance().level;
                 if(level != null) {
                     Entity entity = level.getEntity(msg.id);
-                    if(entity instanceof AbstractOHorse oHorse) {
+                    if(entity instanceof AbstractOMount oHorse) {
                         oHorse.playEmote(msg.emoteName, msg.loopType);
                     }
                 }

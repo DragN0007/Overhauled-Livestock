@@ -59,6 +59,10 @@
   "item.dragnlivestock.brand_tag": "Brand Tag",
   "tooltip.dragnlivestock.brand_tag.tooltip": "This item isn't fully functional yet.",
 
+  "item.dragnlivestock.mane_scissors": "Mane Scissors",
+  "item.dragnlivestock.tail_scissors": "Tail Scissors",
+  "tooltip.dragnlivestock.for_horses.tooltip": "For horses!",
+
   "item.dragnlivestock.netherite_horse_armor": "Netherite Horse Armor",
   "item.dragnlivestock.griffith_inspired_horse_armor": "Griffith-Inspired Horse Armor",
 

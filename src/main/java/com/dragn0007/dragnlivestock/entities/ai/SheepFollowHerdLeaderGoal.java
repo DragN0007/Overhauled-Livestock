@@ -1,6 +1,7 @@
 package com.dragn0007.dragnlivestock.entities.ai;
 
 import com.dragn0007.dragnlivestock.entities.sheep.OSheep;
+import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import com.mojang.datafixers.DataFixUtils;
 import net.minecraft.world.entity.ai.goal.Goal;
 
@@ -23,7 +24,7 @@ public class SheepFollowHerdLeaderGoal extends Goal {
    }
 
    public boolean canUse() {
-      if (this.mob.hasFollowers()) {
+      if (this.mob.hasFollowers() || !LivestockOverhaulCommonConfig.ANIMALS_HERDING_ENABLED.get()) {
          return false;
       } else if (this.mob.isFollower()) {
          return true;
@@ -45,7 +46,7 @@ public class SheepFollowHerdLeaderGoal extends Goal {
    }
 
    public boolean canContinueToUse() {
-      return this.mob.isFollower() && this.mob.inRangeOfLeader();
+      return this.mob.isFollower() && this.mob.inRangeOfLeader() || !LivestockOverhaulCommonConfig.ANIMALS_HERDING_ENABLED.get();
    }
 
    public void start() {

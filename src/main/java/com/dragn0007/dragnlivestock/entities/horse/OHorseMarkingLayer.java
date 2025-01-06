@@ -65,7 +65,14 @@ public class OHorseMarkingLayer extends GeoLayerRenderer<OHorse> {
         TOBIANO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_tobiano.png")),
         ZORSE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_zorse.png")),
         HALF_SILVER(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_half_silver.png")),
-        FULL_SILVER(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_full_silver.png"));
+        FULL_SILVER(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_full_silver.png")),
+
+        CORONET(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_coronet.png")),
+        FEW_SPOT_LEOPARD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_few_spot_leopard.png")),
+        LEOPARD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_leopard.png")),
+        PURE_WHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pure_white.png")),
+        RABICANO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_rabicano.png")),
+        SNOWCAP(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_snowcap.png"));
 
         //Add new entries to bottom when mod is public, else horses will change textures during update.
 

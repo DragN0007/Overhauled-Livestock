@@ -1,6 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.cow.ox;
 
-import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
+import com.dragn0007.dragnlivestock.entities.util.AbstractOMount;
 import com.dragn0007.dragnlivestock.gui.OxMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -43,7 +43,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class Ox extends AbstractOHorse implements IAnimatable {
+public class Ox extends AbstractOMount implements IAnimatable {
 
 
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);

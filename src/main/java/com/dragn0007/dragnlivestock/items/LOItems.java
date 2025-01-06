@@ -73,6 +73,11 @@ public class LOItems {
     public static final RegistryObject<Item> EGG = ITEMS.register("egg",
             () -> new Item((new Item.Properties()).stacksTo(64).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
 
+    public static final RegistryObject<Item> MANE_SCISSORS = ITEMS.register("mane_scissors",
+            () -> new HairScissorItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> TAIL_SCISSORS = ITEMS.register("tail_scissors",
+            () -> new HairScissorItem(new Item.Properties().stacksTo(1)));
+
 
     //Food/ Items
     public static final RegistryObject<Item> SHEEP_MILK_BUCKET = ITEMS.register("sheep_milk_bucket",

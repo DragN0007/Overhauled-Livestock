@@ -11,6 +11,7 @@ import com.dragn0007.dragnlivestock.entities.cow.*;
 import com.dragn0007.dragnlivestock.entities.cow.mooshroom.*;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkeyModel;
+import com.dragn0007.dragnlivestock.entities.horse.BreedModel;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.horse.OHorseMarkingLayer;
 import com.dragn0007.dragnlivestock.entities.horse.OHorseModel;
@@ -31,7 +32,7 @@ import com.dragn0007.dragnlivestock.entities.salmon.OSalmonModel;
 import com.dragn0007.dragnlivestock.entities.sheep.OSheep;
 import com.dragn0007.dragnlivestock.entities.sheep.OSheepHornLayer;
 import com.dragn0007.dragnlivestock.entities.sheep.OSheepModel;
-import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
+import com.dragn0007.dragnlivestock.entities.util.AbstractOMount;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -103,8 +104,15 @@ public class SpawnReplacer {
                 int randomOverlayVariant = event.getWorld().getRandom().nextInt(OHorseMarkingLayer.Overlay.values().length);
                 oHorse.setOverlayVariant(randomOverlayVariant);
 
-                int randomGender = event.getWorld().getRandom().nextInt(AbstractOHorse.Gender.values().length);
+                int randomGender = event.getWorld().getRandom().nextInt(AbstractOMount.Gender.values().length);
                 oHorse.setGender(randomGender);
+
+                if (LivestockOverhaulCommonConfig.NATURAL_HORSE_BREEDS.get()) {
+                    int randomBreedIfConfigured = event.getWorld().getRandom().nextInt(BreedModel.values().length);
+                    oHorse.setBreed(randomBreedIfConfigured);
+                } else {
+                    oHorse.setBreed(0);
+                }
 
                 //discard vanilla horse once it's been successfully replaced on client and server
                 if (event.getWorld().isClientSide) {
@@ -143,7 +151,7 @@ public class SpawnReplacer {
                 int randomVariant = event.getWorld().getRandom().nextInt(ODonkeyModel.Variant.values().length);
                 oDonkey.setVariant(randomVariant);
 
-                int randomGender = event.getWorld().getRandom().nextInt(AbstractOHorse.Gender.values().length);
+                int randomGender = event.getWorld().getRandom().nextInt(AbstractOMount.Gender.values().length);
                 oDonkey.setGender(randomGender);
 
                 if (event.getWorld().isClientSide) {
@@ -182,7 +190,7 @@ public class SpawnReplacer {
                 int randomVariant = event.getWorld().getRandom().nextInt(OMuleModel.Variant.values().length);
                 oMule.setVariant(randomVariant);
 
-                int randomGender = event.getWorld().getRandom().nextInt(AbstractOHorse.Gender.values().length);
+                int randomGender = event.getWorld().getRandom().nextInt(AbstractOMount.Gender.values().length);
                 oMule.setGender(randomGender);
 
                 if (event.getWorld().isClientSide) {

@@ -60,7 +60,7 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
             }
         }
 
-        if(animatable.isBaby()) {
+        if (animatable.isBaby()) {
             model.getBone("saddlebags").ifPresent(b -> b.setHidden(true));
             model.getBone("saddle").ifPresent(b -> b.setHidden(true));
             model.getBone("saddle2").ifPresent(b -> b.setHidden(true));
@@ -71,6 +71,50 @@ public class OHorseRender extends ExtendedGeoEntityRenderer<OHorse> {
             model.getBone("body_armor").ifPresent(b -> b.setHidden(true));
             model.getBone("neck_armor").ifPresent(b -> b.setHidden(true));
             model.getBone("head_armor").ifPresent(b -> b.setHidden(true));
+        }
+
+        if (animatable.hasDefaultMane()) {
+            model.getBone("roached_mane").ifPresent(b -> b.setHidden(false));
+            model.getBone("button_mane").ifPresent(b -> b.setHidden(true));
+        }
+
+        if (animatable.hasButtonMane()) {
+            model.getBone("roached_mane").ifPresent(b -> b.setHidden(true));
+            model.getBone("button_mane").ifPresent(b -> b.setHidden(false));
+        }
+
+        if (animatable.hasShortMane()) {
+            model.getBone("roached_mane").ifPresent(b -> b.setHidden(false));
+            model.getBone("button_mane").ifPresent(b -> b.setHidden(true));
+            model.getBone("mane").ifPresent(b -> b.setScaleZ(0.5F));
+        }
+
+        if (animatable.hasDefaultTail()) {
+            model.getBone("tail").ifPresent(b -> b.setScaleX(1.0F));
+            model.getBone("tail").ifPresent(b -> b.setScaleY(1.0F));
+            model.getBone("tail").ifPresent(b -> b.setScaleZ(1.0F));
+            model.getBone("tail_bottom").ifPresent(b -> b.setHidden(false));
+        }
+
+        if (animatable.hasLongTail()) {
+            model.getBone("tail").ifPresent(b -> b.setScaleX(1.0F));
+            model.getBone("tail").ifPresent(b -> b.setScaleY(1.3F));
+            model.getBone("tail").ifPresent(b -> b.setScaleZ(1.0F));
+            model.getBone("tail_bottom").ifPresent(b -> b.setHidden(false));
+        }
+
+        if (animatable.hasShortTail()) {
+            model.getBone("tail").ifPresent(b -> b.setScaleX(1.0F));
+            model.getBone("tail").ifPresent(b -> b.setScaleY(0.6F));
+            model.getBone("tail").ifPresent(b -> b.setScaleZ(1.0F));
+            model.getBone("tail_bottom").ifPresent(b -> b.setHidden(false));
+        }
+
+        if (animatable.hasTuckedTail()) {
+            model.getBone("tail").ifPresent(b -> b.setScaleY(0.7F));
+            model.getBone("tail").ifPresent(b -> b.setScaleX(1.1F));
+            model.getBone("tail").ifPresent(b -> b.setScaleZ(1.0F));
+            model.getBone("tail_bottom").ifPresent(b -> b.setHidden(true));
         }
 
         super.render(model, animatable, partialTick, type, poseStack, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);

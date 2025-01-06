@@ -34,7 +34,7 @@ import com.dragn0007.dragnlivestock.entities.sheep.OSheep;
 import com.dragn0007.dragnlivestock.entities.sheep.OSheepRender;
 import com.dragn0007.dragnlivestock.entities.unicorn.*;
 import com.dragn0007.dragnlivestock.gui.LOMenuTypes;
-import com.dragn0007.dragnlivestock.gui.OHorseScreen;
+import com.dragn0007.dragnlivestock.gui.OMountScreen;
 import com.dragn0007.dragnlivestock.gui.OxScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -110,7 +110,7 @@ public class LivestockOverhaulEvent {
         EntityRenderers.register(EntityTypes.END_UNICORN_ENTITY.get(), EndUnicornRender::new);
         EntityRenderers.register(EntityTypes.HEADLESS_HORSEMAN_ENTITY.get(), HeadlessHorsemanRender::new);
 
-        MenuScreens.register(LOMenuTypes.O_HORSE_MENU.get(), OHorseScreen::new);
+        MenuScreens.register(LOMenuTypes.O_HORSE_MENU.get(), OMountScreen::new);
         MenuScreens.register(LOMenuTypes.OX_MENU.get(), OxScreen::new);
     }
 }

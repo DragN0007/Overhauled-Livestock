@@ -30,6 +30,9 @@ public class LOItemModelProvider extends ItemModelProvider {
         simpleItem(LOItems.MALE_GENDER_TEST_STRIP.get());
         simpleItem(LOItems.FEMALE_GENDER_TEST_STRIP.get());
 
+        simpleItem(LOItems.TAIL_SCISSORS.get());
+        simpleItem(LOItems.MANE_SCISSORS.get());
+
         simpleItem(LOItems.FERTILIZED_EGG.get());
         simpleItem(LOItems.EGG.get());
 

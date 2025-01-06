@@ -6,7 +6,7 @@ import com.dragn0007.dragnlivestock.entities.ai.HorseFollowHerdLeaderGoal;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.mule.OMule;
 import com.dragn0007.dragnlivestock.entities.mule.OMuleModel;
-import com.dragn0007.dragnlivestock.entities.util.AbstractOHorse;
+import com.dragn0007.dragnlivestock.entities.util.AbstractOMount;
 import com.dragn0007.dragnlivestock.event.LivestockOverhaulClientEvent;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.nbt.CompoundTag;
@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
-public class OHorse extends AbstractOHorse implements IAnimatable {
+public class OHorse extends AbstractOMount implements IAnimatable {
 
 	public AnimationFactory factory = GeckoLibUtil.createFactory(this);
 	public OHorse leader;
@@ -88,87 +88,192 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 0.0F));
 
 		this.goalSelector.addGoal(3, new HorseFollowHerdLeaderGoal(this));
-		this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D, AbstractOHorse.class));
+		this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D, AbstractOMount.class));
 		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
 		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, (livingEntity) -> livingEntity instanceof Wolf));
 	}
 
-	@Override
 	public float generateRandomMaxHealth() {
 		float baseHealth;
-		if (getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.MUSTANG.resourceLocation)) {
 			baseHealth = 16.0F;
-			return baseHealth + this.random.nextInt(3) + this.random.nextInt(4);
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(5);
 		}
-		if (getModelLocation().equals(BreedModel.DRAFT.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.ARDENNES.resourceLocation)) {
 			baseHealth = 20.0F;
-			return baseHealth + this.random.nextInt(3) + this.random.nextInt(4);
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(5);
 		}
-		if (getModelLocation().equals(BreedModel.WARMBLOOD.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.KLADRUBER.resourceLocation)) {
 			baseHealth = 16.0F;
-			return baseHealth + this.random.nextInt(3) + this.random.nextInt(4);
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(5);
 		}
-		if (getModelLocation().equals(BreedModel.PONY.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.FJORD.resourceLocation)) {
 			baseHealth = 14.0F;
-			return baseHealth + this.random.nextInt(3) + this.random.nextInt(4);
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(5);
 		}
-		if (getModelLocation().equals(BreedModel.RACER.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.THOROUGHBRED.resourceLocation)) {
 			baseHealth = 13.0F;
-			return baseHealth + this.random.nextInt(3) + this.random.nextInt(4);
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(5);
+		}
+		if (getModelLocation().equals(BreedModel.FRIESIAN.resourceLocation)) {
+			baseHealth = 18.0F;
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(5);
+		}
+		if (getModelLocation().equals(BreedModel.IRISH_COB.resourceLocation)) {
+			baseHealth = 18.0F;
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(5);
+		}
+		if (getModelLocation().equals(BreedModel.AMERICAN_QUARTER.resourceLocation)) {
+			baseHealth = 16.0F;
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(5);
+		}
+		if (getModelLocation().equals(BreedModel.PERCHERON.resourceLocation)) {
+			baseHealth = 24.0F;
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(5);
+		}
+		if (getModelLocation().equals(BreedModel.SELLE_FRANCAIS.resourceLocation)) {
+			baseHealth = 17.0F;
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(5);
+		}
+		if (getModelLocation().equals(BreedModel.MARWARI.resourceLocation)) {
+			baseHealth = 18.0F;
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(5);
+		}
+		if (getModelLocation().equals(BreedModel.MONGOLIAN.resourceLocation)) {
+			baseHealth = 20.0F;
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(5);
+		}
+		if (getModelLocation().equals(BreedModel.SHIRE.resourceLocation)) {
+			baseHealth = 24.0F;
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(5);
+		}
+		if (getModelLocation().equals(BreedModel.AKHAL_TEKE.resourceLocation)) {
+			baseHealth = 15.0F;
+			return baseHealth + this.random.nextInt(3) + this.random.nextInt(5);
 		}
 		return 15.0F + (float) this.random.nextInt(4) + (float) this.random.nextInt(5);
 	}
 
-	@Override
 	public double generateRandomJumpStrength() {
 		double baseStrength = 0.4F;
-		double multiplier = this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D;
+		double multiplier = this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.25D;
 
-		if (getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.MUSTANG.resourceLocation)) {
 			baseStrength = 0.5F;
 			return baseStrength + multiplier;
 		}
-		if (getModelLocation().equals(BreedModel.DRAFT.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.ARDENNES.resourceLocation)) {
 			baseStrength = 0.3F;
 			return baseStrength + multiplier;
 		}
-		if (getModelLocation().equals(BreedModel.WARMBLOOD.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.KLADRUBER.resourceLocation)) {
 			baseStrength = 0.4F;
 			return baseStrength + multiplier;
 		}
-		if (getModelLocation().equals(BreedModel.PONY.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.FJORD.resourceLocation)) {
 			baseStrength = 0.35F;
 			return baseStrength + multiplier;
 		}
-		if (getModelLocation().equals(BreedModel.RACER.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.THOROUGHBRED.resourceLocation)) {
 			baseStrength = 0.35F;
+			return baseStrength + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.FRIESIAN.resourceLocation)) {
+			baseStrength = 0.35F;
+			return baseStrength + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.IRISH_COB.resourceLocation)) {
+			baseStrength = 0.3F;
+			return baseStrength + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.AMERICAN_QUARTER.resourceLocation)) {
+			baseStrength = 0.4F;
+			return baseStrength + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.SELLE_FRANCAIS.resourceLocation)) {
+			baseStrength = 0.55F;
+			return baseStrength + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.PERCHERON.resourceLocation)) {
+			baseStrength = 0.25F;
+			return baseStrength + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.MARWARI.resourceLocation)) {
+			baseStrength = 0.4F;
+			return baseStrength + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.MONGOLIAN.resourceLocation)) {
+			baseStrength = 0.3F;
+			return baseStrength + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.SHIRE.resourceLocation)) {
+			baseStrength = 0.2F;
+			return baseStrength + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.AKHAL_TEKE.resourceLocation)) {
+			baseStrength = 0.3F;
 			return baseStrength + multiplier;
 		}
 		return baseStrength + this.random.nextDouble() * 0.15D;
 	}
 
-	@Override
 	public double generateRandomSpeed() {
 		double baseSpeed = 0.0F;
-		double multiplier = (this.random.nextDouble() * 0.1D + this.random.nextDouble() * 0.1D + this.random.nextDouble() * 0.1D) * 0.25D;
+		double multiplier = (this.random.nextDouble() * 0.1D + this.random.nextDouble() * 0.1D + this.random.nextDouble() * 0.1D) * 0.30D;
 
-		if (getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.MUSTANG.resourceLocation)) {
 			baseSpeed = 0.2F;
 			return baseSpeed + multiplier;
 		}
-		if (getModelLocation().equals(BreedModel.DRAFT.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.ARDENNES.resourceLocation)) {
 			baseSpeed = 0.15F;
 			return baseSpeed + multiplier;
 		}
-		if (getModelLocation().equals(BreedModel.WARMBLOOD.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.KLADRUBER.resourceLocation)) {
 			baseSpeed = 0.2F;
 			return baseSpeed + multiplier;
 		}
-		if (getModelLocation().equals(BreedModel.PONY.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.FJORD.resourceLocation)) {
 			baseSpeed = 0.15F;
 			return baseSpeed + multiplier;
 		}
-		if (getModelLocation().equals(BreedModel.RACER.resourceLocation)) {
+		if (getModelLocation().equals(BreedModel.THOROUGHBRED.resourceLocation)) {
+			baseSpeed = 0.25F;
+			return baseSpeed + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.FRIESIAN.resourceLocation)) {
+			baseSpeed = 0.2F;
+			return baseSpeed + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.IRISH_COB.resourceLocation)) {
+			baseSpeed = 0.15F;
+			return baseSpeed + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.AMERICAN_QUARTER.resourceLocation)) {
+			baseSpeed = 0.2F;
+			return baseSpeed + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.SELLE_FRANCAIS.resourceLocation)) {
+			baseSpeed = 0.15F;
+			return baseSpeed + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.PERCHERON.resourceLocation)) {
+			baseSpeed = 0.15F;
+			return baseSpeed + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.MARWARI.resourceLocation)) {
+			baseSpeed = 0.2F;
+			return baseSpeed + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.MONGOLIAN.resourceLocation)) {
+			baseSpeed = 0.2F;
+			return baseSpeed + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.SHIRE.resourceLocation)) {
+			baseSpeed = 0.2F;
+			return baseSpeed + multiplier;
+		}
+		if (getModelLocation().equals(BreedModel.AKHAL_TEKE.resourceLocation)) {
 			baseSpeed = 0.25F;
 			return baseSpeed + multiplier;
 		}
@@ -336,24 +441,60 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 			double offsetY = 1.1;
 			double offsetZ = -0.2;
 
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.STOCK.resourceLocation)) {
-				offsetY = 1.3;
+			if (getModelLocation().equals(BreedModel.MUSTANG.resourceLocation)) {
+				offsetY = 1.0;
 			}
 
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.DRAFT.resourceLocation)) {
-				offsetY = 1.45;
-			}
-
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.WARMBLOOD.resourceLocation)) {
-				offsetY = 1.35;
-			}
-
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.PONY.resourceLocation)) {
+			if (getModelLocation().equals(BreedModel.ARDENNES.resourceLocation)) {
 				offsetY = 1.1;
 			}
 
-			if (this.isSaddled() && getModelLocation().equals(BreedModel.RACER.resourceLocation)) {
-				offsetY = 1.3;
+			if (getModelLocation().equals(BreedModel.KLADRUBER.resourceLocation)) {
+				offsetY = 1.15;
+			}
+
+			if (getModelLocation().equals(BreedModel.FJORD.resourceLocation)) {
+				offsetY = 0.85;
+			}
+
+			if (getModelLocation().equals(BreedModel.THOROUGHBRED.resourceLocation)) {
+				offsetY = 1.2;
+			}
+
+			if (getModelLocation().equals(BreedModel.FRIESIAN.resourceLocation)) {
+				offsetY = 1.25;
+			}
+
+			if (getModelLocation().equals(BreedModel.IRISH_COB.resourceLocation)) {
+				offsetY = 0.95;
+			}
+
+			if (getModelLocation().equals(BreedModel.AMERICAN_QUARTER.resourceLocation)) {
+				offsetY = 1.0;
+			}
+
+			if (getModelLocation().equals(BreedModel.PERCHERON.resourceLocation)) {
+				offsetY = 1.43;
+			}
+
+			if (getModelLocation().equals(BreedModel.SELLE_FRANCAIS.resourceLocation)) {
+				offsetY = 1.1;
+			}
+
+			if (getModelLocation().equals(BreedModel.MARWARI.resourceLocation)) {
+				offsetY = 1.1;
+			}
+
+			if (getModelLocation().equals(BreedModel.MONGOLIAN.resourceLocation)) {
+				offsetY = 0.85;
+			}
+
+			if (getModelLocation().equals(BreedModel.SHIRE.resourceLocation)) {
+				offsetY = 1.5;
+			}
+
+			if (getModelLocation().equals(BreedModel.AKHAL_TEKE.resourceLocation)) {
+				offsetY = 1.1;
 			}
 
 			if (this.isJumping()) {
@@ -493,6 +634,14 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		if (tag.contains("Gender")) {
 			this.setGender(tag.getInt("Gender"));
 		}
+
+		if (tag.contains("Mane")) {
+			this.setManeType(tag.getInt("Mane"));
+		}
+
+		if (tag.contains("Tail")) {
+			this.setTailType(tag.getInt("Tail"));
+		}
 	}
 
 	@Override
@@ -504,6 +653,8 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		tag.putString("Overlay_Texture", this.getOverlayLocation().toString());
 		tag.putInt("Breed", this.getBreed());
 		tag.putInt("Gender", this.getGender());
+		tag.putInt("Mane", this.getManeType());
+		tag.putInt("Tail", this.getTailType());
 	}
 
 	@Override
@@ -518,7 +669,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		this.setOverlayVariant(random.nextInt(OHorseMarkingLayer.Overlay.values().length));
 		this.setGender(random.nextInt(Gender.values().length));
 
-		if (spawnType == MobSpawnType.SPAWN_EGG) {
+		if (spawnType == MobSpawnType.SPAWN_EGG || LivestockOverhaulCommonConfig.NATURAL_HORSE_BREEDS.get()) {
 			this.setBreed(random.nextInt(BreedModel.values().length));
 		}
 
@@ -535,6 +686,8 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 		this.entityData.define(GENDER, 0);
 		this.entityData.define(VARIANT_TEXTURE, OHorseModel.Variant.BAY.resourceLocation);
 		this.entityData.define(OVERLAY_TEXTURE, OHorseMarkingLayer.Overlay.NONE.resourceLocation);
+		this.entityData.define(MANE_TYPE, 0);
+		this.entityData.define(TAIL_TYPE, 0);
 	}
 
 	public boolean canMate(Animal animal) {
@@ -544,9 +697,9 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 			return false;
 		} else {
 			if (!LivestockOverhaulCommonConfig.GENDERS_AFFECT_BREEDING.get()) {
-				return this.canParent() && ((AbstractOHorse) animal).canParent();
+				return this.canParent() && ((AbstractOMount) animal).canParent();
 			} else {
-				AbstractOHorse partner = (AbstractOHorse) animal;
+				AbstractOMount partner = (AbstractOMount) animal;
 				if (this.canParent() && partner.canParent() && this.getGender() != partner.getGender()) {
 					return true;
 				}
@@ -564,7 +717,7 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-		AbstractOHorse abstracthorse;
+		AbstractOMount abstracthorse;
 		if (ageableMob instanceof ODonkey) {
 			ODonkey donkey = (ODonkey) ageableMob;
 
@@ -618,14 +771,100 @@ public class OHorse extends AbstractOHorse implements IAnimatable {
 				breed = this.random.nextInt(BreedModel.values().length);
 			}
 
+			int gender;
+			gender = this.random.nextInt(OHorse.Gender.values().length);
+
 			((OHorse) abstracthorse).setVariant(variant);
 			((OHorse) abstracthorse).setOverlayVariant(overlay);
 			((OHorse) abstracthorse).setBreed(breed);
+			((OHorse) abstracthorse).setGender(gender);
+
+			if (this.random.nextInt(4) == 0) {
+				int randomJumpStrength = (int) Math.max(horse.generateRandomJumpStrength(), this.random.nextInt(10) + 10);
+				((OHorse) abstracthorse).generateRandomJumpStrength();
+
+				int betterSpeed = (int) Math.max(horse.getSpeed(), this.random.nextInt(10) + 20);
+				((OHorse) abstracthorse).setSpeed(betterSpeed);
+
+				int betterHealth = (int) Math.max(horse.getHealth(), this.random.nextInt(20) + 40);
+				((OHorse) abstracthorse).setHealth(betterHealth);
+			} else {
+				((OHorse) abstracthorse).setSpeed(horse.getSpeed());
+				((OHorse) abstracthorse).setHealth(horse.getHealth());
+			}
 		}
 
 		this.setOffspringAttributes(ageableMob, abstracthorse);
 		return abstracthorse;
 	}
 
+	public enum Mane {
+		DEFAULT,
+		BUTTONS,
+		SHORT;
+
+		public Mane next() {
+			return Mane.values()[(this.ordinal() + 1) % Mane.values().length];
+		}
+	}
+
+	public boolean hasDefaultMane() {
+		return this.getManeType() == 0;
+	}
+
+	public boolean hasButtonMane() {
+		return this.getManeType() == 1;
+	}
+
+	public boolean hasShortMane() {
+		return this.getManeType() == 2;
+	}
+
+	public enum Tail {
+		DEFAULT,
+		SHORT,
+		LONG,
+		TUCKED;
+
+		public Tail next() {
+			return Tail.values()[(this.ordinal() + 1) % Tail.values().length];
+		}
+	}
+
+	public boolean hasDefaultTail() {
+		return this.getTailType() == 0;
+	}
+
+	public boolean hasLongTail() {
+		return this.getTailType() == 1;
+	}
+
+	public boolean hasShortTail() {
+		return this.getTailType() == 2;
+	}
+
+	public boolean hasTuckedTail() {
+		return this.getTailType() == 3;
+	}
+
+	public static final EntityDataAccessor<Integer> MANE_TYPE = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+
+	public int getManeType() {
+		return this.entityData.get(MANE_TYPE);
+	}
+
+	public void setManeType(int mane) {
+		this.entityData.set(MANE_TYPE, mane);
+	}
+
+	public static final EntityDataAccessor<Integer> TAIL_TYPE = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+
+	public int getTailType() {
+		return this.entityData.get(TAIL_TYPE);
+	}
+
+	public void setTailType(int tail) {
+		this.entityData.set(TAIL_TYPE, tail);
+	}
 
 }
