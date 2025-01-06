@@ -18,6 +18,7 @@ public class LOItemModelProvider extends ItemModelProvider {
     @Override
     public void registerModels() {
         simpleItem(LOItems.LIVESTOCK_OVERHAUL.get());
+        simpleItem(LOItems.LIVESTOCK_OVERHAUL_FOOD.get());
 
         simpleItem(LOItems.OVERWORLD_UNICORN_SPAWN_EGG.get());
         simpleItem(LOItems.NETHER_UNICORN_SPAWN_EGG.get());

@@ -13,4 +13,12 @@ public class LOItemGroup {
         }
     };
 
+    public static final CreativeModeTab LIVESTOCK_OVERHAUL_FOOD_GROUP = new CreativeModeTab("overhauled_livestock_food")
+    {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack(LOItems.LIVESTOCK_OVERHAUL_FOOD.get());
+        }
+    };
+
 }

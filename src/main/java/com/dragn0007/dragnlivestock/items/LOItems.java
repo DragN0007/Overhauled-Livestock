@@ -81,109 +81,109 @@ public class LOItems {
 
     //Food/ Items
     public static final RegistryObject<Item> SHEEP_MILK_BUCKET = ITEMS.register("sheep_milk_bucket",
-         () -> new MilkBucketItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(1).build()).craftRemainder(Items.BUCKET).stacksTo(1).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+         () -> new MilkBucketItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(1).build()).craftRemainder(Items.BUCKET).stacksTo(1).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> LLAMA_MILK_BUCKET = ITEMS.register("llama_milk_bucket",
-            () -> new MilkBucketItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(1).build()).craftRemainder(Items.BUCKET).stacksTo(1).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new MilkBucketItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(1).build()).craftRemainder(Items.BUCKET).stacksTo(1).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
 
     public static final RegistryObject<Item> COW_MILK_JUG = ITEMS.register("cow_milk_jug",
-            () -> new Item(new Item.Properties().tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> SHEEP_MILK_JUG = ITEMS.register("sheep_milk_jug",
-            () -> new Item(new Item.Properties().tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> LLAMA_MILK_JUG = ITEMS.register("llama_milk_jug",
-            () -> new Item(new Item.Properties().tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
 
     public static final RegistryObject<Item> CHEESE = ITEMS.register("cheese",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).effect(new MobEffectInstance(MobEffects.ABSORPTION, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).effect(new MobEffectInstance(MobEffects.ABSORPTION, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> SHEEP_CHEESE = ITEMS.register("sheep_cheese",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).effect(new MobEffectInstance(MobEffects.ABSORPTION, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).effect(new MobEffectInstance(MobEffects.ABSORPTION, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> LLAMA_CHEESE = ITEMS.register("llama_cheese",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).effect(new MobEffectInstance(MobEffects.ABSORPTION, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).effect(new MobEffectInstance(MobEffects.ABSORPTION, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
 
     public static final RegistryObject<Item> EGG_SALAD = ITEMS.register("egg_salad",
-            () -> new BowlFoodItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).build()).stacksTo(1).craftRemainder(Items.BOWL).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new BowlFoodItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).build()).stacksTo(1).craftRemainder(Items.BOWL).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
 
     public static final RegistryObject<Item> BEEF_RIB_STEAK = ITEMS.register("beef_rib_steak",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> BEEF_SIRLOIN_STEAK = ITEMS.register("beef_sirloin_steak",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_BEEF_RIB_STEAK = ITEMS.register("cooked_beef_rib_steak",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(9).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(9).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_BEEF_SIRLOIN_STEAK = ITEMS.register("cooked_beef_sirloin_steak",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(9).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(9).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
 
     public static final RegistryObject<Item> HORSE = ITEMS.register("horse",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> HORSE_RIB_STEAK = ITEMS.register("horse_rib_steak",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> HORSE_SIRLOIN_STEAK = ITEMS.register("horse_sirloin_steak",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_HORSE = ITEMS.register("cooked_horse",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_HORSE_RIB_STEAK = ITEMS.register("cooked_horse_rib_steak",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_HORSE_SIRLOIN_STEAK = ITEMS.register("cooked_horse_sirloin_steak",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
 
     public static final RegistryObject<Item> LLAMA = ITEMS.register("llama",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> LLAMA_RIB = ITEMS.register("llama_rib",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> LLAMA_LOIN = ITEMS.register("llama_loin",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_LLAMA = ITEMS.register("cooked_llama",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_LLAMA_RIB = ITEMS.register("cooked_llama_rib",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(9).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(9).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_LLAMA_LOIN = ITEMS.register("cooked_llama_loin",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(9).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(9).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
 
     public static final RegistryObject<Item> MUTTON_RIB = ITEMS.register("mutton_rib",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> MUTTON_LOIN = ITEMS.register("mutton_loin",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_MUTTON_RIB = ITEMS.register("cooked_mutton_rib",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_MUTTON_LOIN = ITEMS.register("cooked_mutton_loin",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
 
     public static final RegistryObject<Item> PORK_RIB_CHOP = ITEMS.register("pork_rib_chop",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> PORK_TENDERLOIN = ITEMS.register("pork_tenderloin",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_PORK_RIB_CHOP = ITEMS.register("cooked_pork_rib_chop",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_PORK_TENDERLOIN = ITEMS.register("cooked_pork_tenderloin",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
 
     public static final RegistryObject<Item> CHICKEN_THIGH = ITEMS.register("chicken_thigh",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_CHICKEN_THIGH = ITEMS.register("cooked_chicken_thigh",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
 
     public static final RegistryObject<Item> RABBIT_THIGH = ITEMS.register("rabbit_thigh",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_RABBIT_THIGH = ITEMS.register("cooked_rabbit_thigh",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(7).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
 
     public static final RegistryObject<Item> FISH_OIL = ITEMS.register("fish_oil",
             () -> new FishOilItem(
                     new MobEffectInstance(MobEffects.REGENERATION, 500, 0, true, false)
             ));
     public static final RegistryObject<Item> ROE = ITEMS.register("roe",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
 
     public static final RegistryObject<Item> UNICORN = ITEMS.register("unicorn",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).effect(new MobEffectInstance(MobEffects.REGENERATION, 600, 0), 0.8F).effect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 0), 0.8F).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).effect(new MobEffectInstance(MobEffects.REGENERATION, 600, 0), 0.8F).effect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 0), 0.8F).saturationMod(1).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> UNICORN_RIB_STEAK = ITEMS.register("unicorn_rib_steak",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).effect(new MobEffectInstance(MobEffects.REGENERATION, 600, 0), 0.8F).effect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).effect(new MobEffectInstance(MobEffects.REGENERATION, 600, 0), 0.8F).effect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> UNICORN_SIRLOIN_STEAK = ITEMS.register("unicorn_sirloin_steak",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).effect(new MobEffectInstance(MobEffects.REGENERATION, 600, 0), 0.8F).effect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(1).effect(new MobEffectInstance(MobEffects.REGENERATION, 600, 0), 0.8F).effect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_UNICORN = ITEMS.register("cooked_unicorn",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(1).effect(new MobEffectInstance(MobEffects.REGENERATION, 600, 0), 0.8F).effect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(1).effect(new MobEffectInstance(MobEffects.REGENERATION, 600, 0), 0.8F).effect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_UNICORN_RIB_STEAK = ITEMS.register("cooked_unicorn_rib_steak",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1).effect(new MobEffectInstance(MobEffects.REGENERATION, 600, 0), 0.8F).effect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1).effect(new MobEffectInstance(MobEffects.REGENERATION, 600, 0), 0.8F).effect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
     public static final RegistryObject<Item> COOKED_UNICORN_SIRLOIN_STEAK = ITEMS.register("cooked_unicorn_sirloin_steak",
-            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1).effect(new MobEffectInstance(MobEffects.REGENERATION, 600, 0), 0.8F).effect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_GROUP)));
+            () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(10).saturationMod(1).effect(new MobEffectInstance(MobEffects.REGENERATION, 600, 0), 0.8F).effect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 600, 0), 0.8F).build()).tab(LOItemGroup.LIVESTOCK_OVERHAUL_FOOD_GROUP)));
 
     public static final RegistryObject<Item> OVERWORLD_UNICORN_HORN = ITEMS.register("overworld_unicorn_horn",
             () -> new UnicornHornItem(
@@ -209,6 +209,9 @@ public class LOItems {
 
     //Mod Item Tab Icon (UNOBTAINABLE)
     public static final RegistryObject<Item> LIVESTOCK_OVERHAUL = ITEMS.register("livestock_overhaul",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> LIVESTOCK_OVERHAUL_FOOD = ITEMS.register("livestock_overhaul_food",
             () -> new Item(new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
