@@ -20,7 +20,8 @@ on your shaders. This is a Geckolib issue; we can't fix it on our end.
 -Player is not positioned correctly on horse 'Bow' emote. 
 
 -Hundreds of O-Bees spawning from hives 
-(if you come across this one, do /kill on them and destroy the hive)
+(if you come across this one, do /kill on them and destroy the hive.
+You can also fix this by turning off O-Bees in the config.)
 
 -O-Horses replacing Mystic Mounts creatures and spawning in huge amounts. 
 Can't/ won't fix this on our end.
