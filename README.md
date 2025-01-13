@@ -97,6 +97,7 @@ Examples for the Template Texture Pack:
 ```
 
 ### Animals That Currently Have Dynamic Resources
+Don't see the animal you want to add a texture to? Suggest it in this repo's Issues!
 
 ```
 O-Horse
@@ -110,6 +111,9 @@ O-Donkey
 
 O-Rabbit
 /summon dragnlivestock:o_rabbit ~ ~ ~ {Texture:".png"}
+
+Caribou
+/summon dragnlivestock:caribou ~ ~ ~ {Texture:".png"}
 
 Overworld Unicorn
 /summon dragnlivestock:overworld_unicorn ~ ~ ~ {Texture:".png"}
