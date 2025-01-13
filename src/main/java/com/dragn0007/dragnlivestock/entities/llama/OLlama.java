@@ -304,7 +304,9 @@ public class OLlama extends AbstractChestedHorse implements IAnimatable, Chestab
 			return InteractionResult.SUCCESS;
 		}
 
-		if (itemstack.is(Items.BUCKET) && !this.isBaby()) {
+		if (itemstack.is(Items.BUCKET) && !this.isBaby() &&
+				(!LivestockOverhaulCommonConfig.GENDERS_AFFECT_BIPRODUCTS.get() ||
+						(LivestockOverhaulCommonConfig.GENDERS_AFFECT_BIPRODUCTS.get() && this.isFemale()))) {
 			player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
 			ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, LOItems.LLAMA_MILK_BUCKET.get().getDefaultInstance());
 			player.setItemInHand(hand, itemstack1);
