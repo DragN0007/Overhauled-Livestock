@@ -72,7 +72,8 @@ public class ODonkeyMarkingLayer extends GeoLayerRenderer<ODonkey> {
         LEOPARD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_leopard.png")),
         PURE_WHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pure_white.png")),
         RABICANO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_rabicano.png")),
-        SNOWCAP(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_snowcap.png"));
+        SNOWCAP(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_snowcap.png")),
+        HALF_BALD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_half_bald.png"));
 
         //Add new entries to bottom when mod is public, else horses will change textures during update.
 
