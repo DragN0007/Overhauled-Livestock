@@ -73,7 +73,18 @@ public class OMuleMarkingLayer extends GeoLayerRenderer<OMule> {
         PURE_WHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pure_white.png")),
         RABICANO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_rabicano.png")),
         SNOWCAP(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_snowcap.png")),
-        HALF_BALD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_half_bald.png"));
+        HALF_BALD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_half_bald.png")),
+        PINK_NOSE_APPALOOSA(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pink_appaloosa.png")),
+        PINK_NOSE_BALD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pink_bald.png")),
+        PINK_NOSE_BLAZE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pink_blaze.png")),
+        PINK_NOSE_FEW_SPOT_LEOPARD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pink_few_spot_leopard.png")),
+        PINK_NOSE_HALF_BALD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pink_half_bald.png")),
+        PINK_NOSE_LEOPARD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pink_leopard.png")),
+        PINK_NOSE_OVERO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pink_overo.png")),
+        PINK_NOSE_PURE_WHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pink_pure_white.png")),
+        PINK_NOSE_SNIP(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pink_snip.png")),
+        PINK_NOSE_SPLASH_OVERO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pink_splash_overo.png")),
+        PINK_NOSE_SPOTTED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/overlay_pink_spotted.png"));
 
         //Add new entries to bottom when mod is public, else horses will change textures during update.
 
