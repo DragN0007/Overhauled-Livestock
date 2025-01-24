@@ -2,6 +2,7 @@ package com.dragn0007.dragnlivestock.entities.donkey;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.entities.ai.GroundTieGoal;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.horse.OHorseMarkingLayer;
 import com.dragn0007.dragnlivestock.entities.mule.OMule;
@@ -81,6 +82,8 @@ public class ODonkey extends AbstractOMount implements IAnimatable {
 	@Override
 	public void registerGoals() {
 		super.registerGoals();
+		this.goalSelector.addGoal(0, new GroundTieGoal(this));
+
 		this.goalSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.7D));
 		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.4, true));
@@ -179,13 +182,9 @@ public class ODonkey extends AbstractOMount implements IAnimatable {
 		this.shouldEmote = true;
 	}
 
-	//ground tie
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.isSaddled() && !this.isVehicle() || this.isLeashed()) {
-			this.getNavigation().stop();
-		}
 	}
 
 	@Override

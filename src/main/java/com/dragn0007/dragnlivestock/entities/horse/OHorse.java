@@ -2,6 +2,7 @@ package com.dragn0007.dragnlivestock.entities.horse;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.entities.ai.GroundTieGoal;
 import com.dragn0007.dragnlivestock.entities.ai.HorseFollowHerdLeaderGoal;
 import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
 import com.dragn0007.dragnlivestock.entities.mule.OMule;
@@ -60,7 +61,7 @@ public class OHorse extends AbstractOMount implements IAnimatable {
 
 	@Override
 	public Vec3 getLeashOffset() {
-		return new Vec3(0D, (double)this.getEyeHeight() * 0.8F, (double)(this.getBbWidth() * 1.2F));
+		return new Vec3(0D, (double) this.getEyeHeight() * 0.9F, (double) (this.getBbWidth() * 1.1F));
 		//              ^ Side offset                      ^ Height offset                   ^ Length offset
 	}
 
@@ -83,6 +84,8 @@ public class OHorse extends AbstractOMount implements IAnimatable {
 	@Override
 	public void registerGoals() {
 		super.registerGoals();
+		this.goalSelector.addGoal(0, new GroundTieGoal(this));
+		
 		this.goalSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.7D));
 		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.4, true));
@@ -418,9 +421,6 @@ public class OHorse extends AbstractOMount implements IAnimatable {
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.isSaddled() && !this.isVehicle() || this.isLeashed()) {
-			this.getNavigation().stop();
-		}
 
 		if (this.hasFollowers() && this.level.random.nextInt(200) == 1) {
 			List<? extends OHorse> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D));

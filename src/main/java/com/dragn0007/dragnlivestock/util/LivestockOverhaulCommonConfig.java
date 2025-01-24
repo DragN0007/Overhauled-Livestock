@@ -23,6 +23,7 @@ public class LivestockOverhaulCommonConfig {
     public static final ForgeConfigSpec.BooleanValue ANIMALS_HERDING_ENABLED;
     public static final ForgeConfigSpec.BooleanValue USE_VANILLA_LOOT;
     public static final ForgeConfigSpec.BooleanValue NATURAL_HORSE_BREEDS;
+    public static final ForgeConfigSpec.BooleanValue GROUND_TIE;
     public static final ForgeConfigSpec.BooleanValue FAILSAFE_REPLACER;
 
     static {
@@ -81,6 +82,9 @@ public class LivestockOverhaulCommonConfig {
 
         NATURAL_HORSE_BREEDS = BUILDER.comment("Should O-Horses be able to spawn with any breed naturally? (They spawn only as wild Mustangs by default)")
                 .define("Naturally Spawning O-Horse Breeds", false);
+
+        GROUND_TIE = BUILDER.comment("Should O-Mounts \"ground tie\", or stop moving around, when saddled & dismounted? (Will run the ground tie animation visually even when false)")
+                .define("Ground Tie When Dismounted", true);
         BUILDER.pop();
 
         BUILDER.push("Uninstalling");
