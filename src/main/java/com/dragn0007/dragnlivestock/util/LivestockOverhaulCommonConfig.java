@@ -21,7 +21,6 @@ public class LivestockOverhaulCommonConfig {
     public static final ForgeConfigSpec.BooleanValue GENDERS_AFFECT_BIPRODUCTS;
     public static final ForgeConfigSpec.BooleanValue GENDERS_AFFECT_BREEDING;
     public static final ForgeConfigSpec.BooleanValue ANIMALS_HERDING_ENABLED;
-    public static final ForgeConfigSpec.BooleanValue USE_VANILLA_LOOT;
     public static final ForgeConfigSpec.BooleanValue NATURAL_HORSE_BREEDS;
     public static final ForgeConfigSpec.BooleanValue GROUND_TIE;
     public static final ForgeConfigSpec.BooleanValue FAILSAFE_REPLACER;
@@ -76,9 +75,6 @@ public class LivestockOverhaulCommonConfig {
 
         ANIMALS_HERDING_ENABLED = BUILDER.comment("Should animals, like cows, herd together?")
                 .define("Animals Herd Together", true);
-
-        USE_VANILLA_LOOT = BUILDER.comment("Should O-Animals use vanilla loot instead of the loot included in the mod?")
-                .define("Use Vanilla Animal Loot", false);
 
         NATURAL_HORSE_BREEDS = BUILDER.comment("Should O-Horses be able to spawn with any breed naturally? (They spawn only as wild Mustangs by default)")
                 .define("Naturally Spawning O-Horse Breeds", false);

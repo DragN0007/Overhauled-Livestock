@@ -20,6 +20,14 @@ public class LORecipeMaker extends RecipeProvider implements IConditionBuilder {
     @Override
     public void buildCraftingRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
 
+        ShapelessRecipeBuilder.shapeless(Items.EGG)
+                .requires(LOTags.Items.EGG)
+                .unlockedBy("has_egg", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(LOTags.Items.EGG)
+                        .build()))
+                .save(pFinishedRecipeConsumer);
+
+
         ShapedRecipeBuilder.shaped(LOItems.MANE_SCISSORS.get())
                 .define('A', Items.IRON_INGOT)
                 .define('B', Items.IRON_NUGGET)
