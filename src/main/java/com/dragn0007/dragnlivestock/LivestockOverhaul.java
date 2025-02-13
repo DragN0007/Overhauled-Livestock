@@ -17,12 +17,16 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib3.GeckoLib;
 
+import java.util.Random;
+import java.util.logging.Logger;
+
 import static com.dragn0007.dragnlivestock.LivestockOverhaul.MODID;
 
 @Mod(MODID)
 public class LivestockOverhaul
 {
     public static final String MODID = "dragnlivestock";
+    public static final Random RANDOM = new Random();
 
     public LivestockOverhaul()
     {
@@ -59,5 +63,11 @@ public class LivestockOverhaul
 
     static {
         EntityDataSerializers.registerSerializer(RESOURCE_LOCATION);
+    }
+
+    public static <T extends Enum<T>> T getRandom(Class<T> cls) {
+        // get a random value from an enum, pass in as <Enum>.class
+        T[] constants = cls.getEnumConstants();
+        return constants[RANDOM.nextInt(constants.length)];
     }
 }
