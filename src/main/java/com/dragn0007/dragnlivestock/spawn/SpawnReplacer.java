@@ -2,6 +2,7 @@ package com.dragn0007.dragnlivestock.spawn;
 
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.bee.OBee;
+import com.dragn0007.dragnlivestock.entities.bee.OBeeModel;
 import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
 import com.dragn0007.dragnlivestock.entities.chicken.OChickenMarkingLayer;
 import com.dragn0007.dragnlivestock.entities.chicken.OChickenModel;
@@ -95,42 +96,6 @@ public class SpawnReplacer {
 
     @SubscribeEvent
     public static void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
-//        if(!LivestockOverhaulCommonConfig.FAILSAFE_REPLACER.get() || event.getWorld().isClientSide()) {
-//            return;
-//        }
-//
-//        Entity entity = event.getEntity();
-//        if(LivestockOverhaulCommonConfig.REPLACE_HORSES.get() && entity.getClass() == Horse.class) {
-//            Horse horse = (Horse) entity;
-//            OHorse oHorse = EntityTypes.O_HORSE_ENTITY.get().create(event.getWorld());
-//            if(oHorse != null) {
-//                oHorse.setCustomName(horse.getCustomName());
-//                oHorse.deserializeNBT(horse.serializeNBT());
-//
-//                horse.remove(Entity.RemovalReason.DISCARDED);
-//                event.getWorld().addFreshEntity(oHorse);
-//            }
-//        } else if(LivestockOverhaulCommonConfig.REPLACE_BEES.get() && entity.getClass() == Bee.class) {
-//            Bee bee = (Bee) entity;
-//            OBee oBee = EntityTypes.O_BEE_ENTITY.get().create(event.getWorld());
-//            if(oBee != null) {
-//                oBee.setCustomName(bee.getCustomName());
-//                oBee.deserializeNBT(bee.serializeNBT());
-//
-//                bee.remove(Entity.RemovalReason.DISCARDED);
-//                event.getWorld().addFreshEntity(oBee);
-//
-//                // we need to handle beehive data and replace it with oBee data
-//                if(oBee.getHivePos() != null) {
-//                    BlockEntity blockEntity = event.getWorld().getBlockEntity(oBee.getHivePos());
-//                    handleBeehiveData(blockEntity);
-//                }
-//            }
-//        }
-
-
-
-
 
         //Horse
         if (!LivestockOverhaulCommonConfig.FAILSAFE_REPLACER.get() && LivestockOverhaulCommonConfig.REPLACE_HORSES.get() && event.getEntity() instanceof Horse) {
@@ -424,6 +389,9 @@ public class SpawnReplacer {
 
                 bee.remove(Entity.RemovalReason.DISCARDED);
                 event.getWorld().addFreshEntity(oBee);
+
+                int randomSpecies = event.getWorld().getRandom().nextInt(OBeeModel.Variant.values().length);
+                oSalmon.setVariant(randomSpecies);
 
                 // we need to handle beehive data and replace it with oBee data
                 if(oBee.getHivePos() != null) {
