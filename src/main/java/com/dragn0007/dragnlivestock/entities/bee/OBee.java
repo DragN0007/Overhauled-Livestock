@@ -54,14 +54,14 @@ public class OBee extends Bee implements IAnimatable {
 
 	@Override
 	public AnimationFactory getFactory() {
-		return factory;
+		return this.factory;
 	}
 
 	public ResourceLocation getTextureLocation() {
-		return OBeeModel.Variant.variantFromOrdinal(getVariant()).resourceLocation;
+		return OBeeModel.Variant.variantFromOrdinal(this.getVariant()).resourceLocation;
 	}
 
-	protected static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OBee.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OBee.class, EntityDataSerializers.INT);
 
 	public int getVariant() {
 		return this.entityData.get(VARIANT);
@@ -78,7 +78,7 @@ public class OBee extends Bee implements IAnimatable {
 			data = new AgeableMob.AgeableMobGroupData(0.2F);
 		}
 		Random random = new Random();
-		setVariant(random.nextInt(OBeeModel.Variant.values().length));
+		this.setVariant(random.nextInt(OBeeModel.Variant.values().length));
 
 		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
 	}
@@ -87,14 +87,14 @@ public class OBee extends Bee implements IAnimatable {
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		if (tag.contains("Variant")) {
-			setVariant(tag.getInt("Variant"));
+			this.setVariant(tag.getInt("Variant"));
 		}
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		tag.putInt("Variant", getVariant());
+		tag.putInt("Variant", this.getVariant());
 	}
 
 	@Override

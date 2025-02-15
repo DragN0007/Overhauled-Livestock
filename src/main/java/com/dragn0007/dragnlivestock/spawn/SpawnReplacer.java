@@ -88,7 +88,7 @@ public class SpawnReplacer {
             if(!beehivesToUpdate.isEmpty()) {
                 // Beehives which need updates are added to beehivesToUpdate, then updated as the final step of the server tick in which they were marked.
                 // This prevents updating the beehive mid-tick basically. <Arraylist>.clear() cannot be used while the beehive is iterating, only add/remove.
-                beehivesToUpdate.forEach((IForgeBlockEntity::deserializeNBT));
+                beehivesToUpdate.forEach(IForgeBlockEntity::deserializeNBT);
                 beehivesToUpdate.clear();
             }
         }
@@ -391,7 +391,7 @@ public class SpawnReplacer {
                 event.getWorld().addFreshEntity(oBee);
 
                 int randomSpecies = event.getWorld().getRandom().nextInt(OBeeModel.Variant.values().length);
-                oSalmon.setVariant(randomSpecies);
+                oBee.setVariant(randomSpecies);
 
                 // we need to handle beehive data and replace it with oBee data
                 if(oBee.getHivePos() != null) {

@@ -14,8 +14,7 @@ public class OBeeModel extends AnimatedGeoModel<OBee> {
         RED_MASON_BEE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/bee/red_mason_bee.png")),
         RED_TAILED_BEE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/bee/red_tailed_bumble_bee.png")),
         TAWNY_MINING_BEE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/bee/tawny_mining_bee.png")),
-        TREE_BEE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/bee/tree_bumble_bee.png")),
-        ;
+        TREE_BEE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/bee/tree_bumble_bee.png"));
 
         public final ResourceLocation resourceLocation;
         Variant(ResourceLocation resourceLocation) {
