@@ -18,10 +18,6 @@ end by turning off Entity Shadows on your options *and*
 on your shaders. This is a Geckolib issue; we can't fix it on our end.
 
 -Player is not positioned correctly on horse 'Bow' emote. 
-
--Hundreds of O-Bees spawning from hives 
-(if you come across this one, do /kill on them and destroy the hive.
-You can also fix this by turning off O-Bees in the config.)
 ```
 
 ## Licensing & Copyrights
