@@ -148,8 +148,10 @@ public class OCow extends Animal implements IAnimatable {
 	}
 
 	public void stopFollowing() {
-		this.leader.removeFollower();
-		this.leader = null;
+		if (this.leader != null) {
+			this.leader.removeFollower();
+			this.leader = null;
+		}
 	}
 
 	public void addFollower() {
