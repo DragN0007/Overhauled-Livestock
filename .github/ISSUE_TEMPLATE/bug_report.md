@@ -8,20 +8,7 @@ assignees: ''
 
 ---
 
-**Bug Description:**
+Livestock Overhaul 1.18.2 is deprecated, and no longer being worked on. Any reports made here will be lost to time!
 
-
-
-**Mod Version:**
-
-**Minecraft Version:**
-
-**Screenshot (Optional):**
-
-**Have you tried removing other mods? Did the issue persist after removing them?:**
-
-**Are you on Singleplayer or a Server?:**
-
--Before posting an issue, please make sure you’re on the latest version of the mod. There’s a possibility it’s already been fixed!
-
-**Did the issue persist after updating to the latest version?:**
+**Looking for the 1.20.1 repo instead?**
+https://github.com/DragN0007/Overhauled-Livestock-1.20.1/issues
